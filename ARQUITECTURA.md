@@ -88,6 +88,7 @@ graph TD
 | Módulo | Responsabilidad | Lo usan |
 |---|---|---|
 | `config.py` | Rutas, semilla, fechas de corte, costos (FP = 3, FN = 30), tamaños de muestra. Un solo lugar para cada número. | Todos |
+| `muestreo.py` | Muestra y split (D3–D5, D7) y su verificación. | muestrear.py, pruebas |
 | `datos.py` | Cargar y validar CSV (columnas, tipos). `cargar_split("prueba")` falla si no se llama desde `evaluar_prueba.py`. | Scripts |
 | `texto.py` | Limpieza: minúsculas, URL → `<url>`, números → `<num>`, recorte a 5,000 caracteres. Conserva acentos y signos. | Entrenamiento y app |
 | `modelos.py` | Red densa sobre TF-IDF y LSTM, en PyTorch; entrenar, guardar y cargar. | Entrenamiento y congelado |
@@ -132,10 +133,13 @@ data/                   ignorado por git (salvo data/sintetica/)
 | Archivo | Columnas | Quién escribe | Quién lee |
 |---|---|---|---|
 | `data/resenas.csv` | `id, lugar, consulta, tipo_lugar, rating_lugar, fecha, estrellas, idioma, texto` | anonimizar.py | todos |
-| `data/muestra.csv` | `id, split, orden, semilla` | muestrear.py | etiquetar.py, entrenar.py |
+| `data/muestra.csv` | `id, split, estrato, orden, reserva, semilla` (entrenamiento y validación) | muestrear.py | etiquetar.py, entrenar.py |
+| `data/muestra_prueba.csv` | mismas columnas, sólo prueba; SHA-256 en D17 | muestrear.py | etiquetar.py, evaluar_prueba.py |
 | `data/etiquetas.csv` | `id, etiqueta (1/0/vacía), ambigua, nombre_escapado, segundos, etiquetadora, marca_tiempo` | etiquetar.py (sólo agrega filas) | entrenar.py, evaluar_prueba.py |
 | `modelos/config.json` | `umbral, calibrador, version, semilla, hash_prueba, fecha` | congelar.py | predictor.py |
 | `modelos/MANIFIESTO.sha256` | SHA-256 de cada artefacto | congelar.py | evaluar_prueba.py, app |
+
+En la muestra, `orden` recorre primero las principales (`reserva = False`) y después las reservas. Por cada ambigua, `etiquetar.py` toma la siguiente reserva del mismo split y estrato (D7, D17).
 
 Que `etiquetas.csv` sólo reciba filas nuevas hace que un corte de luz no pierda más de una etiqueta, y que se pueda reconstruir el tiempo total de etiquetado. Si una reseña se etiqueta dos veces, vale la última fila (y así se mide la consistencia en T5).
 
@@ -347,7 +351,7 @@ Se agregan a `pyproject.toml` cuando empiece la implementación; no antes.
 | Tarea | Componentes | Produce |
 |---|---|---|
 | T2 | `etiquetar.py`, `datos.py` | `data/etiquetas.csv` |
-| T3 | `muestrear.py`, `config.py` | `data/muestra.csv`, hash de prueba |
+| T3 | `muestrear.py`, `config.py`, `datos.py`, `muestreo.py` | `data/muestra.csv`, `data/muestra_prueba.csv`, hashes (D17) |
 | T6 | `generar_sintetica.py` | `data/sintetica/` |
 | T7 | `entrenar.py`, `modelos.py`, `decision.py`, `metricas.py`, `texto.py` | `resultados/validacion/` |
 | T8 | `modelos.py` (LSTM) | `resultados/validacion/lstm_*` |

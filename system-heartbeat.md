@@ -18,10 +18,10 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 7 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 1 — Datos |
 | Punto de control | **0** ✅ aprobado · siguiente: **A** (mié 25, mediodía) |
-| Último paso | Punto de control 0 aprobado; commit de los documentos |
-| Siguiente paso | T3: `scripts/muestrear.py`, split y hash de prueba |
+| Último paso | T3 hecho: muestra congelada (semilla 20261123), hashes en D17, 9 pruebas pasan |
+| Siguiente paso | T1 (guía de etiquetado) y T2 (`scripts/etiquetar.py`) |
 | Bloqueos | Ninguno |
-| Sin commit | — |
+| Sin commit | T3: `src/resenas/`, `scripts/muestrear.py`, `tests/`, `pyproject.toml`, `uv.lock`, docs |
 
 ## Puntos de control
 
@@ -41,7 +41,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | TA | Arquitectura | lun 23 | ✅ | `ARQUITECTURA.md` (ADR-01–09) |
 | T1 | Guía de etiquetado | mar 24 | ⬜ | |
 | T2 | `scripts/etiquetar.py` | mar 24 | ⬜ | |
-| T3 | `scripts/muestrear.py` + hash de prueba | mar 24 | ⬜ | |
+| T3 | `scripts/muestrear.py` + hash de prueba | mar 24 | ✅ | D17 · `data/muestra.csv`, `data/muestra_prueba.csv` · `tests/test_split.py` |
 | T4 | Etiquetado a mano (prueba → validación → entrenamiento) | mar 24 – mié 25 | ⬜ | |
 | T5 | Consistencia (opcional) | mié 25 | ⬜ | |
 | T6 | Muestra sintética + tubería de punta a punta | mar 24 | ⬜ | |
@@ -64,6 +64,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Reseñas descargadas | 2,783 de 562 restaurantes | `data/resenas.csv` |
 | Llamadas a Places API / costo | 32 / $0 | Avance en `PLAN.md` |
 | Etiquetadas (prueba / validación / entrenamiento) | 0 / 0 / 0 de 200 / 200 / 300 | `data/etiquetas.csv` |
+| Muestra: 1–3★ en prueba / validación | 53 / 59 de 200 | D17 |
+| Reservas (prueba / validación / ent. 1–3★ / ent. 4–5★) | 20 / 20 / 27 / 406 | D17 |
 | `atender` (prueba / validación) | — / — (meta ≥ 30 cada uno) | |
 | Ambiguas (`s`) | — | |
 | Tiempo de etiquetado | — | |
@@ -82,6 +84,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **23-nov** · T3: paquete `src/resenas/` (`config`, `datos`, `muestreo`), `scripts/muestrear.py` y `tests/test_split.py` (9 ✔). Muestra congelada; hashes en D17. Las cifras por periodo de D3 se corrigieron a 1,323 / 750 / 689.
 - **23-nov** · Punto de control 0 aprobado. Commit de `PLAN.md`, `ARQUITECTURA.md`, `DECISIONES.md`, `CLAUDE.md` y este archivo.
 - **23-nov** · Creado `system-heartbeat.md` para seguir el avance.
 - **23-nov** · Creado `CLAUDE.md`.

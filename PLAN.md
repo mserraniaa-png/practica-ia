@@ -90,7 +90,7 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 - [ ] **T2. Herramienta de etiquetado** (`scripts/etiquetar.py`). Depende de: TA.
   - Acepta: teclas `1` / `0` / `s` y una tecla para marcar un nombre; guarda después de cada reseña; retoma donde se quedó; registra quién etiquetó y el tiempo por reseña; no muestra estrellas.
   - Verifica: etiquetar 10, cerrar, reabrir y que siga en la 11; el registro tiene 10 tiempos.
-- [ ] **T3. Muestra y split** (`scripts/muestrear.py`). Depende de: TA.
+- [x] **T3. Muestra y split** (`scripts/muestrear.py`). Depende de: TA. Hecho el 23-nov (D17).
   - Acepta: semilla fija; prueba se muestrea primero, después validación y al final entrenamiento (D5); cantidades de D4; el archivo de prueba queda aparte y su SHA-256 se anota en `DECISIONES.md`.
   - Verifica: ningún `lugar` aparece en dos splits; los conteos coinciden con D4.
 - [ ] **T4. Etiquetado** a mano. Depende de: T1, T2, T3. Orden: prueba → validación → entrenamiento.

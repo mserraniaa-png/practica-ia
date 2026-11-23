@@ -114,3 +114,20 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
   - Imagen pública en GitHub Container Registry: queda pública y requiere publicar para ARM e Intel.
   - Archivo .tar por Drive: ~1 GB que se regenera con cada cambio.
   - Ejecutable de escritorio: con torch pesa mucho y hay que compilar uno por sistema operativo.
+
+## D17 · Muestra y split congelados — 23-nov-2026 (antes de etiquetar)
+
+- **Decisión:** `scripts/muestrear.py` con semilla **20261123**.
+  - Principales: prueba 200, validación 200, entrenamiento 150 de 1–3★ + 150 de 4–5★ (D4).
+  - Reservas para reponer las ambiguas (D7): 20 en prueba y 20 en validación. En entrenamiento queda como reserva todo el pool restante: 27 de 1–3★ y 406 de 4–5★.
+  - Los restaurantes de las reservas también se excluyen de los splits siguientes (D5), así que reponer una ambigua nunca mete un restaurante en dos splits.
+  - Prueba se guarda aparte en `data/muestra_prueba.csv`.
+- **Cifras:**
+  - Restaurantes por split: prueba 178, validación 169, entrenamiento 205; ninguno se repite.
+  - Reseñas de 1–3★ entre las principales: prueba 53, validación 59.
+  - Aptas por periodo (español con texto): entrenamiento 1,323 · validación 750 · prueba 689. Corrige las cifras de D3 (1,342 / 757 / 680), que no se pudieron reproducir; el corte de fechas no cambia.
+- **Hashes SHA-256:**
+  - `data/resenas.csv`: `a94891278d297d249f541970c90698823b962b3f11138fdab38e8b4de495bb8e`
+  - `data/muestra.csv`: `ecd95896c8304171d997774a92b2ae388120d7d484106f737cfd6c648434d968`
+  - `data/muestra_prueba.csv`: `76225d0a3b4a8bb3884c58d3eb3a7aad259028b1409c1bdb8cdafc1baee7a4c4`
+- **Descartadas:** reservas de 40 en prueba y en validación, porque en la simulación con 20 semillas el pool de 1–3★ para entrenamiento bajaba a 159 en el peor caso, contra 150 + reservas que se necesitan; muestra sin reservas, que obliga a muestrear de nuevo cada vez que aparece una ambigua y puede romper D5.

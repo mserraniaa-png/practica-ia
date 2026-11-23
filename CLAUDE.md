@@ -15,7 +15,7 @@ Documentos fuente, en orden de autoridad:
 
 ## Estado actual
 
-Sólo existen `scripts/descargar_resenas.py` y `scripts/anonimizar.py`. Lo demás (`src/resenas/`, el resto de `scripts/`, `app/`, `tests/`, Docker, `reporte/`) está diseñado en `ARQUITECTURA.md` pero no implementado. El punto de control 0 dice que no se escribe código hasta que plan y arquitectura estén aprobados; revisar `PLAN.md` antes de empezar una tarea.
+Punto de control 0 aprobado (23-nov). El avance por tarea está en `system-heartbeat.md`; lo que no aparece ahí como hecho está diseñado en `ARQUITECTURA.md` pero no implementado.
 
 ## Comandos
 
@@ -25,9 +25,14 @@ Entorno con `uv` (Python 3.12, `package = false`):
 uv sync
 uv run python scripts/descargar_resenas.py --dry-run   # lista consultas, 0 llamadas a la API
 uv run python scripts/anonimizar.py                    # data/crudo/resenas_crudas.csv → data/resenas.csv
+uv run python scripts/muestrear.py                     # split congelado; no sobrescribe sin --forzar
+uv run pytest                                          # todas las pruebas
+uv run pytest tests/test_split.py::test_conteos_y_reservas   # una sola
 ```
 
-Las dependencias nuevas (scikit-learn, torch CPU, gradio, matplotlib, pytest) se agregan a `pyproject.toml` sólo al implementar la tarea que las necesita. Con el índice CPU de PyTorch, para que la imagen Docker no baje CUDA. Las pruebas planeadas usan pytest (`uv run pytest tests/test_x.py::nombre`).
+El proyecto es un paquete (`src/resenas`, con hatchling): los scripts y las pruebas hacen `from resenas import config` sin tocar `sys.path`. Si la shell trae un `VIRTUAL_ENV` de otro proyecto, uv lo ignora y avisa; no afecta.
+
+Las dependencias nuevas (scikit-learn, torch CPU, gradio, matplotlib, pytest) se agregan a `pyproject.toml` sólo al implementar la tarea que las necesita. Con el índice CPU de PyTorch, para que la imagen Docker no baje CUDA.
 
 ## Arquitectura (planeada; ver ARQUITECTURA.md)
 

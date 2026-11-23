@@ -1,0 +1,25 @@
+# Secretos
+.env
+.env.*
+!.env.example
+
+# Entornos y cachés
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+
+# Las reseñas de Google Maps no se versionan (términos de Google Maps Platform).
+# Solo se publica la muestra sintética (data/sintetica/).
+data/*
+!data/sintetica/
+cache/
+modelos/
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz

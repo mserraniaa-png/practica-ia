@@ -1,0 +1,116 @@
+# Registro de decisiones
+
+Cada decisión con su cifra o razón y la alternativa que se descartó. Es la fuente del PDF (criterio 5 de la rúbrica). Se agrega una entrada por cada decisión nueva; no se borran las anteriores: si una cambia, se agrega otra que la reemplaza y dice por qué.
+
+## D1 · Datos descargados — 23-nov-2026
+
+- **Decisión:** conservar las 2,783 reseñas ya descargadas (562 restaurantes, 32 llamadas, $0).
+- **Razón:** son 4 veces lo que se va a etiquetar (700); lo que sobra sirve para sacar entradas fuera de dominio y casos nuevos.
+- **Descartada:** borrarlas y descargar de nuevo con otro tamaño. Gasta cuota y tiempo y da el mismo tipo de datos.
+
+## D2 · Costos de cada error — 23-nov-2026
+
+- **Decisión:** FP = 3 min de gerente; FN = 30 min de gerente (proporción 10:1). El costo esperado se reporta en **minutos por cada 1000 reseñas**.
+- **Razón:** un FP es un gerente que lee una reseña que no lo requería (~3 min). Un FN es un problema que nadie atiende: un cliente perdido o daño a la reputación, valuado en ~30 min de gerente (más o menos una cuenta perdida).
+- **Descartadas:** costos en pesos (FP $15, FN $400), porque habría que justificar las cifras con una fuente; proporción 20:1, que en el PDF queda como análisis de sensibilidad.
+
+## D3 · Split temporal — 23-nov-2026
+
+- **Decisión:** entrenamiento antes del 1-jul-2026 · validación del 1-jul al 30-sep-2026 · prueba del 1-oct-2026 en adelante.
+- **Razón:** el enunciado pide split temporal cuando hay fecha. Con este corte el conjunto de prueba (lo más reciente) tiene 680 reseñas en español con texto, 149 de 1–3★.
+- **Descartadas:** corte jun/sep (deja solo ~286 para entrenamiento) y corte ago/mediados de oct (prueba más chica, 492).
+
+## D4 · Cuántas etiquetar y cómo muestrear — 23-nov-2026
+
+- **Decisión:** 700 etiquetadas.
+  - Validación: 200 al azar dentro de su periodo.
+  - Prueba: 200 al azar dentro de su periodo.
+  - Entrenamiento: 300, con 150 de 1–3★ y 150 de 4–5★ (sobremuestreo de quejas).
+  - Semilla fija y anotada.
+- **Razón:** validación y prueba aleatorias mantienen la proporción real de quejas, así que el costo por 1000 casos es honesto. El sobremuestreo solo en entrenamiento le da al modelo más ejemplos de la clase minoritaria. Se esperan ~45 `atender` en validación y otras ~45 en prueba.
+- **Descartadas:** 150+150+300, que deja ~35 quejas por split y vuelve inestables el umbral y la calibración; aleatorio simple en todo, que deja pocas quejas para entrenar; sobremuestreo en todo, que obliga a reponderar los costos y es fácil equivocarse.
+
+## D5 · Restaurante repetido entre splits — 23-nov-2026
+
+- **Decisión:**
+  - Se excluyen del conjunto de entrenamiento las reseñas de los restaurantes que tienen alguna reseña etiquetada en validación o prueba.
+  - Se excluyen de validación los restaurantes que aparecen en la muestra de prueba.
+  - El orden: primero se muestrea prueba, después validación y al final entrenamiento.
+- **Razón:** evita que el modelo memorice nombres de platillos o de lugares, y la evaluación mide restaurantes nuevos. Simulado con 20 semillas: el conjunto del que se saca entrenamiento queda en ~865 reseñas (~208 de 1–3★), suficiente para 300.
+- **Descartadas:**
+  - Excluir todos los restaurantes de los periodos de validación y prueba: deja solo 336 para entrenar.
+  - Permitirlo y declararlo: es una fuga que el criterio 2 castiga.
+  - Split por restaurante en lugar de por fecha: el enunciado pide split temporal.
+
+## D6 · Herramienta de etiquetado — 23-nov-2026
+
+- **Decisión:** script de terminal (`scripts/etiquetar.py`).
+  - Teclas: `1` atender, `0` no atender, `s` ambigua, más una tecla para marcar un nombre que se haya escapado.
+  - Guarda después de cada reseña y retoma donde se quedó.
+  - Registra quién etiquetó y cuánto tardó en cada reseña.
+- **Descartada:** página local en el navegador. Es más cómoda para leer, pero cuesta más construirla.
+
+## D7 · Reseñas ambiguas (`s`) — 23-nov-2026
+
+- **Decisión:** las ambiguas se excluyen del entrenamiento y de la evaluación, se cuentan y se reportan. Se reemplazan con nuevas reseñas del mismo split hasta llegar a las cantidades de D4.
+- **Descartada:** forzar una etiqueta, que mete ruido sin decirlo.
+
+## D8 · Menos de 20 errores en prueba — 23-nov-2026 (fijada antes de ver resultados)
+
+- **Decisión:** se analizan todos los errores de prueba y, si son menos de 20, se completa con errores de validación, indicando de qué split viene cada uno.
+- **Descartada:** usar solo errores de prueba aunque no lleguen a 20, porque no cumpliría "los 20 casos".
+
+## D9 · Fuera de dominio y reseñas no aptas — 23-nov-2026
+
+- **Decisión:** las 18 reseñas vacías y las que no están en español no se etiquetan ni se usan para entrenar; son candidatas para las 10 entradas fuera de dominio, junto con otras de tipos distintos (galimatías, reseña de hotel o producto, texto muy largo, solo emojis, URL, números).
+- **Descartada:** usar solo vacías y en otro idioma, que son dos tipos nada más.
+
+## D10 · Anonimización — 23-nov-2026
+
+- **Decisión:** mientras se etiqueta se marcan los nombres que se hayan escapado; antes de entrenar se cambian por `[PERSONA]`. En el PDF se describe el método (spaCy `es_core_news_sm` + filtro + revisión manual) y cuántas veces falló.
+- **Descartadas:** mejorar el filtro antes de etiquetar (retrasa el etiquetado y aun así no queda perfecto); ignorarlo (se podrían colar datos personales en la muestra sintética o en los ejemplos del PDF).
+
+## D11 · Criterios de etiquetado — 23-nov-2026
+
+`atender` = la reseña reporta **un problema concreto que el negocio puede corregir**. Las estrellas no deciden la etiqueta.
+
+| Caso | Etiqueta | Razón | Alternativa descartada |
+|---|---|---|---|
+| Problema que se resolvió en el momento ("llegó mal pero lo cambiaron rápido") | `atender` | La falla ocurrió y puede repetirse; la etiqueta es "reporta un problema", no "sigue sin resolverse" | `no_atender`: obliga a juzgar si se resolvió bien |
+| Precio ("caro pero rico") | `no_atender`, salvo un problema de cobro (cobro de más, cobrar algo que no se sirvió, propina forzada, precio equivocado) | Opinar del precio es cuestión de gusto; un error de cobro es una falla | Toda queja de precio como `atender` |
+| Queja vaga ("no me gustó", "nada especial", "no vuelvo") | `no_atender` | No le da al gerente nada que corregir | `atender`: la etiqueta se parecería a "≤ 2★" y el modelo aportaría poco sobre el baseline |
+| Reseña positiva con un problema de pasada ("todo bien, aunque el baño estaba sucio") | `atender` | Es justo el caso donde las estrellas fallan y el modelo vale la pena | Solo si es el tema principal |
+| Sugerencia sin falla ("estaría bien que tuvieran estacionamiento") | `no_atender` | Es una idea de mejora, no un problema | Contar las sugerencias como `atender` |
+
+Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
+
+## D12 · Framework de las redes — 23-nov-2026
+
+- **Decisión:** PyTorch (CPU) para la red densa sobre TF-IDF (modelo entregado) y para la LSTM (alternativa). TF-IDF con scikit-learn. Detalle en ARQUITECTURA.md, ADR-02.
+- **Descartadas:** Keras/TensorFlow (instalación más frágil en Mac ARM, app más pesada); MLP de scikit-learn + LSTM en PyTorch (dos estilos de código).
+
+## D13 · Dónde vive la app — 23-nov-2026 (reemplazada por D16)
+
+- **Decisión:** primero local con Gradio, con un comando (ADR-07). Después, si da tiempo, Cloud Run con login de Google vía IAP en el mismo proyecto de GCP (ADR-08), tras un spike de ~1 h.
+- **Razón:** el enunciado (§3, §6, rúbrica 1) pide que otra persona la use sin programar y sin uno presente, y que el video lo muestre; no exige publicarla.
+- **Descartadas:** Hugging Face Spaces (sin login de Google); liga temporal de Gradio (depende de que la Mac esté prendida).
+
+## D14 · Modelo congelado — 23-nov-2026
+
+- **Decisión:** el modelo, el calibrador, el umbral y el vocabulario se versionan en git con un manifiesto SHA-256; `evaluar_prueba.py` verifica los hashes y se niega a correr dos veces (ADR-06).
+- **Descartada:** sólo el manifiesto de hashes, con el modelo fuera de git.
+
+## D15 · Herramienta del PDF — 23-nov-2026
+
+- **Decisión:** Markdown → PDF con pandoc; las cifras y tablas se insertan desde `resultados/` con un script (ADR-09).
+- **Descartadas:** LaTeX (más instalación); Google Docs o Word (cifras copiadas a mano).
+
+## D16 · Distribución de la app: contenedor Docker — 23-nov-2026 (reemplaza a D13)
+
+- **Decisión:** la app se entrega como contenedor Docker que **se construye desde el repo** (`docker compose up --build`, o doble clic en `iniciar.command` / `iniciar.bat`), con un README de pasos numerados para alguien que no programa. Sin hosting en la nube. Detalle en ARQUITECTURA.md, ADR-08.
+- **Razón:** que otra persona la instale y la use en su máquina sin ayuda (§3, §6) y que funcione igual en Mac, Windows o Linux. Se construye en la máquina de quien la usa, así que no hay que publicar imágenes ni compilar para ARM e Intel.
+- **Descartadas:**
+  - Cloud Run con login de Google: había que verificar el acceso de cuentas externas y el arranque en frío.
+  - Imagen pública en GitHub Container Registry: queda pública y requiere publicar para ARM e Intel.
+  - Archivo .tar por Drive: ~1 GB que se regenera con cada cambio.
+  - Ejecutable de escritorio: con torch pesa mucho y hay que compilar uno por sistema operativo.

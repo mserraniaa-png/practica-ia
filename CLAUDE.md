@@ -1,0 +1,51 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Qué es
+
+Práctica 1 del curso de IA Aplicada (MTIIA): clasificador binario que decide si una reseña de restaurante de la CDMX (Google Maps) **reporta un problema que el negocio debe atender** (`atender` / `no_atender`). Dominio "lenguaje sin modelos de lenguaje": TF-IDF + capas densas en PyTorch (modelo entregado), LSTM con embeddings propios como alternativa. Entrega: lun 30-nov-2026, 23:59 CDMX. Todo el proyecto (código, docs, mensajes) está en español.
+
+Documentos fuente, en orden de autoridad:
+- `INSTRUCCIONES.md`: enunciado y rúbrica (no se modifica).
+- `DECISIONES.md`: registro D1…Dn con cifra y alternativa descartada. Es la fuente del PDF. **Sólo se agregan entradas**; si una decisión cambia, se agrega otra que la reemplaza.
+- `ARQUITECTURA.md`: diseño (ADR-01…ADR-09), contratos de datos entre scripts y qué tarea toca qué componente.
+- `PLAN.md`: tareas T0–T17, puntos de control (0, A, B, C), calendario y la sección "Avance".
+- `system-heartbeat.md`: estado vivo (fase, último y siguiente paso, estado de cada tarea, métricas, bitácora). **Leerlo al empezar y actualizarlo al terminar cada paso**, antes de reportar.
+
+## Estado actual
+
+Sólo existen `scripts/descargar_resenas.py` y `scripts/anonimizar.py`. Lo demás (`src/resenas/`, el resto de `scripts/`, `app/`, `tests/`, Docker, `reporte/`) está diseñado en `ARQUITECTURA.md` pero no implementado. El punto de control 0 dice que no se escribe código hasta que plan y arquitectura estén aprobados; revisar `PLAN.md` antes de empezar una tarea.
+
+## Comandos
+
+Entorno con `uv` (Python 3.12, `package = false`):
+
+```bash
+uv sync
+uv run python scripts/descargar_resenas.py --dry-run   # lista consultas, 0 llamadas a la API
+uv run python scripts/anonimizar.py                    # data/crudo/resenas_crudas.csv → data/resenas.csv
+```
+
+Las dependencias nuevas (scikit-learn, torch CPU, gradio, matplotlib, pytest) se agregan a `pyproject.toml` sólo al implementar la tarea que las necesita. Con el índice CPU de PyTorch, para que la imagen Docker no baje CUDA. Las pruebas planeadas usan pytest (`uv run pytest tests/test_x.py::nombre`).
+
+## Arquitectura (planeada; ver ARQUITECTURA.md)
+
+- **Tubería de scripts** que se pasan archivos CSV con contrato fijo (`data/resenas.csv` → `data/muestra.csv` → `data/etiquetas.csv` → `modelos/` → `resultados/`), más un **paquete compartido `src/resenas/`**. Entrenamiento, evaluación y app deben usar el mismo `texto.py`, `predictor.py`, `calibracion.py` y `fuera_dominio.py`: lo que corre la app es exactamente lo que se evaluó. Todas las constantes (rutas, semilla, fechas de corte, costos) van en `config.py`. Sin notebooks como fuente de resultados.
+- Cada script lleva `--help` y `--sintetica`; la tubería completa debe correr con `data/sintetica/`.
+- `data/etiquetas.csv` sólo recibe filas nuevas (vale la última por `id`).
+- App: Gradio en `0.0.0.0:7860`, distribuida como contenedor Docker que se construye desde el repo (ADR-08).
+
+## Reglas duras (romperlas invalida la entrega)
+
+- **Ningún LLM ni modelo preentrenado** como clasificador, para proponer etiquetas, ni en el filtro de fuera de dominio (nada de detectores de idioma). spaCy `es_core_news_sm` se usa **sólo** en `anonimizar.py`.
+- **La prueba se toca una sola vez**, con `evaluar_prueba.py`, después de congelar el modelo (hashes en `modelos/MANIFIESTO.sha256`, en git). No leer, inspeccionar ni usar `split == "prueba"` para ninguna decisión. Umbral, calibración e hiperparámetros salen de validación (o de CV dentro de entrenamiento).
+- Split temporal (entrenamiento < 1-jul-2026, validación jul–sep, prueba ≥ 1-oct) y ningún `lugar` en dos splits (D3, D5).
+- El umbral se elige por **costo esperado** (FP = 3 min, FN = 30 min, reportado por cada 1000 reseñas), nunca por exactitud ni F1. Hay tres baselines: nada es atender, todo es atender y ≤ 2★.
+- La app recibe sólo el texto; las estrellas no son la etiqueta y sólo se usan en un baseline.
+- `data/` (salvo `data/sintetica/`), `cache/` y `.env` no se versionan ni entran a la imagen Docker (términos de Google y privacidad). `data/crudo/` contiene nombres sin anonimizar.
+- Cómputo total < 20 min en CPU.
+
+## Forma de trabajo acordada
+
+Ejecutar sólo el paso anunciado y detenerse a reportar. Pedir confirmación antes de llamadas a la Google Places API (cuestan cuota; hay tope `--max-llamadas` y caché en `cache/`), de corridas largas, de commits y de push. Cada decisión nueva se anota en `DECISIONES.md` con su cifra y la alternativa descartada.

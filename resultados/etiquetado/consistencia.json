@@ -1,0 +1,40 @@
+{
+  "repasadas": 50,
+  "ambiguas_en_repaso": 0,
+  "total": {
+    "n": 50,
+    "acuerdo": 0.9,
+    "kappa": 0.718
+  },
+  "por_split": {
+    "entrenamiento": {
+      "n": 20,
+      "acuerdo": 0.95,
+      "kappa": 0.886
+    },
+    "prueba": {
+      "n": 15,
+      "acuerdo": 0.933,
+      "kappa": 0.762
+    },
+    "validacion": {
+      "n": 15,
+      "acuerdo": 0.8,
+      "kappa": 0.286
+    }
+  },
+  "primera_en_menos_de_2s": {
+    "n": 12,
+    "acuerdo": 1.0,
+    "kappa": 1.0
+  },
+  "primera_en_2s_o_mas": {
+    "n": 38,
+    "acuerdo": 0.868,
+    "kappa": 0.671
+  },
+  "cambios": {
+    "0→1": 2,
+    "1→0": 3
+  }
+}

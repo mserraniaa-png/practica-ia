@@ -188,3 +188,15 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **T5 (opción A, elegida por el usuario):** `etiquetar.py --repaso` muestra 50 reseñas válidas al azar de los tres splits (lista fija en `data/repaso_ids.csv`), sin la primera etiqueta y sin estrellas, y guarda en `data/repaso.csv`. `scripts/consistencia.py` reporta el % de acuerdo y la κ de Cohen en total, por split y según si la primera etiqueta tomó menos de 2 s.
 - **Descartadas:** revisar las 153 de menos de 2 s (opción B): cuesta más y no da una cifra comparable. Sólo declarar la velocidad (opción C): deja el criterio 2 sin evidencia.
 - **Regla fijada antes de ver el resultado:** la primera etiqueta es la que vale para entrenar y evaluar; el repaso sólo mide. Si κ < 0.6 se anota aquí y se decide, antes de T7, si se re-etiqueta algo.
+
+## D24 · Resultado de la consistencia (T5) y nombres reemplazados — 24-nov-2026
+
+- **Nombres:** las 14 reseñas marcadas se revisaron, las 14 tenían nombre y la lista manual quedó con 23 nombres. Después de la segunda pasada de `anonimizar.py` hay 431 `[PERSONA]` (antes 403). No queda ningún nombre en las reseñas marcadas ni ninguna aparición exacta de la lista en todo el corpus. `muestrear.py` sigue dando la misma muestra.
+  - SHA-256 nuevo de `data/resenas.csv`: `9b807cd23b7038e2fd2a62c6d9b9919ad140affc8ad6cfa958c5b1ee0a854cfc` (reemplaza al de D17; sólo cambió el texto de las reseñas con nombres).
+- **Consistencia:** 50 reseñas repasadas el mismo día (15:17–15:21, 3.7 min, mediana 3.7 s), sin ver la primera etiqueta.
+  - Acuerdo 90 % (45/50), **κ = 0.72**, IC 95 % por bootstrap [0.45, 0.94]. Cambios: 2 de `no_atender` a `atender` y 3 al revés. Ninguna ambigua.
+  - Por split: entrenamiento κ 0.89 (n = 20), prueba 0.76 (n = 15), validación 0.29 (n = 15, 3 desacuerdos; con n tan chico no se interpreta).
+  - Las 12 cuya primera etiqueta tomó menos de 2 s coincidieron todas (κ = 1); los 5 desacuerdos están entre las 38 que tomaron 2 s o más. La velocidad alta parece corresponder a casos fáciles, no a descuido.
+- **Decisión:** κ ≥ 0.6, el umbral fijado en D23 antes de ver el resultado, así que no se re-etiqueta. Valen las primeras etiquetas.
+- **Límites que van al PDF:** el repaso fue el mismo día, menos de 2.5 h después, así que la memoria puede inflar el acuerdo. Es consistencia de una sola persona consigo misma, no acuerdo entre personas ni exactitud. Con n = 50 el intervalo es ancho.
+- **Descartada:** repetir el repaso otro día para quitar el efecto de memoria; no cabe en el calendario.

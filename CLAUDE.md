@@ -31,7 +31,9 @@ uv run python scripts/etiquetar.py --repaso            # T5, interactivo (person
 uv run python scripts/revisar_nombres.py               # nombres escapados, interactivo (persona; incluye prueba)
 uv run python scripts/consistencia.py                  # T5: acuerdo y κ → resultados/etiquetado/
 uv run python scripts/auditar_seguridad.py --historial # antes de cada commit
-uv run python scripts/entrenar.py [--sintetica]        # T7: baselines + logística + densa en validación (~20 s)
+uv run python scripts/entrenar.py [--sintetica]        # T7/T8: baselines, logística, densa y LSTM en validación (~70 s)
+uv run python scripts/calibrar.py [--sintetica]        # T9: calibración y costo honesto
+uv run python scripts/congelar.py [--sintetica]        # punto B: modelos/ + MANIFIESTO (no sobrescribe sin --forzar)
 uv run pytest                                          # todas las pruebas
 uv run pytest tests/test_split.py::test_conteos_y_reservas   # una sola
 ```
@@ -50,7 +52,7 @@ Las dependencias nuevas (scikit-learn, torch CPU, gradio, matplotlib, pytest) se
 ## Reglas duras (romperlas invalida la entrega)
 
 - **Ningún LLM ni modelo preentrenado** como clasificador, para proponer etiquetas (Claude no etiqueta ni sugiere la etiqueta de reseñas de la muestra; los ejemplos de la guía salen de fuera de la muestra, D18), ni en el filtro de fuera de dominio (nada de detectores de idioma). spaCy `es_core_news_sm` se usa **sólo** en `anonimizar.py`.
-- **La prueba se toca una sola vez**, con `evaluar_prueba.py`, después de congelar el modelo (hashes en `modelos/MANIFIESTO.sha256`, en git). No leer, inspeccionar ni usar `split == "prueba"` para ninguna decisión. Umbral, calibración e hiperparámetros salen de validación (o de CV dentro de entrenamiento).
+- **La prueba se toca una sola vez**, con `evaluar_prueba.py`, después de congelar el modelo (hashes en `modelos/MANIFIESTO.sha256`, en git; protocolo en D28). `cargar_etiquetadas` bloquea "prueba" salvo con `RESENAS_PERMITIR_PRUEBA=1`. No modificar `modelos/` ni el código que usa el predictor sin anotarlo en `DECISIONES.md`. No leer, inspeccionar ni usar `split == "prueba"` para ninguna decisión. Umbral, calibración e hiperparámetros salen de validación (o de CV dentro de entrenamiento).
 - Split temporal (entrenamiento < 1-jul-2026, validación jul–sep, prueba ≥ 1-oct) y ningún `lugar` en dos splits (D3, D5).
 - El umbral se elige por **costo esperado** (FP = 3 min, FN = 30 min, reportado por cada 1000 reseñas), nunca por exactitud ni F1. Hay tres baselines: nada es atender, todo es atender y ≤ 2★.
 - La app recibe sólo el texto; las estrellas no son la etiqueta y sólo se usan en un baseline.

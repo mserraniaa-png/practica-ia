@@ -91,6 +91,35 @@ class RedDensa:
         return {"ocultas": self.ocultas, "dropout": self.dropout, "weight_decay": self.weight_decay,
                 "epocas": self.epocas, "lr": self.lr, "lote": self.lote}
 
+    def vocabulario_palabras(self) -> list:
+        return list(self.vec.transformer_list[0][1].vocabulary_)
+
+    def guardar(self, carpeta) -> list:
+        """Escribe vectorizador.joblib y red.pt; devuelve los archivos escritos."""
+        import joblib
+        for _, v in self.vec.transformer_list:
+            # Privacidad: stop_words_ guarda todos los n-gramas raros (frases y nombres) y no se usa
+            # para transformar; vocabulary_ se reordena alfabéticamente para que no conserve el orden
+            # del texto. Cada término mantiene su índice, así que el modelo no cambia.
+            if hasattr(v, "stop_words_"):
+                del v.stop_words_
+            v.vocabulary_ = dict(sorted(v.vocabulary_.items()))
+        joblib.dump(self.vec, carpeta / "vectorizador.joblib")
+        torch.save({"estado": self.red.state_dict(), "entradas": self.red.capas[0].in_features,
+                    "params": self.params()}, carpeta / "red.pt")
+        return ["vectorizador.joblib", "red.pt"]
+
+    @classmethod
+    def cargar(cls, carpeta) -> "RedDensa":
+        import joblib
+        d = torch.load(carpeta / "red.pt", weights_only=True)
+        m = cls(**d["params"])
+        m.vec = joblib.load(carpeta / "vectorizador.joblib")
+        m.red = _Red(d["entradas"], m.ocultas, m.dropout)
+        m.red.load_state_dict(d["estado"])
+        m.red.eval()
+        return m
+
 
 _TOKEN = __import__("re").compile(r"<\w+>|\w+|[^\w\s]")
 

@@ -9,6 +9,7 @@ historial de git. Busca:
      data/nombres_escapados.txt (ignorado por git; uno por línea).
   5. place_id de Google.
   6. Archivos sensibles que no estén ignorados (.env, data/, cache/).
+  Los .joblib (vectorizador) se revisan por su vocabulario, que viene de reseñas reales.
 
 Nunca imprime la key ni el texto de una reseña. Sale con código 1 si hay hallazgos.
 
@@ -49,12 +50,22 @@ def fuentes(historial: bool) -> dict:
         out["historial de git"] = sh("git", "log", "--all", "-p", "--format=commit %H %ae")
     for linea in sh("git", "add", "-A", "--dry-run").splitlines():
         ruta = RAIZ / linea.split("'")[1]
-        if ruta.is_file():
+        if ruta.is_file() and ruta.suffix == ".joblib":
+            out[str(ruta.relative_to(RAIZ))] = vocabulario_joblib(ruta)
+        elif ruta.is_file():
             try:
                 out[str(ruta.relative_to(RAIZ))] = ruta.read_text(encoding="utf-8")
             except UnicodeDecodeError:
                 out[str(ruta.relative_to(RAIZ))] = ""
     return out
+
+
+def vocabulario_joblib(ruta) -> str:
+    """Vocabulario de un vectorizador guardado (n-gramas de reseñas reales), una entrada por línea."""
+    import joblib
+    obj = joblib.load(ruta)
+    partes = getattr(obj, "transformer_list", [("", obj)])
+    return "\n".join(t for _, v in partes for t in getattr(v, "vocabulary_", {}))
 
 
 def leer_key() -> str:

@@ -2,5 +2,6 @@
   "entrenar_sintetica": 11.1,
   "entrenar": 70.0,
   "calibrar_sintetica": 5.7,
-  "calibrar": 8.3
+  "calibrar": 8.3,
+  "congelar": 2.2
 }

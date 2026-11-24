@@ -1,0 +1,36 @@
+{
+  "modelo": "TF-IDF (palabras 1–2 + caracteres 3–5) + red densa",
+  "params": {
+    "ocultas": 128,
+    "dropout": 0.5,
+    "weight_decay": 0.0001
+  },
+  "calibrador": "platt",
+  "umbral": 0.09090909090909091,
+  "regla_umbral": "teórico 3/(3+30) (D26, opción A)",
+  "costos": {
+    "fp": 3,
+    "fn": 30
+  },
+  "semilla": 20261123,
+  "n_entrenamiento": 300,
+  "n_validacion_calibrador": 200,
+  "filtro": {
+    "umbral_comunes": 0.5,
+    "umbral_vocabulario": 0.6200445037828216,
+    "n_textos_ajuste": 1323
+  },
+  "hashes_datos": {
+    "resenas.csv": "9b807cd23b7038e2fd2a62c6d9b9919ad140affc8ad6cfa958c5b1ee0a854cfc",
+    "muestra.csv": "ecd95896c8304171d997774a92b2ae388120d7d484106f737cfd6c648434d968",
+    "muestra_prueba.csv": "76225d0a3b4a8bb3884c58d3eb3a7aad259028b1409c1bdb8cdafc1baee7a4c4",
+    "etiquetas.csv": "f5d12823284b3b1c455942d2164002caed5eb59a3d878eb78c7bcdcd4136a458"
+  },
+  "fecha": "2026-11-24T16:16:44",
+  "versiones": {
+    "python": "3.12.13",
+    "torch": "2.15.0",
+    "sklearn": "1.9.1"
+  },
+  "decision": "D28"
+}

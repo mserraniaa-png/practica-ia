@@ -108,7 +108,7 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
   - Tres baselines: "nada es atender" (mayoritaria), "todo es atender" y "≤ 2★ = atender". Después: regresión logística sobre TF-IDF (referencia) y TF-IDF + capas densas (modelo entregado). Probabilidades en validación → barrido de umbral por costo → costo por 1000.
   - Acepta: una tabla con cada baseline y cada modelo (métrica, matriz de confusión y costo por 1000 en su mejor umbral); tiempo de cómputo medido.
 - [x] **T8. Alternativa: LSTM con embeddings propios.** Depende de: T7. Descartada (D27). Se compara en validación y queda como alternativa descartada (o elegida), con su cifra y su tiempo de cómputo.
-- [ ] **T9. Calibración.** Depende de: T7. Cifras listas (D26); falta elegir qué se congela.
+- [x] **T9. Calibración.** Depende de: T7. Platt + umbral 0.09 (D26, D28).
   - Curva de fiabilidad y ECE antes y después; Platt frente a isotónica, ajustados con datos de prevalencia real (validación, con validación cruzada dentro de ella); nuevo barrido de umbral.
   - Acepta: costo por 1000 antes y después; umbral elegido frente al teórico ≈ 0.09; respuesta escrita a "¿la probabilidad sirve para decidir o sólo para ordenar?".
 

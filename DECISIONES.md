@@ -256,3 +256,23 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
   - 45 s de cómputo.
 - **Decisión:** se descarta. Con 300 ejemplos, una secuencia aprendida desde cero no alcanza a los n-gramas de TF-IDF.
 - **Cómputo total de T7 + T8:** 70 s; T9: 8 s.
+
+## D28 · Modelo congelado — punto de control B — 24-nov-2026
+
+- **Elección del usuario (D26, opción A):** red densa sobre TF-IDF (128 ocultas, dropout 0.5, weight decay 1e-4), **calibrada con Platt** ajustado con las 200 de validación (a = 0.780, b = −0.817) y **umbral teórico 3/33 = 0.0909**.
+  - Costo honesto esperado: 833 min/1000 (44.5 FP, 1.1 FN cada 200).
+  - En validación, en la misma muestra del ajuste: 51 VP, 45 FP, 0 FN, 104 VN, costo 675, ECE 0.055, AUC 0.928.
+- **Descartada:** sin calibrar con 0.09 (opción B, 810). El número que mostraría la app no sería una probabilidad fiable (ECE 0.099).
+- **Filtro de fuera de dominio (ADR-05):** ajustado con las 1,323 reseñas aptas del periodo de entrenamiento. Pide que al menos el 50 % de las palabras sean comunes (top 300) y al menos el 62 % estén en el vocabulario del TF-IDF. En validación rechaza 2 de 200 reseñas reales (las dos `no_atender`), cerca del 1 % esperado por usar el percentil 1.
+- **Reproducibilidad:** `scripts/congelar.py` reentrena con los hiperparámetros de T7 y reproduce las probabilidades evaluadas (diferencia máxima 5e-5). El `Predictor` cargado desde disco da las mismas probabilidades que el modelo en memoria. Latencia con el modelo cargado: mediana 0.9 ms, p95 1.6 ms.
+- **Privacidad del modelo versionado:** antes de guardar se borra `stop_words_` del vectorizador, porque scikit-learn ahí guarda todos los n-gramas raros (frases y nombres). Además `vocabulary_` se reordena alfabéticamente: en su orden original las palabras seguían el orden del texto y la auditoría encontró 2 reseñas reconstruibles en 40 caracteres o más. Cada término conserva su índice, así que la red no cambia (`red.pt` quedó idéntico). La auditoría revisa ahora el vocabulario de los `.joblib`.
+- **Cambio de código sin efecto en el modelo:** `limpiar` recorta a 5,000 caracteres en el último espacio para no partir una palabra. Ninguna reseña real pasa de 3,994 caracteres.
+- **Artefactos:** `modelos/` (7.6 MB, ahora en git) con `MANIFIESTO.sha256`. `config.json` guarda los hashes de `resenas.csv`, `muestra.csv`, `muestra_prueba.csv` y `etiquetas.csv`.
+
+### Protocolo de la corrida única sobre prueba (T12), fijado antes de verla
+
+1. `evaluar_prueba.py` se niega a correr si: algún hash de `modelos/` no coincide con el manifiesto; los hashes de datos no coinciden con `config.json`; hay cambios sin commit en `src/`, `modelos/` o `scripts/evaluar_prueba.py`; o ya existe `resultados/prueba/`.
+2. **Métrica principal:** el clasificador sobre las 200 de prueba, sin filtro. Se reportan la matriz de confusión con el umbral congelado, el costo por 1000, el AUC, el ECE con su curva de fiabilidad y el IC 95 % por bootstrap del costo y del ECE. También el costo de los tres baselines en prueba.
+3. **Métrica secundaria:** el sistema completo con filtro. Una reseña rechazada cuenta como enviada al gerente, porque la app le pide a una persona que la revise.
+4. **Las probabilidades se guardan por id, sin texto**, para T13 (errores).
+5. Commit inmediato de `resultados/prueba/`. Si después aparece un error, no se borra nada: se agrega `resultados/prueba_corregida/` y una entrada aquí, y en el PDF van las dos cifras.

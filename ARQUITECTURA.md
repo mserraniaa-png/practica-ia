@@ -97,8 +97,8 @@ graph TD
 | `decision.py` ✔ | Costo esperado, barrido de umbral, costo por 1000. | Validación y prueba |
 | `calibracion.py` ✔ | Platt e isotónica; validación cruzada dentro de validación. | Calibración y app |
 | `metricas.py` | Acuerdo y κ (T5) ✔; matriz de confusión, ECE, curva de fiabilidad, intervalos por bootstrap. | T5, validación y prueba |
-| `fuera_dominio.py` | Filtro propio de entradas fuera de dominio (ADR-05). | App y T14 |
-| `predictor.py` | Carga los artefactos una vez; `predecir(texto) → Resultado` (clase, probabilidad, umbral, fuera de dominio, razón, ms). | App, prueba, T13, T14 |
+| `fuera_dominio.py` ✔ | Filtro propio de entradas fuera de dominio (ADR-05). | App y T14 |
+| `predictor.py` ✔ | Carga los artefactos una vez; `predecir(texto) → Resultado` (clase, probabilidad, umbral, fuera de dominio, razón, ms). | App, prueba, T13, T14 |
 
 ### Estructura del repositorio
 
@@ -113,7 +113,7 @@ scripts/                una etapa por script, cada uno con --help y --sintetica
   auditar_seguridad.py  antes de cada commit (D21)
   entrenar.py           T7 ✔, T8 (baselines, logística y densa en una corrida; LSTM pendiente)
   calibrar.py           T9 ✔ (cifras; elección pendiente)
-  congelar.py           punto B
+  congelar.py           punto B ✔ (D28)
   evaluar_prueba.py     T12
   analizar_errores.py   T13
   probar_fuera_dominio.py T14

@@ -15,7 +15,7 @@ __pycache__/
 data/*
 !data/sintetica/
 cache/
-modelos/
+# modelos/ SÍ se versiona desde el punto de control B (ADR-06)
 
 # LaTeX
 *.aux

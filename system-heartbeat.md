@@ -48,8 +48,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T7 | Baselines, logística y red densa en validación | mié 25 | ✅ | D25 · `resultados/validacion/` · densa 675 vs todo-es-atender 2,235 min/1000 |
 | T8 | LSTM (alternativa) | jue 26 | ✅ | Descartada: AUC val 0.851, costo honesto ~1,300 (D27) |
 | T9 | Calibración | jue 26 | ✅ | Platt + umbral 0.0909, elegido por el usuario (D26, D28) |
-| T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ✅ | D31 · `app/app.py`; ~55 ms por caso vía servidor |
-| T11 | Docker + prueba con otra persona | vie 27 – sáb 28 | ⬜ | |
+| T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ✅ | D31 · diseño nuevo (Stitch adaptado, D35) · ~55 ms por caso vía servidor · capturas en `docs/capturas/` |
+| T11 | Space público de Hugging Face + Docker de respaldo + prueba con otra persona | vie 27 – sáb 28 | 🟡 | D33–D35 · Dockerfile, compose y `dist/space/` listos; falta probar el contenedor (Docker Desktop), autorización para publicar y prueba con otra persona |
 | T12 | Corrida única sobre prueba | vie 27 | ✅ | D29 · commit `80c247d` · costo 750 [480, 1,140] |
 | T13 | 20 errores agrupados | vie 27 | ✅ | D30 · `resultados/prueba/errores.md`; 12/40 FP parecen error de etiqueta (por confirmar) |
 | T14 | 10 entradas fuera de dominio | vie 27 | ✅ | D32 · 9/10 coinciden; falla la reseña de producto en español |
@@ -80,6 +80,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Preguntas abiertas
 
+- ¿Agregar a la app un buscador de restaurantes de Google Maps que traiga sus reseñas y las clasifique? (factibilidad respondida el 24-nov; decide el usuario)
 - T13: confirmar (la etiquetadora) los 12 FP del grupo A que parecen error de etiqueta, antes de citarlos en el PDF.
 - Cómo se entregan el video y el PDF en la plataforma del curso (formato, tamaño máximo). Antes del sáb 28.
 - Quién va a probar la app instalada (T11).

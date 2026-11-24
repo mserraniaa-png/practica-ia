@@ -1,0 +1,104 @@
+{
+  "casos": [
+    {
+      "tipo": "Vacía",
+      "entrada": "",
+      "responde": "fuera de dominio",
+      "razon": "Vacía: no hay texto que analizar.",
+      "deberia": "fuera de dominio",
+      "coincide": true,
+      "ms": 0.0
+    },
+    {
+      "tipo": "Sólo emojis",
+      "entrada": "😋🔥👍👍🌮",
+      "responde": "fuera de dominio",
+      "razon": "Muy corta: tiene 0 palabra(s); se necesitan al menos 3.",
+      "deberia": "fuera de dominio",
+      "coincide": true,
+      "ms": 0.0
+    },
+    {
+      "tipo": "Galimatías",
+      "entrada": "asdkj qwpoe zmxn alskdj qpwoei lkjhg",
+      "responde": "fuera de dominio",
+      "razon": "No parece una reseña en español: sólo 0% de sus palabras son palabras comunes de las reseñas (mínimo 50%).",
+      "deberia": "fuera de dominio",
+      "coincide": true,
+      "ms": 0.0
+    },
+    {
+      "tipo": "Reseña en inglés",
+      "entrada": "The tacos were amazing but the waiter forgot our drinks twice.",
+      "responde": "fuera de dominio",
+      "razon": "No parece una reseña en español: sólo 9% de sus palabras son palabras comunes de las reseñas (mínimo 50%).",
+      "deberia": "fuera de dominio",
+      "coincide": true,
+      "ms": 0.0
+    },
+    {
+      "tipo": "Reseña en portugués",
+      "entrada": "A comida estava ótima, mas o garçom demorou muito para trazer a conta.",
+      "responde": "fuera de dominio",
+      "razon": "No parece una reseña en español: sólo 38% de sus palabras son palabras comunes de las reseñas (mínimo 50%).",
+      "deberia": "fuera de dominio",
+      "coincide": true,
+      "ms": 0.0
+    },
+    {
+      "tipo": "Reseña de hotel (español)",
+      "entrada": "La habitación estaba sucia, las toallas olían mal y el aire acondicionado no servía.",
+      "responde": "fuera de dominio",
+      "razon": "Vocabulario desconocido: sólo 57% de sus palabras las conoce el modelo (mínimo 62%).",
+      "deberia": "fuera de dominio",
+      "coincide": true,
+      "ms": 0.0
+    },
+    {
+      "tipo": "Reseña de producto (español)",
+      "entrada": "El celular llegó con la pantalla rota y la batería dura muy poco.",
+      "responde": "atender (p = 0.40)",
+      "razon": "",
+      "deberia": "fuera de dominio",
+      "coincide": false,
+      "ms": 12.2
+    },
+    {
+      "tipo": "URL y números",
+      "entrada": "https://www.ejemplo.com 5555 1234 99",
+      "responde": "fuera de dominio",
+      "razon": "Vocabulario desconocido: sólo 0% de sus palabras las conoce el modelo (mínimo 62%).",
+      "deberia": "fuera de dominio",
+      "coincide": true,
+      "ms": 0.0
+    },
+    {
+      "tipo": "HTML / código",
+      "entrada": "<div><script>alert('hola')</script></div>",
+      "responde": "fuera de dominio",
+      "razon": "No parece una reseña en español: sólo 0% de sus palabras son palabras comunes de las reseñas (mínimo 50%).",
+      "deberia": "fuera de dominio",
+      "coincide": true,
+      "ms": 0.0
+    },
+    {
+      "tipo": "Reseña de restaurante muy larga (11,730 caracteres)",
+      "entrada": "La comida estuvo rica pero el mesero tardó mucho en traer la cuenta. La comida e… (11,730 caracteres)",
+      "responde": "atender (p = 0.52)",
+      "razon": "Texto de 11,730 caracteres: se analizaron los primeros 5,000.",
+      "deberia": "clasificar normal (con aviso)",
+      "coincide": true,
+      "ms": 3.6
+    }
+  ],
+  "reales": {
+    "vacias": {
+      "n": 18,
+      "rechazadas": 18
+    },
+    "otro_idioma": {
+      "n": 3,
+      "rechazadas": 3
+    }
+  }
+}

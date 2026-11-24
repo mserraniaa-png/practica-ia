@@ -1,0 +1,42 @@
+id,grupo,en_los_20,parafrasis,hipotesis
+5c450f8ba59c,A,1,Todo rico pero a las pocas horas las dos personas tuvieron síntomas de intoxicación,Etiqueta probablemente equivocada: comida en mal estado es atender (D11); el modelo acierta
+9c2f133774e1,A,1,Tardaron muchísimo en traer el platillo; otro mesero lo notó y lo resolvió,Etiqueta probablemente equivocada: problema resuelto en el momento es atender (guía 1.1 y R3)
+547e63c6d863,A,1,Personal cortante y con cara de fastidio; les aventaron la cuenta para que se fueran,Etiqueta probablemente equivocada: trato con un hecho concreto es atender (R3)
+17048e2caf03,A,1,Buen servicio; los sanitarios tuvieron una falla y se saturaron,Etiqueta probablemente equivocada: problema de pasada en una reseña positiva es atender (guía 1.4)
+e02b691244bf,A,1,El gerente los alcanzó en la calle para reclamar una propina que sí habían dejado,Etiqueta probablemente equivocada: trato y propina exigida son atender (R3 y 1.2)
+5479afa9ba80,A,1,Lugar bonito para turistas pero servicio muy lento: 15 minutos por un vaso de agua,Etiqueta probablemente equivocada: espera concreta es atender (R3)
+de48193397db,A,1,Comida rica pero tardaron en darles lugar y las meseras no estaban pendientes,Etiqueta probablemente equivocada: tiempo y servicio con hecho son atender (R3)
+b52f366542c3,A,0,El menú anunciaba ensalada de quinoa y sirvieron otra guarnición,Etiqueta probablemente equivocada: ingrediente anunciado que no se sirvió es atender (R1)
+5772cb44f188,A,0,La encargada trata mal y los meseros aventaron la comida,Etiqueta probablemente equivocada: trato con hecho es atender (R3)
+e47a8f44fdec,A,0,Le gustó la comida; el servicio fue lento,Etiqueta probablemente equivocada: lentitud mencionada es atender (R3)
+53eee27d074d,A,0,Faltan insumos y la preparación es muy lenta; una mesera atiende de mala gana,Etiqueta probablemente equivocada: tiempo y trato son atender (R3 y R5)
+8e7dafb86743,A,0,Tacos sin sabor; piden propina al tomar la orden,Etiqueta probablemente equivocada: propina forzada es atender (1.2)
+9c0256e3c898,B,1,Sabor flojo; el queso ya estaba amargo y la persona que cobra atiende mal,Frontera de la guía: sabor (R1 → 0) contra queso echado a perder y trato (→ 1)
+253da5c8f408,B,1,Sushi frito en aceite quemado y pescado que no se sentía fresco,Frontera de la guía: ¿juicio de sabor o falla verificable de preparación (R1)?
+4ab363bf366e,B,1,Pizza con mucho menos ingrediente del anunciado; porciones pequeñas para el precio,Frontera de la guía: precio (→ 0) contra ingrediente anunciado que faltó (R1 → 1)
+885a3f32e46f,B,1,Cobran cover y no sirven bebidas sin un consumo mínimo de comida,Frontera de la guía: política anunciada (R2 → 0) contra cobro (1.2 → 1)
+354b53063192,B,0,Comida rica; la mesera se veía molesta si tardaban en pedir,Frontera de la guía: trato leve sin un hecho fuerte (R3)
+4da6b843f19e,B,0,La porción de carne es la mitad de la que servían antes y sin sabor,Frontera de la guía: porción menor que antes (no que la anunciada) y sabor
+1ed92bce491f,B,0,Mesera amable; cobran 15 pesos extra por cambiar el sabor en la promoción,Frontera de la guía: cargo de una política (R2) contra cobro sorpresa (1.2)
+ed55ae2ad450,C,1,Decepción con el sabor de la pizza y la pasta para ser un restaurante italiano,Modelo confunde decepción de sabor (R1 → 0) con un problema: aprendió que tono negativo ≈ atender
+3cf9a28ac835,C,1,Comida vegana con poco sabor y cara para el tamaño; el personal muy amable,Modelo confunde opinión de precio y sabor con un problema
+fbc35407bb9b,D,1,"Reseña positiva, sin mayúscula inicial, que lista acompañamientos y venta para llevar",Vocabulario de logística (para llevar; venden salsas) que en entrenamiento acompaña quejas de entrega; texto con signos raros
+06c3a9c9cb0f,D,1,Tortería tradicional: no se paga por la porción sino por la historia; mejor pedir para llevar,Ironía y comparación con el precio que el modelo lee como queja
+51f03829f7e2,D,1,Positiva y nostálgica con varias faltas de ortografía,Faltas de ortografía y redacción poco común: n-gramas desconocidos
+203309e22830,D,1,"Muy rico todo; ""consideren que sólo hay un cocinero""",Reseña muy corta con una advertencia que suena a queja de tiempo sin serlo
+8e8b0553d8e2,D,0,Platillo favorito y muy buen servicio,Reseña corta: pocas palabras y mucho peso de servicio
+6faa427a92ad,D,0,Larga y positiva; explica la fila de 15 a 30 minutos para entrar,Espera esperada por la fila (R2 → 0) leída como queja de tiempo
+0337bb6ba346,D,0,Positiva; sólo no le encantó la decoración,Comentario de gusto sobre el local (R2) leído como problema
+4cfbb7d1fc70,D,0,Larga y descriptiva; las papas no le parecieron especiales,Descripción neutral con un comentario menor de gusto
+bc2c7f246511,D,0,Tacos ricos; la fila para entrar es de más de media hora,Espera por la fila (R2) leída como queja de tiempo
+7e3f978c7b7e,D,0,Rica y a buen precio; a veces hay que esperar un poco,Mención de espera leída como queja de tiempo
+120e961de8f6,E,1,Elogio a la comida y al mesero; les dieron pastel de cumpleaños,Elogio puro apenas sobre el umbral (p = 0.092 contra 0.091): costo aceptado del umbral bajo
+61f2adcd3c85,E,1,"Lugar bonito y relajado, comida muy buena",Elogio puro apenas sobre el umbral: el umbral 0.09 manda al gerente casos con p ≈ 0.1 a propósito
+53606510333f,E,0,Elogio a los platillos y al mesero,Elogio sobre el umbral bajo
+09a6739a6f59,E,0,Festejo de cumpleaños con muy buen trato del chef y el personal,Elogio sobre el umbral bajo
+7f0d12cf83c0,E,0,Cliente de hace décadas recomienda la especialidad,Elogio sobre el umbral bajo
+5ee53988c069,E,0,Elogio detallado de una trattoria,Elogio sobre el umbral bajo
+1b365f471a7b,E,0,Muy bueno; recomienda pedir arroz aparte,Elogio con consejo práctico sobre el umbral bajo
+9ad97f0df888,E,0,Evento con atención excelente,Elogio sobre el umbral bajo
+1f337903a252,E,0,Personal amable y rapidísimo; poca espera,Elogio que menciona tiempo de espera (corto)
+adcac2dd2742,F,1,Local pequeño; servicio malo y tardan mucho en atender; sólo hay botana,"Único falso negativo (p = 0.018): queja corta y redactada con negaciones (""no es bueno"", ""no hay"") que el modelo no capta"

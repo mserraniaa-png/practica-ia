@@ -115,9 +115,9 @@ scripts/                una etapa por script, cada uno con --help y --sintetica
   calibrar.py           T9 ✔ (cifras; elección pendiente)
   congelar.py           punto B ✔ (D28)
   evaluar_prueba.py     T12 ✔ (D29)
-  analizar_errores.py   T13
-  probar_fuera_dominio.py T14
-app/app.py              T10  (Gradio)
+  analizar_errores.py   T13 ✔ (D30)
+  probar_fuera_dominio.py T14 ✔ (D32)
+app/app.py              T10 ✔ (Gradio 6, D31)
 Dockerfile              T11  imagen de la app (sólo src/, app/, modelos/)
 compose.yaml            T11  `docker compose up --build`
 .dockerignore           T11  excluye data/, cache/, .env, resultados/

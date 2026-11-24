@@ -16,10 +16,10 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 |---|---|
 | Actualizado | mar 24-nov-2026 |
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
-| Fase | 3–4 — Aplicación y corrida única sobre prueba |
-| Punto de control | **B** ✅ (D28) · siguiente: **C** (vie 27) |
-| Último paso | T12: corrida única sobre prueba hecha y con commit (D29) |
-| Siguiente paso | T13 (20 errores de prueba), T10 (app), T14 (10 fuera de dominio) |
+| Fase | 5 — Entregables (T11 Docker, T15 casos del video, T16 PDF, T17 video) |
+| Punto de control | **C** ✅ (24-nov) · siguiente: **Cierre** (lun 30) |
+| Último paso | T10, T13, T14 hechos; punto C (D30–D32) |
+| Siguiente paso | T11 (Docker + prueba con otra persona), T15 (casos del video), T16 (PDF) |
 | Bloqueos | Ninguno |
 | Sin commit | — |
 
@@ -30,7 +30,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | 0 | lun 23 | Plan y arquitectura revisados y aprobados | ✅ | Aprobado por el usuario el 23-nov |
 | A | mié 25, mediodía | ≥ 500 etiquetadas, split congelado, hash de prueba anotado, tiempo registrado | ✅ | D22 (24-nov), un día antes; alerta: velocidad de etiquetado |
 | B | jue 26 | Modelo, calibrador, umbral y filtro congelados; commit con manifiesto | ✅ | D28 (24-nov), dos días antes; `modelos/MANIFIESTO.sha256` |
-| C | vie 27 | Tablas y figuras de prueba, errores y fuera de dominio en `resultados/` | ⬜ | |
+| C | vie 27 | Tablas y figuras de prueba, errores y fuera de dominio en `resultados/` | ✅ | D29, D30, D32 (24-nov) |
 | Cierre | lun 30 | Video y PDF entregados; checklist de la rúbrica completo | ⬜ | |
 
 ## Tareas
@@ -48,11 +48,11 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T7 | Baselines, logística y red densa en validación | mié 25 | ✅ | D25 · `resultados/validacion/` · densa 675 vs todo-es-atender 2,235 min/1000 |
 | T8 | LSTM (alternativa) | jue 26 | ✅ | Descartada: AUC val 0.851, costo honesto ~1,300 (D27) |
 | T9 | Calibración | jue 26 | ✅ | Platt + umbral 0.0909, elegido por el usuario (D26, D28) |
-| T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ⬜ | |
+| T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ✅ | D31 · `app/app.py`; ~55 ms por caso vía servidor |
 | T11 | Docker + prueba con otra persona | vie 27 – sáb 28 | ⬜ | |
 | T12 | Corrida única sobre prueba | vie 27 | ✅ | D29 · commit `80c247d` · costo 750 [480, 1,140] |
-| T13 | 20 errores agrupados | vie 27 | ⬜ | |
-| T14 | 10 entradas fuera de dominio | vie 27 | ⬜ | |
+| T13 | 20 errores agrupados | vie 27 | ✅ | D30 · `resultados/prueba/errores.md`; 12/40 FP parecen error de etiqueta (por confirmar) |
+| T14 | 10 entradas fuera de dominio | vie 27 | ✅ | D32 · 9/10 coinciden; falla la reseña de producto en español |
 | T15 | Casos nuevos para el video | mar 24 | ⬜ | Apartarlos antes de que entren al desarrollo |
 | T16 | PDF (6–8 págs.) | sáb 28 – dom 29 | ⬜ | |
 | T17 | Video (3–5 min) | dom 29 | ⬜ | Revisar cómo se entrega antes del sáb 28 |
@@ -76,15 +76,17 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | ECE antes / después de calibrar (densa) | 0.099 / 0.059 Platt | D26 |
 | Umbral elegido (teórico ≈ 0.09) | 0.0909 teórico, sobre probabilidad calibrada con Platt | D28 |
 | Costo por 1000 en prueba | 750 [480, 1,140] vs 2,115 del mejor baseline · AUC 0.947 · ECE 0.023 | D29 |
-| Latencia p95 del predictor (modelo cargado) | 1.6 ms (meta < 2 s) | D28 |
+| Latencia p95 del predictor (modelo cargado) | 1.6 ms; vía app ~55 ms (meta < 2 s) | D28, D31 |
 
 ## Preguntas abiertas
 
+- T13: confirmar (la etiquetadora) los 12 FP del grupo A que parecen error de etiqueta, antes de citarlos en el PDF.
 - Cómo se entregan el video y el PDF en la plataforma del curso (formato, tamaño máximo). Antes del sáb 28.
 - Quién va a probar la app instalada (T11).
 
 ## Bitácora
 
+- **24-nov** · T13 (41 errores en 6 grupos; 12 FP parecen error de etiqueta), T10 (app Gradio, telemetría apagada) y T14 (9/10). Punto C cumplido. 95 pruebas pasan (D30–D32).
 - **24-nov** · T12: corrida única sobre prueba (commit `80c247d`): 41/42 quejas, 40 FP, costo 750 contra 2,115 del mejor baseline (≤ 2★). El filtro rechazó 6/200 reseñas reales (D29).
 - **24-nov** · Punto B: modelo congelado (densa + Platt + 0.0909) y filtro de fuera de dominio; protocolo de prueba fijado (D28). La auditoría encontró que el vectorizador guardaba n-gramas en orden de texto y `stop_words_`; se corrigió sin cambiar el modelo. 71 pruebas pasan.
 - **24-nov** · T9: costo honesto densa 810 (sin calibrar, 0.09) / 833 (Platt, 0.09); ECE 0.099 → 0.059 con Platt; el umbral teórico gana al barrido. T8: LSTM descartada (AUC 0.851). 54 pruebas pasan (D26, D27).

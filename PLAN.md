@@ -116,7 +116,7 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 
 ### Fase 3 — Aplicación (jue 26 – vie 27)
 
-- [ ] **T10. App.** Depende de: B.
+- [x] **T10. App.** Depende de: B. Hecha el 24-nov (D31).
   - Acepta: recibe el texto de una reseña y muestra clase, probabilidad y umbral; el filtro de fuera de dominio es propio (vacío, muy corto, sin palabras del vocabulario, sin palabras comunes del español) y responde "fuera de dominio" con su razón; no usa detectores de idioma ni modelos preentrenados.
   - Verifica: p95 < 2 s en 100 casos; ninguna excepción con emoji, 10,000 caracteres, HTML, sólo números o texto vacío (prueba automatizada).
 - [ ] **T11. App instalable con Docker y probada por otra persona** (ADR-08). Depende de: T10.
@@ -129,8 +129,8 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 - [x] **T12. `scripts/evaluar_prueba.py`.** Depende de: B. Corrida única el 24-nov (D29).
   - Acepta: verifica los hashes del modelo congelado; se niega a correr si ya hay resultados; escribe en `resultados/` la matriz de confusión, el costo por 1000, el ECE y la curva de fiabilidad; commit inmediato de los resultados.
   - Regla: si después aparece un error, no se vuelve a correr en silencio. Se reporta el resultado original y, aparte, el corregido, con la corrección declarada.
-- [ ] **T13. 20 errores** agrupados por tipo de falla (etiqueta ambigua, ironía o faltas de ortografía, problema mencionado de pasada, clase confundida, etc.), con hipótesis de causa. Depende de: T12. Si son menos de 20, se completan con validación (D8).
-- [ ] **T14. 10 entradas fuera de dominio** de tipos distintos (D9): qué responde la app y qué debería responder. Depende de: T10.
+- [x] **T13. 20 errores** agrupados por tipo de falla (etiqueta ambigua, ironía o faltas de ortografía, problema mencionado de pasada, clase confundida, etc.), con hipótesis de causa. Depende de: T12. Si son menos de 20, se completan con validación (D8).
+- [x] **T14. 10 entradas fuera de dominio** de tipos distintos (D9): qué responde la app y qué debería responder. Depende de: T10.
 
 **Punto de control C (vie 27):** todas las tablas y figuras en `resultados/`.
 

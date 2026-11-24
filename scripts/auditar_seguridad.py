@@ -30,9 +30,9 @@ from resenas import config
 
 RAIZ = config.RAIZ
 VENTANA = 40
-# Falsos positivos revisados a mano (24-nov): palabras que el NER tomó por nombres,
+# Falsos positivos revisados a mano (24-nov): palabras comunes que el NER tomó por nombres,
 # zonas de la CDMX y el correo noreply de GitHub del autor.
-PERMITIDOS = {"Checklist", "Falta", "Ángel", "Gustavo", "Mixcoac",
+PERMITIDOS = {"Checklist", "Falta", "Ángel", "Gustavo", "Mixcoac", "Comida", "Decepción",
               "mserraniaa-png@users.noreply.github.com", "noreply@anthropic.com", "@pytest.fixture"}
 SENSIBLES = [".env", "data/resenas.csv", "data/crudo/resenas_crudas.csv", "data/muestra.csv",
              "data/muestra_prueba.csv", "data/etiquetas.csv", "cache/"]

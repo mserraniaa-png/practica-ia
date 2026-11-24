@@ -298,3 +298,41 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
   - **Calibración:** ECE 0.023; la curva sigue a la diagonal en todos los contenedores. El IC por bootstrap [0.029, 0.076] no contiene el valor puntual porque el bootstrap sesga el ECE hacia arriba al repetir casos; se reporta así.
   - **Filtro:** rechazó 6 de 200 reseñas reales (3 %; en validación 1 %), 2 de ellas `atender`. Como una rechazada va al gerente, no agrega FN, pero suma 4 FP (+60 min/1000). Es una limitación del filtro que va a T14 y al PDF.
 - **Errores para T13:** 41 (40 FP, 1 FN). Pasan de 20, así que no hace falta completar con validación (D8).
+
+## D30 · Análisis de errores en prueba (T13) — 24-nov-2026
+
+- **Hecho:** después de la corrida única y con permiso del usuario, Claude leyó las 41 reseñas mal clasificadas (40 FP, 1 FN) y las agrupó por tipo de falla, con una hipótesis de la causa. `resultados/prueba/errores_categorias.csv` (paráfrasis, sin texto) → `scripts/analizar_errores.py` → `resultados/prueba/errores.md`. **No se cambió ninguna etiqueta ni ningún resultado.**
+- **Grupos (los 41 errores; entre paréntesis, cuántos entran en los 20):**
+  - A. Etiqueta probablemente equivocada según la guía: el modelo marca una falla que la etiqueta no marcó (sobre todo lentitud o trato, R3). 12 (7)
+  - B. Casos en la frontera de la guía: sabor contra falla, política contra cobro. 7 (4)
+  - C. Decepción de sabor o precio leída como problema. 2 (2)
+  - D. Reseña positiva o neutral con vocabulario de problemas (fila, espera, logística, ironía, faltas de ortografía). 10 (4)
+  - E. Elogio apenas sobre el umbral bajo (p entre 0.09 y 0.19): es el costo aceptado de un umbral de 0.09. 9 (2)
+  - F. El único FN: queja corta redactada con negaciones (p = 0.018). 1 (1)
+- **Hallazgo principal:** 12 de los 40 FP (30 %) parecen errores de la etiqueta, no del modelo. Es coherente con la velocidad del etiquetado (D22): la consistencia (κ 0.72, D24) mide si la etiquetadora se repite a sí misma, no si se le escapa sistemáticamente un tipo de queja.
+  - Consecuencias: el costo de prueba (750) probablemente es **pesimista**. Puede haber errores ocultos del otro lado: reseñas que la etiqueta y el modelo marcan igual de mal, y que este análisis no ve. Las etiquetas de entrenamiento probablemente tienen el mismo ruido.
+  - El juicio del grupo A es de Claude aplicando la guía; **la etiquetadora debe confirmarlo antes de citarlo en el PDF**.
+  - No se re-etiqueta ni se recalcula la prueba: el protocolo (D28) sólo permite una corrección declarada aparte.
+- **Privacidad:** en 2 reseñas de prueba aparecieron 3 nombres que no se marcaron al etiquetar. Se agregaron a `data/nombres_escapados.txt` (fuera de git) para que la auditoría los detecte. No se volvió a correr `anonimizar.py`, porque cambiaría los hashes de datos después de la corrida única. No están en ningún archivo versionado.
+
+## D31 · App (T10) — 24-nov-2026
+
+- **Hecho:** `app/app.py` con Gradio 6.32.0 (agregado al `.venv`) sobre el mismo `Predictor` de la prueba.
+  - Muestra la clase en palabras, la probabilidad calibrada, el umbral aplicado (9.1 %), una barra con la marca del umbral, una explicación y el tiempo. Si el filtro rechaza, dice "Fuera de dominio", da la razón y sugiere que la revise una persona.
+  - Los ejemplos son inventados.
+  - La telemetría de Gradio está desactivada, `share=False`, y no se guarda ni se registra lo que se escribe.
+- **Verificado:**
+  - La app levantada responde HTTP 200 a los 5 s.
+  - Por la API del servidor, la primera predicción tarda 541 ms (calentamiento) y las siguientes unos 55 ms.
+  - `tests/test_app.py`: 11 entradas raras sin excepción y sin inyectar HTML (el texto se escapa); p95 < 200 ms en 100 casos.
+- **Descartadas:** Streamlit y FastAPI con HTML propio (ADR-07).
+
+## D32 · 10 entradas fuera de dominio (T14) — 24-nov-2026
+
+- **Hecho:** `scripts/probar_fuera_dominio.py` corre 10 entradas inventadas de tipos distintos (D9). Lo que debería responder la app en cada caso se escribió antes de correrlo. Resultado en `resultados/fuera_dominio/`.
+- **Resultado:** 9 de 10 coinciden.
+  - Se rechazan: vacía, sólo emojis, galimatías, inglés, portugués (38 % de palabras comunes contra un mínimo de 50 %), URL con números, HTML y la reseña de hotel. La de hotel apenas: 57 % de vocabulario contra un mínimo de 62 %.
+  - La reseña de 11,730 caracteres se clasifica con aviso de recorte, como se esperaba.
+  - **Falla:** una reseña de producto en español (celular roto) pasa el filtro y sale `atender` (p = 0.40). Es el límite previsto en ADR-05: el filtro mira idioma y vocabulario, no el tema. Lo correcto sería "fuera de dominio".
+- **Reales no aptas (D9):** las 18 reseñas vacías y las 3 en otro idioma se rechazan.
+- **Para el PDF ("cuándo no usar la app"):** sólo sirve para reseñas de restaurantes en español. Una queja en español sobre otro tipo de negocio se clasifica como si fuera de restaurante.

@@ -7,6 +7,17 @@ Práctica 1 del curso de Inteligencia Artificial Aplicada (MTIIA, Universidad An
 
 Las reseñas descargadas de Google Maps no se versionan; para reproducir hay una muestra sintética (inventada) en `data/sintetica/`:
 
+## Probar la app (desarrollo)
+
+```bash
+uv sync
+uv run python app/app.py      # abre http://localhost:7860
+```
+
+(Las instrucciones para instalarla con Docker, sin programar, se agregan en T11.)
+
+## Reproducir
+
 ```bash
 uv sync
 uv run python scripts/muestrear.py --sintetica   # reproduce la muestra: "sin cambios"

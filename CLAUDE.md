@@ -34,6 +34,10 @@ uv run python scripts/auditar_seguridad.py --historial # antes de cada commit
 uv run python scripts/entrenar.py [--sintetica]        # T7/T8: baselines, logística, densa y LSTM en validación (~70 s)
 uv run python scripts/calibrar.py [--sintetica]        # T9: calibración y costo honesto
 uv run python scripts/congelar.py [--sintetica]        # punto B: modelos/ + MANIFIESTO (no sobrescribe sin --forzar)
+uv run python scripts/evaluar_prueba.py                # T12: YA SE CORRIÓ (D29); el candado impide repetirla
+uv run python scripts/analizar_errores.py              # T13 → resultados/prueba/errores.md
+uv run python scripts/probar_fuera_dominio.py          # T14 → resultados/fuera_dominio/
+uv run python app/app.py                               # T10: app Gradio en :7860
 uv run pytest                                          # todas las pruebas
 uv run pytest tests/test_split.py::test_conteos_y_reservas   # una sola
 ```

@@ -1,7 +1,7 @@
 {
-  "entrenar_sintetica": 11.1,
+  "entrenar_sintetica": 18.5,
   "entrenar": 70.0,
-  "calibrar_sintetica": 5.7,
+  "calibrar_sintetica": 8.8,
   "calibrar": 8.3,
   "congelar": 2.2
 }

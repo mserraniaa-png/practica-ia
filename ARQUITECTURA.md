@@ -106,9 +106,10 @@ src/resenas/            paquete compartido (arriba)
 scripts/                una etapa por script, cada uno con --help y --sintetica
   descargar_resenas.py  ✔ hecho
   anonimizar.py         ✔ hecho
-  muestrear.py          T3
-  etiquetar.py          T2
-  generar_sintetica.py  T6
+  muestrear.py          T3 ✔
+  etiquetar.py          T2 ✔
+  generar_sintetica.py  T6 ✔ (D20)
+  auditar_seguridad.py  antes de cada commit (D21)
   entrenar.py           T7, T8   (--modelo mayoritaria|todo|estrellas|logistica|densa|lstm)
   calibrar.py           T9
   congelar.py           punto B
@@ -126,7 +127,7 @@ modelos/                en git a partir del punto B (ADR-06)
 resultados/validacion/  tablas (.md / .csv / .json) y figuras (.png)
 resultados/prueba/      sólo los escribe evaluar_prueba.py; en git
 reporte/                reporte.md, construir.py, reporte.pdf
-data/                   ignorado por git (salvo data/sintetica/)
+data/                   ignorado por git (salvo data/sintetica/: resenas, muestra, muestra_prueba, etiquetas)
 ```
 
 ### Contratos de datos

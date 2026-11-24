@@ -96,7 +96,7 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 - [ ] **T4. Etiquetado** a mano. Depende de: T1, T2, T3. Orden: prueba → validación → entrenamiento.
   - Acepta: 700 etiquetas (más reemplazos de las `s`); tiempo total registrado; ≥ 30 `atender` en validación y en prueba. Si no se llega, se anota en `DECISIONES.md` antes de seguir.
 - [ ] **T5. Consistencia** (opcional). Depende de: T4. Volver a etiquetar 50 al azar sin ver la primera etiqueta; reportar el acuerdo (% y κ).
-- [ ] **T6. Muestra sintética** en `data/sintetica/` (`scripts/generar_sintetica.py`). Depende de: T3.
+- [x] **T6. Muestra sintética** en `data/sintetica/` (`scripts/generar_sintetica.py`). Depende de: T3.
   - Acepta: mismas columnas y mismo formato que los datos reales; texto inventado, sin reseñas reales.
   - Verifica: la tubería completa (split → entrenamiento → evaluación → app) corre con ella de principio a fin.
 

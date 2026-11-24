@@ -18,8 +18,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 1 — Datos |
 | Punto de control | **0** ✅ aprobado · siguiente: **A** (mié 25, mediodía) |
-| Último paso | T1 guía aprobada (R1–R4, R5 = A; D19) · T2 herramienta lista |
-| Siguiente paso | Usuario: T4, etiquetar (prueba → validación → entrenamiento). En paralelo, Claude: T6 (muestra sintética) |
+| Último paso | T6 muestra sintética (D20) y tubería de punta a punta con ella · auditoría de seguridad como script (D21) |
+| Siguiente paso | Usuario: T4, etiquetar (prueba → validación → entrenamiento). Claude: T7 sobre la sintética (código listo para cuando haya etiquetas reales) |
 | Bloqueos | Ninguno |
 | Sin commit | — |
 
@@ -44,7 +44,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T3 | `scripts/muestrear.py` + hash de prueba | mar 24 | ✅ | D17 · `data/muestra.csv`, `data/muestra_prueba.csv` · `tests/test_split.py` |
 | T4 | Etiquetado a mano (prueba → validación → entrenamiento) | mar 24 – mié 25 | ⬜ | |
 | T5 | Consistencia (opcional) | mié 25 | ⬜ | |
-| T6 | Muestra sintética + tubería de punta a punta | mar 24 | ⬜ | |
+| T6 | Muestra sintética + tubería de punta a punta | mar 24 | ✅ | D20 · `data/sintetica/` · `tests/test_punta_a_punta.py` |
 | T7 | Baselines, logística y red densa en validación | mié 25 | ⬜ | |
 | T8 | LSTM (alternativa) | jue 26 | ⬜ | |
 | T9 | Calibración | jue 26 | ⬜ | |
@@ -84,6 +84,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · T6: `generar_sintetica.py` (2,783 reseñas inventadas, 1,092 lugares, 700 etiquetas simuladas); `muestrear`/`etiquetar --sintetica` corren; 24 pruebas pasan. `auditar_seguridad.py` en el repo (D21).
 - **24-nov** · Auditoría de seguridad antes del commit (contenido nuevo + todo el historial): sin key, sin nombres, sin correos ni teléfonos reales. 4 paráfrasis de la guía compartían ≥ 40 caracteres con la reseña original; se reescribieron. Commit de T1/T2/D19.
 - **24-nov** · Guía aprobada por la etiquetadora: R1–R4 sin cambios, R5 = opción A (D19).
 - **23-nov** · T1 borrador `GUIA_ETIQUETADO.md` v1 (ejemplos fuera de la muestra, D18) · T2 `scripts/etiquetar.py` + `src/resenas/etiquetado.py`; 20 pruebas pasan. Commit de T3: `c38657e`.

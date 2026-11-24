@@ -150,3 +150,18 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **Razón de R5:** decirle al gerente *dónde* está el problema ya le da algo que revisar, y este tipo de reseña es común en 1–2★. Mandarla a `no_atender` haría que muchas quejas reales cayeran en falsos negativos, que cuestan 10 veces más (D2).
 - **Descartada en R5:** opción B (`no_atender` sin un hecho concreto). Más estricta, pero deja fuera quejas que el negocio sí querría ver.
 - **Efecto esperado:** la etiqueta se parece más a "≤ 2★" en las reseñas negativas, lo que puede acercar el baseline de estrellas al modelo. Se revisa con las cifras de T7.
+
+## D20 · Muestra sintética — 24-nov-2026
+
+- **Decisión:** `scripts/generar_sintetica.py` (semilla 7) genera 2,783 reseñas inventadas con fragmentos de plantilla, las mismas columnas y la misma distribución de estrellas y de reseñas por periodo que los datos reales, 18 vacías, 3 en inglés, faltas de ortografía y `[PERSONA]`. Genera la muestra con el mismo código que `muestrear.py` y simula el etiquetado con la lógica de `etiquetar.py` (~3 % de ambiguas). Todo queda en `data/sintetica/`, que sí se versiona.
+- **Cifras:** 1,092 lugares; 719 filas de etiquetas, 700 válidas, 19 ambiguas; `atender` ≈ 31 %.
+- **Diferencias declaradas con los datos reales:**
+  - 1,200 lugares posibles y no 562: aquí los lugares se reparten al azar entre periodos, y con 562 o con 800 la regla D5 dejaba menos de 150 reseñas de 1–3★ para entrenamiento.
+  - La proporción de `atender` por estrellas es un supuesto (80 % en 1★ … 7 % en 5★), no una cifra medida.
+  - El texto es mucho más regular que el real: **las métricas con la sintética no dicen nada del modelo**; sólo sirve para comprobar que la tubería corre.
+- **Descartadas:** sacar la sintética parafraseando reseñas reales (riesgo de reproducir texto real; ver la auditoría de seguridad); generarla con un LLM (no hace falta y complica la regla de integridad).
+
+## D21 · Auditoría de seguridad antes de cada commit — 24-nov-2026
+
+- **Decisión:** `scripts/auditar_seguridad.py --historial` corre antes de cada commit. Busca la key, secretos, correos, teléfonos, place_id, texto de reseñas reales (40 caracteres o más idénticos) y nombres de personas, en lo que entra al commit y en todo el historial. Los nombres que se escapan a la anonimización van en `data/nombres_escapados.txt`, ignorado por git.
+- **Razón:** pedido del usuario. La primera corrida encontró 4 paráfrasis de la guía demasiado parecidas a la reseña original; la segunda, los 4 nombres escapados escritos dentro del propio script. Los dos se corrigieron antes de que entraran a git.

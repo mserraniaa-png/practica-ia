@@ -5,4 +5,10 @@ Práctica 1 del curso de Inteligencia Artificial Aplicada (MTIIA, Universidad An
 - [INSTRUCCIONES.md](INSTRUCCIONES.md): enunciado y rúbrica.
 - [PLAN.md](PLAN.md): caso, datos, calendario y checklist.
 
-Las reseñas descargadas de Google Maps no se versionan; para reproducir hay una muestra sintética en `data/sintetica/`.
+Las reseñas descargadas de Google Maps no se versionan; para reproducir hay una muestra sintética (inventada) en `data/sintetica/`:
+
+```bash
+uv sync
+uv run python scripts/muestrear.py --sintetica   # reproduce la muestra: "sin cambios"
+uv run pytest                                    # pruebas, incluida la de punta a punta
+```

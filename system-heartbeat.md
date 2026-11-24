@@ -14,14 +14,14 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 | | |
 |---|---|
-| Actualizado | lun 23-nov-2026 |
-| Faltan para la entrega | 7 días (lun 30-nov, 23:59 CDMX) |
+| Actualizado | mar 24-nov-2026 |
+| Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 1 — Datos |
 | Punto de control | **0** ✅ aprobado · siguiente: **A** (mié 25, mediodía) |
-| Último paso | T3 hecho: muestra congelada (semilla 20261123), hashes en D17, 9 pruebas pasan |
-| Siguiente paso | T1 (guía de etiquetado) y T2 (`scripts/etiquetar.py`) |
+| Último paso | T1 guía aprobada (R1–R4, R5 = A; D19) · T2 herramienta lista |
+| Siguiente paso | Usuario: T4, etiquetar (prueba → validación → entrenamiento). En paralelo, Claude: T6 (muestra sintética) |
 | Bloqueos | Ninguno |
-| Sin commit | T3: `src/resenas/`, `scripts/muestrear.py`, `tests/`, `pyproject.toml`, `uv.lock`, docs |
+| Sin commit | — |
 
 ## Puntos de control
 
@@ -39,8 +39,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 |---|---|---|---|---|
 | T0 | Decisiones y costos | lun 23 | ✅ | D1–D16 en `DECISIONES.md` |
 | TA | Arquitectura | lun 23 | ✅ | `ARQUITECTURA.md` (ADR-01–09) |
-| T1 | Guía de etiquetado | mar 24 | ⬜ | |
-| T2 | `scripts/etiquetar.py` | mar 24 | ⬜ | |
+| T1 | Guía de etiquetado | mar 24 | ✅ | `GUIA_ETIQUETADO.md` v1, aprobada (D19) |
+| T2 | `scripts/etiquetar.py` | mar 24 | ✅ | `tests/test_etiquetado.py` (11 ✔), incluye retomar en la 11 tras 10 |
 | T3 | `scripts/muestrear.py` + hash de prueba | mar 24 | ✅ | D17 · `data/muestra.csv`, `data/muestra_prueba.csv` · `tests/test_split.py` |
 | T4 | Etiquetado a mano (prueba → validación → entrenamiento) | mar 24 – mié 25 | ⬜ | |
 | T5 | Consistencia (opcional) | mié 25 | ⬜ | |
@@ -84,6 +84,9 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · Auditoría de seguridad antes del commit (contenido nuevo + todo el historial): sin key, sin nombres, sin correos ni teléfonos reales. 4 paráfrasis de la guía compartían ≥ 40 caracteres con la reseña original; se reescribieron. Commit de T1/T2/D19.
+- **24-nov** · Guía aprobada por la etiquetadora: R1–R4 sin cambios, R5 = opción A (D19).
+- **23-nov** · T1 borrador `GUIA_ETIQUETADO.md` v1 (ejemplos fuera de la muestra, D18) · T2 `scripts/etiquetar.py` + `src/resenas/etiquetado.py`; 20 pruebas pasan. Commit de T3: `c38657e`.
 - **23-nov** · T3: paquete `src/resenas/` (`config`, `datos`, `muestreo`), `scripts/muestrear.py` y `tests/test_split.py` (9 ✔). Muestra congelada; hashes en D17. Las cifras por periodo de D3 se corrigieron a 1,323 / 750 / 689.
 - **23-nov** · Punto de control 0 aprobado. Commit de `PLAN.md`, `ARQUITECTURA.md`, `DECISIONES.md`, `CLAUDE.md` y este archivo.
 - **23-nov** · Creado `system-heartbeat.md` para seguir el avance.

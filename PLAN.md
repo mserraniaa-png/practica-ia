@@ -85,9 +85,9 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 
 ### Fase 1 — Datos (mar 24 – mié 25)
 
-- [ ] **T1. Guía de etiquetado** (`GUIA_ETIQUETADO.md`). Depende de: T0.
+- [x] **T1. Guía de etiquetado** (`GUIA_ETIQUETADO.md`). Depende de: T0. Aprobada el 24-nov (D19).
   - Acepta: los 5 casos de D11 con ≥ 2 ejemplos reales cada uno; regla para `s` (D7); regla para nombres que se escaparon (D10).
-- [ ] **T2. Herramienta de etiquetado** (`scripts/etiquetar.py`). Depende de: TA.
+- [x] **T2. Herramienta de etiquetado** (`scripts/etiquetar.py`). Depende de: TA. Hecha el 23-nov; `tests/test_etiquetado.py`.
   - Acepta: teclas `1` / `0` / `s` y una tecla para marcar un nombre; guarda después de cada reseña; retoma donde se quedó; registra quién etiquetó y el tiempo por reseña; no muestra estrellas.
   - Verifica: etiquetar 10, cerrar, reabrir y que siga en la 11; el registro tiene 10 tiempos.
 - [x] **T3. Muestra y split** (`scripts/muestrear.py`). Depende de: TA. Hecho el 23-nov (D17).

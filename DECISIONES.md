@@ -131,3 +131,22 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
   - `data/muestra.csv`: `ecd95896c8304171d997774a92b2ae388120d7d484106f737cfd6c648434d968`
   - `data/muestra_prueba.csv`: `76225d0a3b4a8bb3884c58d3eb3a7aad259028b1409c1bdb8cdafc1baee7a4c4`
 - **Descartadas:** reservas de 40 en prueba y en validación, porque en la simulación con 20 semillas el pool de 1–3★ para entrenamiento bajaba a 159 en el peor caso, contra 150 + reservas que se necesitan; muestra sin reservas, que obliga a muestrear de nuevo cada vez que aparece una ambigua y puede romper D5.
+
+## D18 · Ejemplos de la guía de etiquetado — 23-nov-2026
+
+- **Decisión:** los ejemplos de `GUIA_ETIQUETADO.md` se sacan sólo de las 1,120 reseñas aptas que **no están en la muestra** (ni principales ni reservas) y **no son del periodo de prueba**. En la guía se citan por `id` con una paráfrasis corta, no con el texto.
+- **Razón:** si los ejemplos salieran de la muestra, la guía (redactada con ayuda de Claude) estaría proponiendo etiquetas de reseñas que se van a etiquetar, y la regla es que ninguna etiqueta la proponga un modelo. Paráfrasis y no texto porque la guía se versiona y las reseñas no se suben al repo (términos de Google).
+- **Descartadas:** ejemplos de la muestra (riesgo de integridad); ejemplos inventados (no muestran los casos difíciles reales); texto literal (publicaría reseñas en git).
+- **Pendiente:** aprobar la guía (incluidas R1–R4) y elegir la opción de R5 antes de etiquetar la primera reseña.
+
+## D19 · Guía de etiquetado aprobada — 24-nov-2026 (antes de la primera etiqueta)
+
+- **Decisión:** la etiquetadora aprueba `GUIA_ETIQUETADO.md` v1 con las reglas R1–R4 sin cambios y R5 = opción A.
+  - R1: falla verificable de preparación → `atender`; juicio de sabor → `no_atender`.
+  - R2: características del local o políticas → `no_atender`, salvo que causen una falla.
+  - R3: trato o tiempo con un hecho → `atender`.
+  - R4: fallas en pedidos a domicilio o por aplicación → `atender`.
+  - R5: queja negativa sin hechos que nombra un área corregible (higiene, trato, tiempo, cobro, estado de la comida) → `atender`; la queja global sin área sigue siendo `no_atender`.
+- **Razón de R5:** decirle al gerente *dónde* está el problema ya le da algo que revisar, y este tipo de reseña es común en 1–2★. Mandarla a `no_atender` haría que muchas quejas reales cayeran en falsos negativos, que cuestan 10 veces más (D2).
+- **Descartada en R5:** opción B (`no_atender` sin un hecho concreto). Más estricta, pero deja fuera quejas que el negocio sí querría ver.
+- **Efecto esperado:** la etiqueta se parece más a "≤ 2★" en las reseñas negativas, lo que puede acercar el baseline de estrellas al modelo. Se revisa con las cifras de T7.

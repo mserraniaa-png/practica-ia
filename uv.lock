@@ -782,34 +782,38 @@ name = "practica-ia"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "es-core-news-sm" },
     { name = "gradio" },
     { name = "matplotlib" },
     { name = "pandas" },
     { name = "scikit-learn" },
-    { name = "spacy" },
     { name = "torch", version = "2.15.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'linux'" },
     { name = "torch", version = "2.15.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "sys_platform == 'linux'" },
 ]
 
 [package.dev-dependencies]
+datos = [
+    { name = "es-core-news-sm" },
+    { name = "spacy" },
+]
 dev = [
     { name = "pytest" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "es-core-news-sm", url = "https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-3.8.0/es_core_news_sm-3.8.0-py3-none-any.whl" },
     { name = "gradio", specifier = ">=6.32.0" },
     { name = "matplotlib", specifier = ">=3.11.2" },
     { name = "pandas", specifier = ">=2.2" },
     { name = "scikit-learn", specifier = ">=1.9.1" },
-    { name = "spacy", specifier = ">=3.8" },
     { name = "torch", marker = "sys_platform != 'linux'", specifier = ">=2.15.0" },
     { name = "torch", marker = "sys_platform == 'linux'", specifier = ">=2.15.0", index = "https://download.pytorch.org/whl/cpu" },
 ]
 
 [package.metadata.requires-dev]
+datos = [
+    { name = "es-core-news-sm", url = "https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-3.8.0/es_core_news_sm-3.8.0-py3-none-any.whl" },
+    { name = "spacy", specifier = ">=3.8" },
+]
 dev = [{ name = "pytest", specifier = ">=9.2.0" }]
 
 [[package]]

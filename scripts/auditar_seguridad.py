@@ -16,6 +16,7 @@ Nunca imprime la key ni el texto de una reseña. Sale con código 1 si hay halla
 Uso:
   uv run python scripts/auditar_seguridad.py              # lo que entraría al commit
   uv run python scripts/auditar_seguridad.py --historial  # además, todo el historial
+  uv run python scripts/auditar_seguridad.py --carpeta dist/space   # lo que se subiría al Space
 """
 
 import argparse
@@ -44,12 +45,15 @@ def sh(*args):
     return subprocess.run(args, cwd=RAIZ, capture_output=True, text=True, check=True).stdout
 
 
-def fuentes(historial: bool) -> dict:
+def fuentes(historial: bool, carpeta=None) -> dict:
     out = {}
     if historial:
         out["historial de git"] = sh("git", "log", "--all", "-p", "--format=commit %H %ae")
-    for linea in sh("git", "add", "-A", "--dry-run").splitlines():
-        ruta = RAIZ / linea.split("'")[1]
+    if carpeta is not None:
+        rutas = [r for r in sorted(carpeta.rglob("*")) if r.is_file()]
+    else:
+        rutas = [RAIZ / linea.split("'")[1] for linea in sh("git", "add", "-A", "--dry-run").splitlines()]
+    for ruta in rutas:
         if ruta.is_file() and ruta.suffix == ".joblib":
             out[str(ruta.relative_to(RAIZ))] = vocabulario_joblib(ruta)
         elif ruta.is_file():
@@ -106,6 +110,8 @@ def resenas_reales():
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--historial", action="store_true")
+    ap.add_argument("--carpeta", type=lambda x: (config.RAIZ / x).resolve(),
+                    help="auditar todos los archivos de una carpeta (p. ej. dist/space) en vez de lo que entra al commit")
     args = ap.parse_args()
 
     hallazgos = []
@@ -113,7 +119,7 @@ def main():
         if subprocess.run(["git", "check-ignore", "-q", f], cwd=RAIZ).returncode != 0:
             hallazgos.append(("NO IGNORADO", f, "archivo sensible fuera de .gitignore"))
 
-    src = fuentes(args.historial)
+    src = fuentes(args.historial, args.carpeta)
     key = leer_key()
     textos, nombres = resenas_reales()
     norm = lambda s: re.sub(r"\s+", " ", s.lower())

@@ -1,0 +1,66 @@
+{
+  "textos": [
+    "Todo muy rico y la atención excelente, aunque el baño estaba sucio y sin papel.",
+    "La sopa llegó fría y nos cobraron dos refrescos que nunca pedimos.",
+    "Excelente lugar para venir en familia, los tacos al pastor son de lo mejor de la zona.",
+    "Un poco caro para mi gusto, pero la comida vale la pena.",
+    "El mesero fue grosero y tardaron una hora en traer la comida.",
+    "Muy buen café y pan recién hecho, volveremos pronto.",
+    "Encontré un cabello en la sopa y nadie se disculpó.",
+    "La música estaba muy alta pero la comida muy buena.",
+    "Great tacos and friendly staff, we will come back!",
+    "",
+    "asdf 1234",
+    "Pedimos a domicilio y llegó incompleto, faltaron las bebidas."
+  ],
+  "esperado": [
+    {
+      "clase": "atender",
+      "probabilidad": 0.182142
+    },
+    {
+      "clase": "atender",
+      "probabilidad": 0.788128
+    },
+    {
+      "clase": "no_atender",
+      "probabilidad": 0.002776
+    },
+    {
+      "clase": "no_atender",
+      "probabilidad": 0.045168
+    },
+    {
+      "clase": "atender",
+      "probabilidad": 0.867745
+    },
+    {
+      "clase": "no_atender",
+      "probabilidad": 0.039062
+    },
+    {
+      "clase": "atender",
+      "probabilidad": 0.693412
+    },
+    {
+      "clase": "no_atender",
+      "probabilidad": 0.017555
+    },
+    {
+      "clase": "fuera_de_dominio",
+      "probabilidad": null
+    },
+    {
+      "clase": "fuera_de_dominio",
+      "probabilidad": null
+    },
+    {
+      "clase": "fuera_de_dominio",
+      "probabilidad": null
+    },
+    {
+      "clase": "atender",
+      "probabilidad": 0.130034
+    }
+  ]
+}

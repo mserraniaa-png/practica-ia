@@ -1,0 +1,9 @@
+# Lista blanca: sólo entra lo que la imagen necesita.
+*
+!pyproject.toml
+!uv.lock
+!src/
+!app/
+!modelos/
+**/__pycache__
+**/*.pyc

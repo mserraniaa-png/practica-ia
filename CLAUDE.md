@@ -38,6 +38,9 @@ uv run python scripts/evaluar_prueba.py                # T12: YA SE CORRIÓ (D29
 uv run python scripts/analizar_errores.py              # T13 → resultados/prueba/errores.md
 uv run python scripts/probar_fuera_dominio.py          # T14 → resultados/fuera_dominio/
 uv run python app/app.py                               # T10: app Gradio en :7860
+uv run python scripts/referencia_app.py [--url URL]    # misma respuesta que app/referencia.json (local, contenedor o Space)
+uv run python scripts/preparar_space.py                # arma dist/space/ + auditoría. NO sube nada
+docker compose up --build                              # respaldo local en :7860
 uv run pytest                                          # todas las pruebas
 uv run pytest tests/test_split.py::test_conteos_y_reservas   # una sola
 ```
@@ -55,6 +58,7 @@ Las dependencias nuevas (scikit-learn, torch CPU, gradio, matplotlib, pytest) se
 
 ## Reglas duras (romperlas invalida la entrega)
 
+- **No crear ni subir el Space de Hugging Face sin autorización explícita del usuario** (D33, D34).
 - **Ningún LLM ni modelo preentrenado** como clasificador, para proponer etiquetas (Claude no etiqueta ni sugiere la etiqueta de reseñas de la muestra; los ejemplos de la guía salen de fuera de la muestra, D18), ni en el filtro de fuera de dominio (nada de detectores de idioma). spaCy `es_core_news_sm` se usa **sólo** en `anonimizar.py`.
 - **La prueba se toca una sola vez**, con `evaluar_prueba.py`, después de congelar el modelo (hashes en `modelos/MANIFIESTO.sha256`, en git; protocolo en D28). `cargar_etiquetadas` bloquea "prueba" salvo con `RESENAS_PERMITIR_PRUEBA=1`. No modificar `modelos/` ni el código que usa el predictor sin anotarlo en `DECISIONES.md`. No leer, inspeccionar ni usar `split == "prueba"` para ninguna decisión. Umbral, calibración e hiperparámetros salen de validación (o de CV dentro de entrenamiento).
 - Split temporal (entrenamiento < 1-jul-2026, validación jul–sep, prueba ≥ 1-oct) y ningún `lugar` en dos splits (D3, D5).

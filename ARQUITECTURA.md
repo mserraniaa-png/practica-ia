@@ -118,8 +118,10 @@ scripts/                una etapa por script, cada uno con --help y --sintetica
   analizar_errores.py   T13 ✔ (D30)
   probar_fuera_dominio.py T14 ✔ (D32)
 app/app.py              T10 ✔ (Gradio 6, D31)
-Dockerfile              T11  imagen de la app (sólo src/, app/, modelos/)
-compose.yaml            T11  `docker compose up --build`
+Dockerfile              T11 ✔ imagen única: respaldo local y Space de Hugging Face (D33, D34)
+compose.yaml            T11 ✔ `docker compose up --build`
+space/README.md         tarjeta del Space (sdk: docker)
+dist/space/             lo que se subiría al Space (no se versiona; preparar_space.py)
 .dockerignore           T11  excluye data/, cache/, .env, resultados/
 iniciar.command         T11  doble clic en Mac
 iniciar.bat             T11  doble clic en Windows

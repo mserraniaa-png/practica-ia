@@ -5,13 +5,15 @@ description = "Práctica 1: ¿esta reseña de restaurante hay que atenderla?"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "pandas>=2.2",
-    "spacy>=3.8",
-    "es-core-news-sm",
     "scikit-learn>=1.9.1",
     "torch>=2.15.0",
     "matplotlib>=3.11.2",
     "gradio>=6.32.0",
 ]
+
+[tool.uv]
+# En local se instala todo; el contenedor usa --no-default-groups.
+default-groups = ["dev", "datos"]
 
 [tool.uv.sources]
 es-core-news-sm = { url = "https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-3.8.0/es_core_news_sm-3.8.0-py3-none-any.whl" }
@@ -28,6 +30,11 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
+# Sólo para anonimizar.py (no va en la app ni en el contenedor).
+datos = [
+    "spacy>=3.8",
+    "es-core-news-sm",
+]
 dev = [
     "pytest>=9.2.0",
 ]

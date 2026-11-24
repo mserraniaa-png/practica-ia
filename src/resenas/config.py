@@ -1,8 +1,10 @@
 """Un solo lugar para cada número y cada ruta del proyecto."""
 
+import os
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parents[2]
+# RESENAS_RAIZ permite indicar la raíz (contenedor, Space); por omisión, la del repo.
+RAIZ = Path(os.environ.get("RESENAS_RAIZ") or Path(__file__).resolve().parents[2])
 DATA = RAIZ / "data"
 SINTETICA = DATA / "sintetica"
 

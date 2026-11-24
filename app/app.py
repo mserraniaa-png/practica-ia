@@ -69,7 +69,9 @@ def construir() -> gr.Blocks:
     with gr.Blocks(title="¿Hay que atender esta reseña?") as demo:
         gr.Markdown("# ¿Hay que atender esta reseña?\n"
                     "Pega el texto de una reseña de restaurante (en español). La app dice si reporta un problema"
-                    " que el negocio debe atender, con la probabilidad y el umbral aplicado.")
+                    " que el negocio debe atender, con la probabilidad y el umbral aplicado.\n\n"
+                    "> **Aviso:** no escribas datos personales (nombres, teléfonos, correos). El texto se procesa"
+                    " en el servidor donde corre la app y no se guarda.")
         entrada = gr.Textbox(label="Reseña", lines=6, placeholder="Escribe o pega aquí la reseña…")
         with gr.Row():
             boton = gr.Button("Analizar", variant="primary")

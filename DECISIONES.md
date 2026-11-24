@@ -349,3 +349,15 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
   - El código de la app y `modelos/` quedan públicos. El vocabulario del modelo son palabras y n-gramas sueltos en orden alfabético, sin `stop_words_` (D28); no hay reseñas, datos ni la key.
   - Lo que escribe quien la usa se procesa en servidores de Hugging Face. La app no lo guarda.
   - El Space se duerme tras 48 h sin uso; hay que abrirlo antes de grabar o de compartir la liga.
+
+## D34 · Preparación del Space y del contenedor (sin publicar) — 24-nov-2026
+
+- **Hecho:**
+  - **Contenedor único:** `Dockerfile` (python 3.12.13-slim, uv 0.12.1, usuario 1000, torch CPU), `.dockerignore` en lista blanca, `compose.yaml` con healthcheck y `space/README.md` (tarjeta del Space, `sdk: docker`).
+  - **`scripts/preparar_space.py`** arma `dist/space/`, que no se versiona: 27 archivos, 7.8 MB, sólo `src/resenas/`, `app/`, `modelos/`, `pyproject.toml`, `uv.lock`, `Dockerfile` y la tarjeta. Verifica el manifiesto, rechaza rutas prohibidas y corre `auditar_seguridad.py --carpeta`. Resultado: sin hallazgos.
+  - **spaCy pasa al grupo de dependencias `datos`:** se instala en local por omisión (`default-groups`), pero no en el contenedor (`--no-default-groups`).
+  - **`RESENAS_RAIZ`** permite indicar la raíz del proyecto en el contenedor. Sólo cambia rutas: el predictor da las mismas probabilidades (`app/referencia.json`, 12 textos inventados, 12/12 iguales).
+  - La app avisa que no se escriban datos personales y que el texto no se guarda.
+- **Sesión de Hugging Face:** iniciada por el usuario con el CLI. El token queda fuera del repo.
+- **Regla:** no se crea ni se sube el Space sin autorización explícita del usuario.
+- **Falta:** construir y probar el contenedor en local (Docker Desktop no estaba corriendo).

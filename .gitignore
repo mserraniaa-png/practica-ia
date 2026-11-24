@@ -26,3 +26,6 @@ cache/
 
 # Resultados con la muestra sintética: se regeneran, no dicen nada del modelo
 resultados/sintetica/
+
+# Carpeta armada para el Space (se regenera con scripts/preparar_space.py)
+dist/

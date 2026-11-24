@@ -64,3 +64,12 @@ def test_modelo_reproducible_y_en_rango(clase):
     p1 = clase(**kw).fit(textos, y).predict_proba(["sopa fría", "", "😋"])
     p2 = clase(**kw).fit(textos, y).predict_proba(["sopa fría", "", "😋"])
     assert np.allclose(p1, p2) and ((p1 >= 0) & (p1 <= 1)).all()
+
+
+def test_lstm_reproducible_y_en_rango():
+    from resenas.modelos import LSTMPropia
+    textos = ["la sopa llegó fría", "muy rico todo", "el mesero fue grosero", "excelente servicio"] * 10
+    y = [1, 0, 1, 0] * 10
+    p1 = LSTMPropia(epocas=3).fit(textos, y).predict_proba(["sopa fría", "", "😋", "x" * 6000])
+    p2 = LSTMPropia(epocas=3).fit(textos, y).predict_proba(["sopa fría", "", "😋", "x" * 6000])
+    assert np.allclose(p1, p2) and ((p1 >= 0) & (p1 <= 1)).all()

@@ -1,0 +1,748 @@
+{
+  "n_validacion": 200,
+  "atender": 51,
+  "umbral_teorico": 0.09090909090909091,
+  "repeticiones": 20,
+  "eleccion_densa": {
+    "metodo": "sin_calibrar",
+    "regla_umbral": "teorico",
+    "umbral": 0.0909,
+    "calibrador": {},
+    "costo_honesto_1000": 810.0
+  },
+  "resultados": {
+    "densa": {
+      "sin_calibrar": {
+        "ece": 0.09925800000000003,
+        "ece_ic95": [
+          0.07197661250000002,
+          0.1477031875
+        ],
+        "brier": 0.10764173529999999,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.022258163265306122,
+            "observada": 0.0,
+            "n": 98
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.1410611111111111,
+            "observada": 0.1111111111111111,
+            "n": 18
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.272125,
+            "observada": 0.16666666666666666,
+            "n": 12
+          },
+          {
+            "contenedor": 3,
+            "p_media": 0.345075,
+            "observada": 0.25,
+            "n": 4
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.4664333333333333,
+            "observada": 0.6666666666666666,
+            "n": 3
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.5565571428571429,
+            "observada": 0.8571428571428571,
+            "n": 7
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6545249999999999,
+            "observada": 0.25,
+            "n": 4
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.7508222222222222,
+            "observada": 0.6666666666666666,
+            "n": 9
+          },
+          {
+            "contenedor": 8,
+            "p_media": 0.8566444444444445,
+            "observada": 0.5,
+            "n": 18
+          },
+          {
+            "contenedor": 9,
+            "p_media": 0.962425925925926,
+            "observada": 0.8148148148148148,
+            "n": 27
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 918.75,
+          "desv": 22.18529918662356,
+          "fp": 41.25,
+          "fn": 2.0,
+          "umbral_mediano": 0.13
+        },
+        "honesto_teorico": {
+          "costo_1000": 810.0,
+          "desv": 0.0,
+          "fp": 54.0,
+          "fn": 0.0,
+          "umbral_mediano": 0.09090909090909091
+        }
+      },
+      "platt": {
+        "ece": 0.059141383438204936,
+        "ece_ic95": [
+          0.04613868696031697,
+          0.1136481126053498
+        ],
+        "brier": 0.10077453334223645,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.027410649920393455,
+            "observada": 0.01834862385321101,
+            "n": 109
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.1512104917248936,
+            "observada": 0.1,
+            "n": 20
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.25076290503215354,
+            "observada": 0.5,
+            "n": 6
+          },
+          {
+            "contenedor": 3,
+            "p_media": 0.34875075424747803,
+            "observada": 0.75,
+            "n": 8
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.45691468789150147,
+            "observada": 0.5714285714285714,
+            "n": 7
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.5495912509909824,
+            "observada": 0.5714285714285714,
+            "n": 7
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6561793815043016,
+            "observada": 0.5,
+            "n": 16
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.7691147381248986,
+            "observada": 0.6666666666666666,
+            "n": 9
+          },
+          {
+            "contenedor": 8,
+            "p_media": 0.846829916946509,
+            "observada": 0.875,
+            "n": 8
+          },
+          {
+            "contenedor": 9,
+            "p_media": 0.9510167636549521,
+            "observada": 0.9,
+            "n": 10
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 963.75,
+          "desv": 109.90763167314634,
+          "fp": 43.25,
+          "fn": 2.1,
+          "umbral_mediano": 0.09
+        },
+        "honesto_teorico": {
+          "costo_1000": 833.25,
+          "desv": 76.70193934966703,
+          "fp": 44.55,
+          "fn": 1.1,
+          "umbral_mediano": 0.09090909090909091
+        }
+      },
+      "isotonica": {
+        "ece": 0.0855888905605559,
+        "ece_ic95": [
+          0.052783621215390396,
+          0.1303558050588261
+        ],
+        "brier": 0.10342158075651194,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.0033720993720993747,
+            "observada": 0.018018018018018018,
+            "n": 111
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.1111842105263158,
+            "observada": 0.3,
+            "n": 10
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.2355379188712522,
+            "observada": 0.0,
+            "n": 9
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.4710204081632653,
+            "observada": 0.0,
+            "n": 1
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.5361455039561978,
+            "observada": 0.7037037037037037,
+            "n": 27
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6628260628260628,
+            "observada": 0.47619047619047616,
+            "n": 21
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.75,
+            "observada": 0.8333333333333334,
+            "n": 6
+          },
+          {
+            "contenedor": 8,
+            "p_media": 0.8228571428571427,
+            "observada": 0.6,
+            "n": 5
+          },
+          {
+            "contenedor": 9,
+            "p_media": 0.9955357142857139,
+            "observada": 0.9,
+            "n": 10
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 902.25,
+          "desv": 54.76027300881543,
+          "fp": 40.65,
+          "fn": 1.95,
+          "umbral_mediano": 0.15
+        },
+        "honesto_teorico": {
+          "costo_1000": 876.0,
+          "desv": 58.365229375031156,
+          "fp": 41.4,
+          "fn": 1.7,
+          "umbral_mediano": 0.09090909090909091
+        }
+      }
+    },
+    "logistica": {
+      "sin_calibrar": {
+        "ece": 0.13173300000000002,
+        "ece_ic95": [
+          0.11408604999999998,
+          0.17939036249999996
+        ],
+        "brier": 0.11248493889999998,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.0594125,
+            "observada": 0.0,
+            "n": 24
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.14388222222222222,
+            "observada": 0.0,
+            "n": 45
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.24274374999999998,
+            "observada": 0.0,
+            "n": 32
+          },
+          {
+            "contenedor": 3,
+            "p_media": 0.35591666666666666,
+            "observada": 0.1111111111111111,
+            "n": 18
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.4587222222222222,
+            "observada": 0.3333333333333333,
+            "n": 18
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.5474214285714286,
+            "observada": 0.5714285714285714,
+            "n": 14
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6533500000000001,
+            "observada": 0.5769230769230769,
+            "n": 26
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.7209222222222222,
+            "observada": 0.7777777777777778,
+            "n": 9
+          },
+          {
+            "contenedor": 8,
+            "p_media": 0.8397076923076922,
+            "observada": 0.9230769230769231,
+            "n": 13
+          },
+          {
+            "contenedor": 9,
+            "p_media": 0.904,
+            "observada": 1.0,
+            "n": 1
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 575.25,
+          "desv": 107.88274885263166,
+          "fp": 35.85,
+          "fn": 0.25,
+          "umbral_mediano": 0.38
+        },
+        "honesto_teorico": {
+          "costo_1000": 1920.0,
+          "desv": 0.0,
+          "fp": 128.0,
+          "fn": 0.0,
+          "umbral_mediano": 0.09090909090909091
+        }
+      },
+      "platt": {
+        "ece": 0.06191392772700934,
+        "ece_ic95": [
+          0.04907964477151889,
+          0.11272612786220165
+        ],
+        "brier": 0.0948595914703578,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.017780915133450256,
+            "observada": 0.0,
+            "n": 106
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.14125426667560798,
+            "observada": 0.15,
+            "n": 20
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.26771435965435897,
+            "observada": 0.5555555555555556,
+            "n": 9
+          },
+          {
+            "contenedor": 3,
+            "p_media": 0.3329396568744064,
+            "observada": 0.42857142857142855,
+            "n": 7
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.44988461804774904,
+            "observada": 0.625,
+            "n": 8
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.5478167748210986,
+            "observada": 0.6666666666666666,
+            "n": 6
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6586437319974886,
+            "observada": 0.42857142857142855,
+            "n": 14
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.7469095962834319,
+            "observada": 0.6923076923076923,
+            "n": 13
+          },
+          {
+            "contenedor": 8,
+            "p_media": 0.8456523471865225,
+            "observada": 1.0,
+            "n": 4
+          },
+          {
+            "contenedor": 9,
+            "p_media": 0.9539115917064304,
+            "observada": 0.9230769230769231,
+            "n": 13
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 556.5,
+          "desv": 78.07208207803862,
+          "fp": 34.6,
+          "fn": 0.25,
+          "umbral_mediano": 0.13
+        },
+        "honesto_teorico": {
+          "costo_1000": 635.25,
+          "desv": 12.794041581923986,
+          "fp": 42.35,
+          "fn": 0.0,
+          "umbral_mediano": 0.09090909090909091
+        }
+      },
+      "isotonica": {
+        "ece": 0.03794012152219589,
+        "ece_ic95": [
+          0.026732355178051684,
+          0.08654384801560691
+        ],
+        "brier": 0.09474224905206324,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.00043094160741215346,
+            "observada": 0.0,
+            "n": 117
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.12068965517241428,
+            "observada": 1.0,
+            "n": 1
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.27040816326530603,
+            "observada": 0.42857142857142855,
+            "n": 7
+          },
+          {
+            "contenedor": 3,
+            "p_media": 0.3592171717171717,
+            "observada": 0.5,
+            "n": 6
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.4761904761904762,
+            "observada": 0.6666666666666666,
+            "n": 6
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.538515406162465,
+            "observada": 0.4838709677419355,
+            "n": 31
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6458333333333333,
+            "observada": 0.625,
+            "n": 8
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.7158812938473955,
+            "observada": 0.5,
+            "n": 4
+          },
+          {
+            "contenedor": 9,
+            "p_media": 0.941971369437737,
+            "observada": 0.9,
+            "n": 20
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 637.5,
+          "desv": 32.69174207655505,
+          "fp": 32.0,
+          "fn": 1.05,
+          "umbral_mediano": 0.28
+        },
+        "honesto_teorico": {
+          "costo_1000": 517.5,
+          "desv": 74.6240577829965,
+          "fp": 32.5,
+          "fn": 0.2,
+          "umbral_mediano": 0.09090909090909091
+        }
+      }
+    },
+    "lstm": {
+      "sin_calibrar": {
+        "ece": 0.24828350000000002,
+        "ece_ic95": [
+          0.19270624999999997,
+          0.30583322499999993
+        ],
+        "brier": 0.24304533014999996,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.013414285714285714,
+            "observada": 0.03296703296703297,
+            "n": 91
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.14742857142857144,
+            "observada": 0.42857142857142855,
+            "n": 7
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.25825,
+            "observada": 0.0,
+            "n": 2
+          },
+          {
+            "contenedor": 3,
+            "p_media": 0.3822,
+            "observada": 0.0,
+            "n": 1
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.4481,
+            "observada": 0.0,
+            "n": 1
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.5529714285714286,
+            "observada": 0.2857142857142857,
+            "n": 7
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6185999999999999,
+            "observada": 0.0,
+            "n": 3
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.73526,
+            "observada": 0.4,
+            "n": 5
+          },
+          {
+            "contenedor": 8,
+            "p_media": 0.8618727272727273,
+            "observada": 0.18181818181818182,
+            "n": 11
+          },
+          {
+            "contenedor": 9,
+            "p_media": 0.9816541666666667,
+            "observada": 0.5416666666666666,
+            "n": 72
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 1300.5,
+          "desv": 56.94075868830692,
+          "fp": 64.7,
+          "fn": 2.2,
+          "umbral_mediano": 0.06
+        },
+        "honesto_teorico": {
+          "costo_1000": 1395.0,
+          "desv": 0.0,
+          "fp": 63.0,
+          "fn": 3.0,
+          "umbral_mediano": 0.09090909090909091
+        }
+      },
+      "platt": {
+        "ece": 0.027901666060047972,
+        "ece_ic95": [
+          0.029864664106082624,
+          0.09717801008225968
+        ],
+        "brier": 0.13778646480827267,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.03807409781177452,
+            "observada": 0.05319148936170213,
+            "n": 94
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.14266485226757702,
+            "observada": 0.2,
+            "n": 10
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.24193692276072873,
+            "observada": 0.25,
+            "n": 16
+          },
+          {
+            "contenedor": 3,
+            "p_media": 0.3513646855244557,
+            "observada": 0.23076923076923078,
+            "n": 13
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.45137658321715896,
+            "observada": 0.4666666666666667,
+            "n": 15
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.5429856788908402,
+            "observada": 0.5,
+            "n": 28
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6452332284213482,
+            "observada": 0.6521739130434783,
+            "n": 23
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.7033892256492266,
+            "observada": 1.0,
+            "n": 1
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 1269.0,
+          "desv": 91.65969670471314,
+          "fp": 64.6,
+          "fn": 2.0,
+          "umbral_mediano": 0.08
+        },
+        "honesto_teorico": {
+          "costo_1000": 1410.75,
+          "desv": 146.08452176736589,
+          "fp": 62.55,
+          "fn": 3.15,
+          "umbral_mediano": 0.09090909090909091
+        }
+      },
+      "isotonica": {
+        "ece": 0.058571761939568104,
+        "ece_ic95": [
+          0.04230751429816968,
+          0.1186928346638888
+        ],
+        "brier": 0.14310729988315427,
+        "fiabilidad": [
+          {
+            "contenedor": 0,
+            "p_media": 0.009542266519010705,
+            "observada": 0.023255813953488372,
+            "n": 86
+          },
+          {
+            "contenedor": 1,
+            "p_media": 0.16,
+            "observada": 0.75,
+            "n": 4
+          },
+          {
+            "contenedor": 2,
+            "p_media": 0.25407654830464044,
+            "observada": 0.23076923076923078,
+            "n": 39
+          },
+          {
+            "contenedor": 3,
+            "p_media": 0.37674610842726775,
+            "observada": 0.4666666666666667,
+            "n": 15
+          },
+          {
+            "contenedor": 4,
+            "p_media": 0.457112941504956,
+            "observada": 0.3684210526315789,
+            "n": 19
+          },
+          {
+            "contenedor": 5,
+            "p_media": 0.5146652864044117,
+            "observada": 0.3333333333333333,
+            "n": 6
+          },
+          {
+            "contenedor": 6,
+            "p_media": 0.6462121212121211,
+            "observada": 0.75,
+            "n": 8
+          },
+          {
+            "contenedor": 7,
+            "p_media": 0.7415342233524052,
+            "observada": 0.6818181818181818,
+            "n": 22
+          },
+          {
+            "contenedor": 9,
+            "p_media": 1.0,
+            "observada": 0.0,
+            "n": 1
+          }
+        ],
+        "honesto_barrido": {
+          "costo_1000": 1299.0,
+          "desv": 59.510503274632114,
+          "fp": 64.6,
+          "fn": 2.2,
+          "umbral_mediano": 0.24
+        },
+        "honesto_teorico": {
+          "costo_1000": 1320.75,
+          "desv": 60.833276255680985,
+          "fp": 66.05,
+          "fn": 2.2,
+          "umbral_mediano": 0.09090909090909091
+        }
+      }
+    }
+  },
+  "segundos": 8.3
+}

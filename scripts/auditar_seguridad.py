@@ -113,7 +113,8 @@ def main():
         for nombre, p in SECRETOS.items():
             for m in re.finditer(p, txt):
                 hallazgos.append(("secreto", donde, f"{nombre}: {m.group()[:8]}…"))
-        for m in {c.lstrip("+") for c in re.findall(r"[\w.+-]+@[\w-]+\.[\w.]+", txt)} - PERMITIDOS:
+        correos = {c.lstrip("+") for c in re.findall(r"[\w.+-]+@[\w-]+\.[\w.]+", txt)}
+        for m in {c for c in correos if not c.startswith("@")} - PERMITIDOS:   # "+@pytest…" de un diff no es correo
             hallazgos.append(("correo", donde, m))
         for m in set(re.findall(r"(?<![\w.])(?:\+?52[\s-]?)?\(?\d{2,3}\)?[\s-]?\d{4}[\s-]?\d{4}(?![\w.])", txt)):
             hallazgos.append(("teléfono", donde, m))

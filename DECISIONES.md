@@ -224,3 +224,35 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
   - Sin calibrar, el umbral de la densa (0.13) está cerca del teórico 0.09; con el teórico costaría 810. La logística en el teórico cuesta 1,920. Se revisa en T9.
 - **Cómputo:** 21.7 s en total (CPU, Mac), en `resultados/tiempos.json`.
 - **Descartadas:** elegir hiperparámetros con validación (contaminaría la comparación y el umbral); umbral 0.5 (1,365 la densa y 1,500 la logística, el doble o más).
+
+## D26 · Calibración y costo honesto (T9), sólo con validación — 24-nov-2026
+
+- **Método:** `scripts/calibrar.py`.
+  - Las probabilidades calibradas se obtienen fuera de parte: 5 partes dentro de validación, agrupadas por restaurante.
+  - Costo honesto: en cada parte, calibrador y umbral se eligen con 4/5 y el costo se mide en el 1/5 que no se vio. Promedio de 20 particiones.
+  - Umbral teórico 3/33 ≈ 0.09. ECE con 10 contenedores e IC 95 % por bootstrap.
+- **Red densa (entregado):**
+
+| Calibración | ECE | Brier | Honesto, umbral barrido | Honesto, umbral 0.09 |
+|---|---|---|---|---|
+| Sin calibrar | 0.099 [0.072, 0.148] | 0.108 | 919 ± 22 | **810** (54 FP, 0 FN) |
+| Platt | **0.059** [0.046, 0.114] | 0.101 | 964 ± 110 | 833 (44.5 FP, 1.1 FN) |
+| Isotónica | 0.086 [0.053, 0.130] | 0.103 | 902 ± 55 | 876 (41.4 FP, 1.7 FN) |
+
+- **Lectura:**
+  - **El costo honesto es más alto que el de T7.** 675 era optimista porque el umbral se elegía donde se medía; la cifra honesta está entre 810 y 960. Sigue siendo entre 2.3 y 2.8 veces menos que el mejor baseline (2,235).
+  - **El umbral teórico le gana al barrido en todos los casos.** Con unos 160 casos para elegir, el barrido se sobreajusta.
+  - **Platt mejora la calibración pero no el costo.** El ECE baja de 0.099 a 0.059 y el costo cambia de 810 a 833; la diferencia de +23 equivale a 1.5 FP por cada 200 reseñas, dentro del ruido. Con Platt, el mínimo de la curva de costo cae justo en 0.09 (`t9_barrido.png`).
+  - **Respuesta a "¿decidir u ordenar?":** después de Platt, la probabilidad sirve para decidir, porque el umbral teórico es el de menor costo. Sin calibrar, el 0.09 funciona por coincidencia y el número que se mostraría no es una probabilidad fiable (ECE 0.099).
+- **Referencia, logística:** su costo honesto es más bajo, de 518 a 575 (isotónica con 0.09: 518; Platt con barrido: 556), por unos 10 FP menos cada 200. Se reporta en el PDF. No se entrega porque el enunciado pide capas densas (brecha 16 de `PLAN.md`).
+- **Pendiente (decisión del usuario):** qué calibración y umbral se congelan para la red densa.
+
+## D27 · LSTM con embeddings propios (T8): descartada — 24-nov-2026
+
+- **Hecho:** embeddings de 64 dimensiones entrenados desde cero (vocabulario del entrenamiento con frecuencia ≥ 2) y una capa LSTM con promedio de salidas, hasta 200 tokens. 4 combinaciones elegidas con validación cruzada en entrenamiento: gana 64 ocultas y dropout 0.5.
+- **Cifras:**
+  - AUC en validación cruzada de entrenamiento 0.810, contra 0.918 de la densa. AUC en validación 0.851, contra 0.928.
+  - Costo honesto entre 1,269 y 1,411 min/1000, contra 810–964 de la densa. Con Platt el ECE baja a 0.028, pero ordena peor.
+  - 45 s de cómputo.
+- **Decisión:** se descarta. Con 300 ejemplos, una secuencia aprendida desde cero no alcanza a los n-gramas de TF-IDF.
+- **Cómputo total de T7 + T8:** 70 s; T9: 8 s.

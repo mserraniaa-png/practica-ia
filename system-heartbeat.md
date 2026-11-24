@@ -18,9 +18,9 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 2 — Modelo, umbral y calibración (sólo validación) |
 | Punto de control | **A** ✅ condiciones cumplidas (D22), alerta de calidad resuelta con T5 (D24) · siguiente: **B** (jue 26) |
-| Último paso | T7 hecho en validación (D25) |
-| Siguiente paso | T9 (calibración + costo honesto con CV dentro de validación) y T8 (LSTM) |
-| Bloqueos | Ninguno |
+| Último paso | T8 (LSTM descartada) y T9 (cifras de calibración) hechos (D26, D27) |
+| Siguiente paso | Usuario elige calibración/umbral → `congelar.py` → punto de control B |
+| Bloqueos | Punto B espera la elección de T9 |
 | Sin commit | — |
 
 ## Puntos de control
@@ -46,8 +46,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T5 | Consistencia | mié 25 | ✅ | Acuerdo 90 %, κ 0.72 [0.45, 0.94] (D24) · `resultados/etiquetado/consistencia.json` |
 | T6 | Muestra sintética + tubería de punta a punta | mar 24 | ✅ | D20 · `data/sintetica/` · `tests/test_punta_a_punta.py` |
 | T7 | Baselines, logística y red densa en validación | mié 25 | ✅ | D25 · `resultados/validacion/` · densa 675 vs todo-es-atender 2,235 min/1000 |
-| T8 | LSTM (alternativa) | jue 26 | ⬜ | |
-| T9 | Calibración | jue 26 | ⬜ | |
+| T8 | LSTM (alternativa) | jue 26 | ✅ | Descartada: AUC val 0.851, costo honesto ~1,300 (D27) |
+| T9 | Calibración | jue 26 | 🔵 | D26 · cifras listas; usuario elige calibración y umbral a congelar |
 | T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ⬜ | |
 | T11 | Docker + prueba con otra persona | vie 27 – sáb 28 | ⬜ | |
 | T12 | Corrida única sobre prueba | vie 27 | ⬜ | |
@@ -71,20 +71,22 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Consistencia (repaso de 50) | 90 % · κ 0.72, IC 95 % [0.45, 0.94] | D24 |
 | Tiempo de etiquetado | 1.19 h · mediana 4.3 s/reseña · 48 % a > 60 car/s | D22 |
 | Nombres escapados a la anonimización | 14 marcados, 14 con nombre; 23 nombres en la lista manual; 0 restantes | D22, D24 |
-| Cómputo acumulado | 0.4 min (T7: 21.7 s) de 20 min | `resultados/tiempos.json` |
-| Costo por 1000 en validación (mejor baseline / modelo) | 2,235 / 675 densa (540 logística), optimista: umbral elegido en la misma validación | D25 |
-| ECE antes / después de calibrar | — / — | |
-| Umbral elegido (teórico ≈ 0.09) | — | |
+| Cómputo acumulado | 1.3 min (T7+T8 70 s, T9 8 s) de 20 min | `resultados/tiempos.json` |
+| Costo por 1000 en validación (mejor baseline / modelo) | 2,235 / honesto 810–960 densa (518–575 logística) | D25, D26 |
+| ECE antes / después de calibrar (densa) | 0.099 / 0.059 Platt | D26 |
+| Umbral elegido (teórico ≈ 0.09) | pendiente; el teórico gana al barrido en costo honesto | D26 |
 | Costo por 1000 en prueba | — | `resultados/prueba/` |
 | Latencia p95 de la app | — (meta < 2 s) | |
 
 ## Preguntas abiertas
 
+- T9: ¿qué se congela para la densa? (A: Platt + 0.09, recomendada; B: sin calibrar + 0.09)
 - Cómo se entregan el video y el PDF en la plataforma del curso (formato, tamaño máximo). Antes del sáb 28.
 - Quién va a probar la app instalada (T11).
 
 ## Bitácora
 
+- **24-nov** · T9: costo honesto densa 810 (sin calibrar, 0.09) / 833 (Platt, 0.09); ECE 0.099 → 0.059 con Platt; el umbral teórico gana al barrido. T8: LSTM descartada (AUC 0.851). 54 pruebas pasan (D26, D27).
 - **24-nov** · T7: scikit-learn, torch (CPU) y matplotlib en `.venv`. Densa AUC val 0.928, costo 675/1000 (umbral 0.13) contra 2,235 del mejor baseline; logística 540. 47 pruebas pasan (D25).
 - **24-nov** · Usuario revisó los 14 nombres y repasó 50. Nombres: 0 restantes, 431 `[PERSONA]`, nuevo hash de `resenas.csv` (D24). T5: κ 0.72 ≥ 0.6 → no se re-etiqueta.
 - **24-nov** · Usuario eligió T5 (opción A). Hechos `revisar_nombres.py` + segunda pasada de `anonimizar.py` (`privacidad.py`) y `etiquetar.py --repaso` + `consistencia.py` (κ). 32 pruebas pasan (D23).

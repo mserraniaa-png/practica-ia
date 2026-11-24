@@ -90,3 +90,67 @@ class RedDensa:
     def params(self) -> dict:
         return {"ocultas": self.ocultas, "dropout": self.dropout, "weight_decay": self.weight_decay,
                 "epocas": self.epocas, "lr": self.lr, "lote": self.lote}
+
+
+_TOKEN = __import__("re").compile(r"<\w+>|\w+|[^\w\s]")
+
+
+def tokenizar(texto) -> list:
+    return _TOKEN.findall(limpiar(texto))
+
+
+class _RedLSTM(nn.Module):
+    def __init__(self, vocab: int, emb: int, ocultas: int, dropout: float):
+        super().__init__()
+        self.emb = nn.Embedding(vocab, emb, padding_idx=0)
+        self.lstm = nn.LSTM(emb, ocultas, batch_first=True)
+        self.drop = nn.Dropout(dropout)
+        self.salida = nn.Linear(ocultas, 1)
+
+    def forward(self, ids):
+        mascara = (ids != 0).unsqueeze(-1).float()
+        h, _ = self.lstm(self.emb(ids))
+        # Promedio de las salidas de la LSTM sobre los tokens reales (sin relleno).
+        prom = (h * mascara).sum(1) / mascara.sum(1).clamp(min=1)
+        return self.salida(self.drop(prom)).squeeze(-1)
+
+
+class LSTMPropia:
+    """Alternativa (T8): embeddings propios (sin preentrenar) + LSTM de una capa."""
+
+    def __init__(self, emb: int = 64, ocultas: int = 64, dropout: float = 0.3, max_tokens: int = 200,
+                 min_frec: int = 2, epocas: int = 15, lr: float = 2e-3, lote: int = 32, semilla: int = config.SEMILLA):
+        self.emb, self.ocultas, self.dropout, self.max_tokens = emb, ocultas, dropout, max_tokens
+        self.min_frec, self.epocas, self.lr, self.lote, self.semilla = min_frec, epocas, lr, lote, semilla
+
+    def _ids(self, textos) -> torch.Tensor:
+        filas = [[self.vocab.get(t, 1) for t in tokenizar(x)][: self.max_tokens] or [1] for x in textos]
+        largo = max(len(f) for f in filas)
+        return torch.tensor([f + [0] * (largo - len(f)) for f in filas], dtype=torch.long)
+
+    def fit(self, textos, y):
+        from collections import Counter
+        torch.manual_seed(self.semilla)
+        gen = torch.Generator().manual_seed(self.semilla)
+        frec = Counter(t for x in textos for t in tokenizar(x))
+        # 0 = relleno, 1 = desconocida
+        self.vocab = {t: i + 2 for i, t in enumerate(sorted(t for t, n in frec.items() if n >= self.min_frec))}
+        X = self._ids(textos)
+        t = torch.tensor(np.asarray(y), dtype=torch.float32)
+        self.red = _RedLSTM(len(self.vocab) + 2, self.emb, self.ocultas, self.dropout)
+        opt = torch.optim.Adam(self.red.parameters(), lr=self.lr)
+        perdida = nn.BCEWithLogitsLoss()
+        self.red.train()
+        for _ in range(self.epocas):
+            orden = torch.randperm(len(t), generator=gen)
+            for i in range(0, len(t), self.lote):
+                idx = orden[i:i + self.lote]
+                opt.zero_grad()
+                perdida(self.red(X[idx]), t[idx]).backward()
+                opt.step()
+        self.red.eval()
+        return self
+
+    def predict_proba(self, textos) -> np.ndarray:
+        with torch.no_grad():
+            return torch.sigmoid(self.red(self._ids(list(textos)))).numpy()

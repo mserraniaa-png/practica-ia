@@ -95,7 +95,7 @@ graph TD
 | `texto.py` ✔ | Limpieza: minúsculas, URL → `<url>`, números → `<num>`, recorte a 5,000 caracteres. Conserva acentos y signos. | Entrenamiento y app |
 | `modelos.py` | TF-IDF (palabras 1–2 + caracteres 3–5), logística y red densa ✔; LSTM (T8); guardar y cargar (punto B). | Entrenamiento y congelado |
 | `decision.py` ✔ | Costo esperado, barrido de umbral, costo por 1000. | Validación y prueba |
-| `calibracion.py` | Platt e isotónica; validación cruzada dentro de validación. | Calibración y app |
+| `calibracion.py` ✔ | Platt e isotónica; validación cruzada dentro de validación. | Calibración y app |
 | `metricas.py` | Acuerdo y κ (T5) ✔; matriz de confusión, ECE, curva de fiabilidad, intervalos por bootstrap. | T5, validación y prueba |
 | `fuera_dominio.py` | Filtro propio de entradas fuera de dominio (ADR-05). | App y T14 |
 | `predictor.py` | Carga los artefactos una vez; `predecir(texto) → Resultado` (clase, probabilidad, umbral, fuera de dominio, razón, ms). | App, prueba, T13, T14 |
@@ -112,7 +112,7 @@ scripts/                una etapa por script, cada uno con --help y --sintetica
   generar_sintetica.py  T6 ✔ (D20)
   auditar_seguridad.py  antes de cada commit (D21)
   entrenar.py           T7 ✔, T8 (baselines, logística y densa en una corrida; LSTM pendiente)
-  calibrar.py           T9
+  calibrar.py           T9 ✔ (cifras; elección pendiente)
   congelar.py           punto B
   evaluar_prueba.py     T12
   analizar_errores.py   T13

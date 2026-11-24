@@ -7,7 +7,7 @@
     "fn": 30
   },
   "umbral_teorico": 0.09090909090909091,
-  "segundos_total": 21.5,
+  "segundos_total": 70.0,
   "filas": [
     {
       "modelo": "Nada es atender (mayoritaria)",
@@ -72,7 +72,7 @@
           "cv_auc": 0.9068
         }
       ],
-      "segundos": 2.1
+      "segundos": 2.2
     },
     {
       "modelo": "TF-IDF + red densa (entregado)",
@@ -141,7 +141,47 @@
           "cv_auc": 0.91
         }
       ],
-      "segundos": 19.4
+      "segundos": 22.5
+    },
+    {
+      "modelo": "LSTM con embeddings propios (alternativa)",
+      "umbral": 0.06,
+      "costo_1000": 1125.0,
+      "vp": 50,
+      "fp": 65,
+      "fn": 1,
+      "vn": 84,
+      "auc_val": 0.8505066456112645,
+      "costo_1000_umbral_0.5": 1695.0,
+      "costo_1000_umbral_teorico_0.09": 1395.0,
+      "params": {
+        "ocultas": 64,
+        "dropout": 0.5
+      },
+      "cv_auc_ent": 0.8097803921568628,
+      "rejilla_cv": [
+        {
+          "ocultas": 64,
+          "dropout": 0.5,
+          "cv_auc": 0.8098
+        },
+        {
+          "ocultas": 64,
+          "dropout": 0.2,
+          "cv_auc": 0.7986
+        },
+        {
+          "ocultas": 32,
+          "dropout": 0.2,
+          "cv_auc": 0.777
+        },
+        {
+          "ocultas": 32,
+          "dropout": 0.5,
+          "cv_auc": 0.7736
+        }
+      ],
+      "segundos": 45.3
     }
   ],
   "nota": "Umbral elegido y costo medidos sobre la misma validación (optimista); probabilidades sin calibrar (T9)."

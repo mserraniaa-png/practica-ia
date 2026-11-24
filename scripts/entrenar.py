@@ -1,4 +1,4 @@
-"""T7 · Baselines, regresión logística (referencia) y red densa sobre TF-IDF, evaluados en validación.
+"""T7/T8 · Baselines, regresión logística (referencia), red densa sobre TF-IDF y LSTM, evaluados en validación.
 
 - Hiperparámetros: rejilla chica elegida con validación cruzada de 5 partes DENTRO de
   entrenamiento (agrupada por restaurante), por ROC-AUC (ADR-02).
@@ -35,11 +35,12 @@ import matplotlib.pyplot as plt  # noqa: E402
 from resenas import config  # noqa: E402
 from resenas.datos import cargar_etiquetadas  # noqa: E402
 from resenas.decision import barrido, costo_por_1000, matriz, mejor_umbral, umbral_teorico  # noqa: E402
-from resenas.modelos import Logistica, RedDensa  # noqa: E402
+from resenas.modelos import Logistica, LSTMPropia, RedDensa  # noqa: E402
 
 REJILLA_DENSA = [dict(ocultas=o, dropout=d, weight_decay=w)
                  for o, d, w in itertools.product([32, 128], [0.2, 0.5], [1e-4, 1e-3])]   # 8
 REJILLA_LOGISTICA = [dict(C=c) for c in (0.3, 1.0, 3.0, 10.0)]
+REJILLA_LSTM = [dict(ocultas=o, dropout=d) for o, d in itertools.product([32, 64], [0.2, 0.5])]   # 4
 
 
 def cv_auc(clase, params, ent) -> float:
@@ -98,7 +99,8 @@ def main():
 
     probs = pd.DataFrame({"id": val["id"], "y": y, "estrellas": val["estrellas"]})
     for nombre, clave, clase, rejilla in (("Regresión logística (referencia)", "logistica", Logistica, REJILLA_LOGISTICA),
-                                          ("TF-IDF + red densa (entregado)", "densa", RedDensa, REJILLA_DENSA)):
+                                          ("TF-IDF + red densa (entregado)", "densa", RedDensa, REJILLA_DENSA),
+                                          ("LSTM con embeddings propios (alternativa)", "lstm", LSTMPropia, REJILLA_LSTM)):
         t = time.perf_counter()
         params, tabla_cv = elegir(clase, rejilla, ent)
         modelo = clase(**params).fit(ent["texto"], ent["y"])

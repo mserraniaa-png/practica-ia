@@ -2,6 +2,8 @@
 
 - Nombres de personas (meseros, gerentes…) detectados con spaCy es_core_news_sm → [PERSONA]
 - Teléfonos, correos y @usuarios → [TELEFONO], [CORREO], [USUARIO]
+- Nombres que se escaparon y se anotaron a mano (scripts/revisar_nombres.py) → [PERSONA]
+  (data/nombres_escapados.txt y data/nombres_revisados.csv; ver resenas/privacidad.py)
 
 Entrada:  data/crudo/resenas_crudas.csv
 Salida:   data/resenas.csv  (con columna `etiqueta` vacía, lista para etiquetar)
@@ -15,6 +17,8 @@ from pathlib import Path
 
 import pandas as pd
 import spacy
+
+from resenas.privacidad import leer_nombres, leer_revisados, reemplazar
 
 RAIZ = Path(__file__).resolve().parent.parent
 ENTRADA = RAIZ / "data" / "crudo" / "resenas_crudas.csv"
@@ -59,7 +63,13 @@ def main():
     df = pd.read_csv(ENTRADA, dtype=str).fillna("")
     nlp = spacy.load("es_core_news_sm", disable=["lemmatizer"])
     df["texto"] = [anonimizar(d) for d in nlp.pipe(df["texto"], batch_size=64)]
+    n_spacy = df["texto"].str.count(r"\[PERSONA\]").sum()
+
+    # Segunda pasada: nombres anotados a mano (D10, D23).
+    globales, por_resena = leer_nombres(), leer_revisados()
+    df["texto"] = [reemplazar(t, globales, por_resena.get(i, set())) for i, t in zip(df["id"], df["texto"])]
     n_personas = df["texto"].str.count(r"\[PERSONA\]").sum()
+    print(f"[PERSONA]: {n_spacy} por spaCy + {n_personas - n_spacy} por la lista manual ({len(globales)} nombres)")
 
     # place_id se reemplaza por un id corto: basta para agrupar reseñas del mismo lugar.
     df["lugar"] = df["place_id"].astype("category").cat.codes.map(lambda i: f"R{i:04d}")

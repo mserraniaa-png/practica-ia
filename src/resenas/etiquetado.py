@@ -9,6 +9,7 @@ import csv
 import os
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from resenas import config
@@ -106,3 +107,21 @@ def cargar_muestra_completa(carpeta: Path) -> pd.DataFrame:
     m["id"] = m["id"].astype(str)
     m["reserva"] = m["reserva"].astype(str) == "True"
     return m
+
+
+N_REPASO = 50
+
+
+def ids_de_repaso(ruta: Path, etiquetas: pd.DataFrame, n: int = N_REPASO, semilla: int = config.SEMILLA) -> list:
+    """T5: n ids al azar entre las etiquetas válidas, de todos los splits.
+
+    La lista se guarda la primera vez y después se reutiliza, aunque cambien las etiquetas.
+    """
+    if ruta.exists():
+        return pd.read_csv(ruta, dtype=str)["id"].tolist()
+    vig = vigentes(etiquetas)
+    validas = sorted(vig.index[vig["etiqueta"].isin(["0", "1"])])
+    rng = np.random.default_rng(semilla + 5)
+    ids = [validas[i] for i in rng.choice(len(validas), size=min(n, len(validas)), replace=False)]
+    pd.DataFrame({"id": ids}).to_csv(ruta, index=False)
+    return ids

@@ -27,6 +27,10 @@ uv run python scripts/descargar_resenas.py --dry-run   # lista consultas, 0 llam
 uv run python scripts/anonimizar.py                    # data/crudo/resenas_crudas.csv → data/resenas.csv
 uv run python scripts/muestrear.py                     # split congelado; no sobrescribe sin --forzar
 uv run python scripts/etiquetar.py --etiquetadora <nombre>   # interactivo: lo corre la persona, no Claude
+uv run python scripts/etiquetar.py --repaso            # T5, interactivo (persona)
+uv run python scripts/revisar_nombres.py               # nombres escapados, interactivo (persona; incluye prueba)
+uv run python scripts/consistencia.py                  # T5: acuerdo y κ → resultados/etiquetado/
+uv run python scripts/auditar_seguridad.py --historial # antes de cada commit
 uv run pytest                                          # todas las pruebas
 uv run pytest tests/test_split.py::test_conteos_y_reservas   # una sola
 ```

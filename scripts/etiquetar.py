@@ -12,6 +12,8 @@ Teclas:
 Uso:
   uv run python scripts/etiquetar.py --etiquetadora <nombre>   # la primera vez
   uv run python scripts/etiquetar.py                           # después reutiliza el nombre
+  uv run python scripts/etiquetar.py --repaso                  # T5: 50 al azar otra vez, sin ver
+                                                               # la primera etiqueta → data/repaso.csv
 """
 
 import argparse
@@ -24,10 +26,12 @@ from pathlib import Path
 
 from resenas import config
 from resenas.datos import cargar_resenas
-from resenas.etiquetado import (ReservasAgotadas, agregar, cargar_muestra_completa, leer,
-                                progreso, siguiente, vigentes)
+from resenas.etiquetado import (ReservasAgotadas, agregar, cargar_muestra_completa, ids_de_repaso,
+                                leer, progreso, siguiente, vigentes)
 
 ETIQUETAS = "etiquetas.csv"
+REPASO = "repaso.csv"
+REPASO_IDS = "repaso_ids.csv"
 VERSION_GUIA = "1"
 NOMBRES = {"prueba": "PRUEBA", "validacion": "VALIDACIÓN", "entrenamiento": "ENTRENAMIENTO"}
 
@@ -49,15 +53,19 @@ def leer_tecla() -> str:
     return "q" if c == "\x03" else c.lower()
 
 
-def pantalla(fila, texto, prog, etiquetadora, marcado, anterior):
-    ancho = min(shutil.get_terminal_size((100, 30)).columns, 100) - 2
+def encabezado(fila, prog, etiquetadora):
     p = prog[fila["split"]]
     total = sum(x["validas"] for x in prog.values())
     objetivo = sum(x["objetivo"] for x in prog.values())
+    return (f"{NOMBRES[fila['split']]} · {p['validas']}/{p['objetivo']} válidas · ambiguas {p['ambiguas']}"
+            f" · total {total}/{objetivo} · {etiquetadora}")
+
+
+def pantalla(titulo, texto, marcado, anterior):
+    ancho = min(shutil.get_terminal_size((100, 30)).columns, 100) - 2
     if sys.stdout.isatty():
         print("\033[2J\033[H", end="")
-    print(f"{NOMBRES[fila['split']]} · {p['validas']}/{p['objetivo']} válidas · ambiguas {p['ambiguas']}"
-          f" · total {total}/{objetivo} · {etiquetadora}")
+    print(titulo)
     print("─" * ancho)
     for parrafo in texto.splitlines() or [""]:
         print(textwrap.fill(parrafo, ancho) if parrafo.strip() else "")
@@ -72,16 +80,21 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--etiquetadora", help="quién etiqueta (se guarda en cada fila)")
     ap.add_argument("--sintetica", action="store_true", help="usar data/sintetica/")
+    ap.add_argument("--repaso", action="store_true", help="T5: volver a etiquetar 50 al azar sin ver la primera etiqueta")
     ap.add_argument("--carpeta", type=Path, help=argparse.SUPPRESS)  # para pruebas
     args = ap.parse_args()
 
     carpeta = args.carpeta or (config.SINTETICA if args.sintetica else config.DATA)
-    ruta = carpeta / ETIQUETAS
     textos = cargar_resenas(carpeta / config.RESENAS).set_index("id")["texto"]
     muestra = cargar_muestra_completa(carpeta)
+    originales = leer(carpeta / ETIQUETAS)
+    if args.repaso:
+        ruta = carpeta / REPASO
+        ids_repaso = ids_de_repaso(carpeta / REPASO_IDS, originales)
+    else:
+        ruta = carpeta / ETIQUETAS
 
-    etiquetas = leer(ruta)
-    etiquetadora = args.etiquetadora or (etiquetas["etiquetadora"].iloc[-1] if len(etiquetas) else "")
+    etiquetadora = args.etiquetadora or (originales["etiquetadora"].iloc[-1] if len(originales) else "")
     if not etiquetadora:
         sys.exit("Falta --etiquetadora <nombre> (sólo la primera vez).")
 
@@ -93,6 +106,15 @@ def main():
             fila = muestra.set_index("id").loc[revisar].copy()
             fila["id"] = revisar
             anterior = vigentes(etiquetas).loc[revisar, "etiqueta"] or "ambigua"
+        elif args.repaso:
+            hechas = set(etiquetas["id"])
+            pendientes = [i for i in ids_repaso if i not in hechas]
+            anterior = None
+            if not pendientes:
+                print(f"✔ Repaso terminado ({len(ids_repaso)}). Ahora: uv run python scripts/consistencia.py")
+                break
+            fila = muestra.set_index("id").loc[pendientes[0]].copy()
+            fila["id"] = pendientes[0]
         else:
             try:
                 fila = siguiente(muestra, etiquetas)
@@ -103,10 +125,14 @@ def main():
                 print("✔ Objetivos de D4 cumplidos. No hay más reseñas que etiquetar.")
                 break
 
-        prog = progreso(muestra, etiquetas)
+        if args.repaso:
+            titulo = (f"REPASO (T5) · {len(set(etiquetas['id']) & set(ids_repaso)) + 1}/{len(ids_repaso)}"
+                      f" · no se muestra la primera etiqueta · {etiquetadora}")
+        else:
+            titulo = encabezado(fila, progreso(muestra, etiquetas), etiquetadora)
         marcado, pausado, inicio = False, 0.0, time.monotonic()
         while True:
-            pantalla(fila, textos[fila["id"]], prog, etiquetadora, marcado, anterior)
+            pantalla(titulo, textos[fila["id"]], marcado, anterior)
             t = leer_tecla()
             if t == "n":
                 marcado = not marcado

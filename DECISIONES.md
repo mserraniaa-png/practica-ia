@@ -176,3 +176,15 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **Condiciones del punto A:** ≥ 500 etiquetadas ✔; split congelado ✔ (D17); hash de prueba anotado ✔; tiempo registrado ✔; ≥ 30 `atender` en validación y en prueba ✔.
 - **Alerta de calidad (pendiente de decidir):** la velocidad es alta para el largo de las reseñas: mediana de 57 caracteres por segundo; 48 % de las etiquetas a más de 60 car/s (~700 palabras por minuto) y 153 en menos de 2 s. D4 suponía ~5 h para 700. No dice que las etiquetas estén mal, pero hay que medirlo (T5) y declararlo en el PDF.
 - **Pendiente:** los 14 nombres marcados todavía no se cambian por `[PERSONA]` (D10).
+
+## D23 · Nombres marcados al etiquetar y consistencia (T5) — 24-nov-2026
+
+- **Nombres (D10):** quien etiquetó revisa las 14 reseñas marcadas con `scripts/revisar_nombres.py` y escribe el nombre que se escapó. Los nombres quedan en `data/nombres_escapados.txt` y, por reseña, en `data/nombres_revisados.csv`; los dos están fuera de git. `anonimizar.py` hace una segunda pasada después de spaCy:
+  - en la reseña marcada, el nombre se reemplaza sin distinguir mayúsculas;
+  - en las demás, sólo con la grafía exacta, para no tocar palabras comunes.
+  - Comprobado con los 4 nombres que se encontraron al hacer la guía: spaCy vuelve a dar los mismos 397 reemplazos, la lista agrega 6, y sólo cambian esas 6 reseñas (ids, fechas, estrellas y lugares iguales).
+  - Como cambia el texto de `data/resenas.csv`, cambia su SHA-256 (D17). La muestra no cambia porque depende de ids, fechas, estrellas y lugares. El hash nuevo se anota al terminar.
+- **Por qué lo hace la persona y no Claude:** 6 de las 14 reseñas son de prueba, y Claude no lee textos de prueba.
+- **T5 (opción A, elegida por el usuario):** `etiquetar.py --repaso` muestra 50 reseñas válidas al azar de los tres splits (lista fija en `data/repaso_ids.csv`), sin la primera etiqueta y sin estrellas, y guarda en `data/repaso.csv`. `scripts/consistencia.py` reporta el % de acuerdo y la κ de Cohen en total, por split y según si la primera etiqueta tomó menos de 2 s.
+- **Descartadas:** revisar las 153 de menos de 2 s (opción B): cuesta más y no da una cifra comparable. Sólo declarar la velocidad (opción C): deja el criterio 2 sin evidencia.
+- **Regla fijada antes de ver el resultado:** la primera etiqueta es la que vale para entrenar y evaluar; el repaso sólo mide. Si κ < 0.6 se anota aquí y se decide, antes de T7, si se re-etiqueta algo.

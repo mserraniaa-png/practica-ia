@@ -89,13 +89,14 @@ graph TD
 |---|---|---|
 | `config.py` | Rutas, semilla, fechas de corte, costos (FP = 3, FN = 30), tamaños de muestra. Un solo lugar para cada número. | Todos |
 | `muestreo.py` | Muestra y split (D3–D5, D7) y su verificación. | muestrear.py, pruebas |
-| `etiquetado.py` | Qué reseña sigue (orden, reservas), progreso y registro de `etiquetas.csv`. | etiquetar.py, pruebas |
+| `etiquetado.py` | Qué reseña sigue (orden, reservas), progreso, registro de `etiquetas.csv` y lista del repaso (T5). | etiquetar.py, pruebas |
+| `privacidad.py` | Reemplazo de nombres anotados a mano (D10, D23). | anonimizar.py, revisar_nombres.py |
 | `datos.py` | Cargar y validar CSV (columnas, tipos). `cargar_split("prueba")` falla si no se llama desde `evaluar_prueba.py`. | Scripts |
 | `texto.py` | Limpieza: minúsculas, URL → `<url>`, números → `<num>`, recorte a 5,000 caracteres. Conserva acentos y signos. | Entrenamiento y app |
 | `modelos.py` | Red densa sobre TF-IDF y LSTM, en PyTorch; entrenar, guardar y cargar. | Entrenamiento y congelado |
 | `decision.py` | Costo esperado, barrido de umbral, costo por 1000. | Validación y prueba |
 | `calibracion.py` | Platt e isotónica; validación cruzada dentro de validación. | Calibración y app |
-| `metricas.py` | Matriz de confusión, ECE, curva de fiabilidad, intervalos por bootstrap. | Validación y prueba |
+| `metricas.py` | Acuerdo y κ (T5) ✔; matriz de confusión, ECE, curva de fiabilidad, intervalos por bootstrap. | T5, validación y prueba |
 | `fuera_dominio.py` | Filtro propio de entradas fuera de dominio (ADR-05). | App y T14 |
 | `predictor.py` | Carga los artefactos una vez; `predecir(texto) → Resultado` (clase, probabilidad, umbral, fuera de dominio, razón, ms). | App, prueba, T13, T14 |
 

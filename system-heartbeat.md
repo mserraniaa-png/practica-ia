@@ -18,8 +18,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 1 — Datos (cierre) |
 | Punto de control | **A** ✅ condiciones cumplidas (D22), con alerta de calidad pendiente · siguiente: **B** (jue 26) |
-| Último paso | T4 terminado (usuario) · punto A revisado y registrado (D22) |
-| Siguiente paso | Usuario decide: calidad del etiquetado (T5) y nombres marcados → después T7 |
+| Último paso | Herramientas listas: nombres (`revisar_nombres.py`) y T5 (`--repaso`, `consistencia.py`) |
+| Siguiente paso | Usuario: revisar los 14 nombres → `anonimizar.py` → repaso de 50 (T5). Claude: hash nuevo de `resenas.csv`, κ, después T7 |
 | Bloqueos | Ninguno |
 | Sin commit | — |
 
@@ -43,7 +43,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T2 | `scripts/etiquetar.py` | mar 24 | ✅ | `tests/test_etiquetado.py` (11 ✔), incluye retomar en la 11 tras 10 |
 | T3 | `scripts/muestrear.py` + hash de prueba | mar 24 | ✅ | D17 · `data/muestra.csv`, `data/muestra_prueba.csv` · `tests/test_split.py` |
 | T4 | Etiquetado a mano (prueba → validación → entrenamiento) | mar 24 – mié 25 | ✅ | 700 válidas, 12 ambiguas, 1.19 h (D22) |
-| T5 | Consistencia (opcional) | mié 25 | ⬜ | |
+| T5 | Consistencia | mié 25 | 🟡 | Herramienta lista (`etiquetar.py --repaso`, `consistencia.py`); falta que el usuario repase 50 (D23) |
 | T6 | Muestra sintética + tubería de punta a punta | mar 24 | ✅ | D20 · `data/sintetica/` · `tests/test_punta_a_punta.py` |
 | T7 | Baselines, logística y red densa en validación | mié 25 | ⬜ | |
 | T8 | LSTM (alternativa) | jue 26 | ⬜ | |
@@ -69,7 +69,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | `atender` (prueba / validación) | 42 / 51 (meta ≥ 30 cada uno) ✔ | D22 |
 | Ambiguas (`s`) | 12 (4 / 1 / 7) | D22 |
 | Tiempo de etiquetado | 1.19 h · mediana 4.3 s/reseña · 48 % a > 60 car/s | D22 |
-| Nombres escapados a la anonimización | 14 marcados (6 / 5 / 3), sin reemplazar aún | D22 |
+| Nombres escapados a la anonimización | 14 marcados al etiquetar (6 / 5 / 3), por revisar · 4 más fuera de la muestra, ya reemplazados (6 apariciones) | D22, D23 |
 | Cómputo acumulado | — de 20 min | `resultados/tiempos.json` |
 | Costo por 1000 en validación (mejor baseline / modelo) | — / — | |
 | ECE antes / después de calibrar | — / — | |
@@ -79,13 +79,12 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Preguntas abiertas
 
-- Velocidad del etiquetado: ¿T5 (consistencia) ahora, revisar las de < 2 s, o sólo declararlo?
-- Cómo reemplazar los 14 nombres marcados (6 en prueba) sin que Claude lea textos de prueba.
 - Cómo se entregan el video y el PDF en la plataforma del curso (formato, tamaño máximo). Antes del sáb 28.
 - Quién va a probar la app instalada (T11).
 
 ## Bitácora
 
+- **24-nov** · Usuario eligió T5 (opción A). Hechos `revisar_nombres.py` + segunda pasada de `anonimizar.py` (`privacidad.py`) y `etiquetar.py --repaso` + `consistencia.py` (κ). 32 pruebas pasan (D23).
 - **24-nov** · T4 terminado por el usuario: 700 válidas (D22). Punto A cumplido un día antes, con alerta de velocidad (mediana 4.3 s por reseña). Commits sólo locales por ahora.
 - **24-nov** · T6: `generar_sintetica.py` (2,783 reseñas inventadas, 1,092 lugares, 700 etiquetas simuladas); `muestrear`/`etiquetar --sintetica` corren; 24 pruebas pasan. `auditar_seguridad.py` en el repo (D21).
 - **24-nov** · Auditoría de seguridad antes del commit (contenido nuevo + todo el historial): sin key, sin nombres, sin correos ni teléfonos reales. 4 paráfrasis de la guía compartían ≥ 40 caracteres con la reseña original; se reescribieron. Commit de T1/T2/D19.

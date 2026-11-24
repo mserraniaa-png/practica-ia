@@ -115,7 +115,7 @@ def main():
                 hallazgos.append(("secreto", donde, f"{nombre}: {m.group()[:8]}…"))
         for m in {c.lstrip("+") for c in re.findall(r"[\w.+-]+@[\w-]+\.[\w.]+", txt)} - PERMITIDOS:
             hallazgos.append(("correo", donde, m))
-        for m in set(re.findall(r"(?<!\w)(?:\+?52[\s-]?)?\(?\d{2,3}\)?[\s-]?\d{4}[\s-]?\d{4}(?!\w)", txt)):
+        for m in set(re.findall(r"(?<![\w.])(?:\+?52[\s-]?)?\(?\d{2,3}\)?[\s-]?\d{4}[\s-]?\d{4}(?![\w.])", txt)):
             hallazgos.append(("teléfono", donde, m))
         for m in set(re.findall(r"ChIJ[0-9A-Za-z_\-]{20,}", txt)):
             hallazgos.append(("place_id", donde, m[:10] + "…"))

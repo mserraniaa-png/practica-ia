@@ -23,3 +23,6 @@ modelos/
 *.out
 *.toc
 *.synctex.gz
+
+# Resultados con la muestra sintética: se regeneran, no dicen nada del modelo
+resultados/sintetica/

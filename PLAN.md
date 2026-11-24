@@ -104,7 +104,7 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 
 ### Fase 2 — Modelo, umbral y calibración, sólo con validación (mié 25 – jue 26)
 
-- [ ] **T7. Primer camino completo.** Depende de: A.
+- [x] **T7. Primer camino completo.** Depende de: A. Hecho el 24-nov (D25).
   - Tres baselines: "nada es atender" (mayoritaria), "todo es atender" y "≤ 2★ = atender". Después: regresión logística sobre TF-IDF (referencia) y TF-IDF + capas densas (modelo entregado). Probabilidades en validación → barrido de umbral por costo → costo por 1000.
   - Acepta: una tabla con cada baseline y cada modelo (métrica, matriz de confusión y costo por 1000 en su mejor umbral); tiempo de cómputo medido.
 - [ ] **T8. Alternativa: LSTM con embeddings propios.** Depende de: T7. Se compara en validación y queda como alternativa descartada (o elegida), con su cifra y su tiempo de cómputo.

@@ -31,6 +31,7 @@ uv run python scripts/etiquetar.py --repaso            # T5, interactivo (person
 uv run python scripts/revisar_nombres.py               # nombres escapados, interactivo (persona; incluye prueba)
 uv run python scripts/consistencia.py                  # T5: acuerdo y κ → resultados/etiquetado/
 uv run python scripts/auditar_seguridad.py --historial # antes de cada commit
+uv run python scripts/entrenar.py [--sintetica]        # T7: baselines + logística + densa en validación (~20 s)
 uv run pytest                                          # todas las pruebas
 uv run pytest tests/test_split.py::test_conteos_y_reservas   # una sola
 ```

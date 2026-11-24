@@ -91,10 +91,10 @@ graph TD
 | `muestreo.py` | Muestra y split (D3–D5, D7) y su verificación. | muestrear.py, pruebas |
 | `etiquetado.py` | Qué reseña sigue (orden, reservas), progreso, registro de `etiquetas.csv` y lista del repaso (T5). | etiquetar.py, pruebas |
 | `privacidad.py` | Reemplazo de nombres anotados a mano (D10, D23). | anonimizar.py, revisar_nombres.py |
-| `datos.py` | Cargar y validar CSV (columnas, tipos). `cargar_split("prueba")` falla si no se llama desde `evaluar_prueba.py`. | Scripts |
-| `texto.py` | Limpieza: minúsculas, URL → `<url>`, números → `<num>`, recorte a 5,000 caracteres. Conserva acentos y signos. | Entrenamiento y app |
-| `modelos.py` | Red densa sobre TF-IDF y LSTM, en PyTorch; entrenar, guardar y cargar. | Entrenamiento y congelado |
-| `decision.py` | Costo esperado, barrido de umbral, costo por 1000. | Validación y prueba |
+| `datos.py` | Cargar y validar CSV. `cargar_etiquetadas(..., splits)` falla con "prueba" salvo con `RESENAS_PERMITIR_PRUEBA=1`, que sólo pone `evaluar_prueba.py`. | Scripts |
+| `texto.py` ✔ | Limpieza: minúsculas, URL → `<url>`, números → `<num>`, recorte a 5,000 caracteres. Conserva acentos y signos. | Entrenamiento y app |
+| `modelos.py` | TF-IDF (palabras 1–2 + caracteres 3–5), logística y red densa ✔; LSTM (T8); guardar y cargar (punto B). | Entrenamiento y congelado |
+| `decision.py` ✔ | Costo esperado, barrido de umbral, costo por 1000. | Validación y prueba |
 | `calibracion.py` | Platt e isotónica; validación cruzada dentro de validación. | Calibración y app |
 | `metricas.py` | Acuerdo y κ (T5) ✔; matriz de confusión, ECE, curva de fiabilidad, intervalos por bootstrap. | T5, validación y prueba |
 | `fuera_dominio.py` | Filtro propio de entradas fuera de dominio (ADR-05). | App y T14 |
@@ -111,7 +111,7 @@ scripts/                una etapa por script, cada uno con --help y --sintetica
   etiquetar.py          T2 ✔
   generar_sintetica.py  T6 ✔ (D20)
   auditar_seguridad.py  antes de cada commit (D21)
-  entrenar.py           T7, T8   (--modelo mayoritaria|todo|estrellas|logistica|densa|lstm)
+  entrenar.py           T7 ✔, T8 (baselines, logística y densa en una corrida; LSTM pendiente)
   calibrar.py           T9
   congelar.py           punto B
   evaluar_prueba.py     T12

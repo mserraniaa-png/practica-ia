@@ -7,10 +7,20 @@ dependencies = [
     "pandas>=2.2",
     "spacy>=3.8",
     "es-core-news-sm",
+    "scikit-learn>=1.9.1",
+    "torch>=2.15.0",
+    "matplotlib>=3.11.2",
 ]
 
 [tool.uv.sources]
 es-core-news-sm = { url = "https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-3.8.0/es_core_news_sm-3.8.0-py3-none-any.whl" }
+# Linux (imagen Docker): torch sólo CPU, sin CUDA (ADR-08). En macOS el de PyPI ya es CPU.
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
 [build-system]
 requires = ["hatchling"]

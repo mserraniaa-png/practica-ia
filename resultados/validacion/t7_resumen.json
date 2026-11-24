@@ -1,0 +1,148 @@
+{
+  "n_entrenamiento": 300,
+  "n_validacion": 200,
+  "atender_validacion": 51,
+  "costos": {
+    "fp": 3,
+    "fn": 30
+  },
+  "umbral_teorico": 0.09090909090909091,
+  "segundos_total": 21.5,
+  "filas": [
+    {
+      "modelo": "Nada es atender (mayoritaria)",
+      "umbral": null,
+      "costo_1000": 7650.0,
+      "vp": 0,
+      "fp": 0,
+      "fn": 51,
+      "vn": 149,
+      "auc_val": null
+    },
+    {
+      "modelo": "Todo es atender",
+      "umbral": null,
+      "costo_1000": 2235.0,
+      "vp": 51,
+      "fp": 149,
+      "fn": 0,
+      "vn": 0,
+      "auc_val": null
+    },
+    {
+      "modelo": "≤ 2★ = atender",
+      "umbral": null,
+      "costo_1000": 3720.0,
+      "vp": 27,
+      "fp": 8,
+      "fn": 24,
+      "vn": 141,
+      "auc_val": null
+    },
+    {
+      "modelo": "Regresión logística (referencia)",
+      "umbral": 0.38,
+      "costo_1000": 540.0,
+      "vp": 51,
+      "fp": 36,
+      "fn": 0,
+      "vn": 113,
+      "auc_val": 0.9355178312935912,
+      "costo_1000_umbral_0.5": 1500.0,
+      "costo_1000_umbral_teorico_0.09": 1920.0,
+      "params": {
+        "C": 3.0
+      },
+      "cv_auc_ent": 0.9094054310613136,
+      "rejilla_cv": [
+        {
+          "C": 3.0,
+          "cv_auc": 0.9094
+        },
+        {
+          "C": 1.0,
+          "cv_auc": 0.9092
+        },
+        {
+          "C": 10.0,
+          "cv_auc": 0.9068
+        },
+        {
+          "C": 0.3,
+          "cv_auc": 0.9068
+        }
+      ],
+      "segundos": 2.1
+    },
+    {
+      "modelo": "TF-IDF + red densa (entregado)",
+      "umbral": 0.13,
+      "costo_1000": 675.0,
+      "vp": 51,
+      "fp": 45,
+      "fn": 0,
+      "vn": 104,
+      "auc_val": 0.927753651796289,
+      "costo_1000_umbral_0.5": 1365.0,
+      "costo_1000_umbral_teorico_0.09": 810.0,
+      "params": {
+        "ocultas": 128,
+        "dropout": 0.5,
+        "weight_decay": 0.0001
+      },
+      "cv_auc_ent": 0.917954310613134,
+      "rejilla_cv": [
+        {
+          "ocultas": 128,
+          "dropout": 0.5,
+          "weight_decay": 0.0001,
+          "cv_auc": 0.918
+        },
+        {
+          "ocultas": 32,
+          "dropout": 0.5,
+          "weight_decay": 0.001,
+          "cv_auc": 0.9163
+        },
+        {
+          "ocultas": 128,
+          "dropout": 0.2,
+          "weight_decay": 0.0001,
+          "cv_auc": 0.9161
+        },
+        {
+          "ocultas": 32,
+          "dropout": 0.2,
+          "weight_decay": 0.001,
+          "cv_auc": 0.9156
+        },
+        {
+          "ocultas": 32,
+          "dropout": 0.5,
+          "weight_decay": 0.0001,
+          "cv_auc": 0.9146
+        },
+        {
+          "ocultas": 128,
+          "dropout": 0.5,
+          "weight_decay": 0.001,
+          "cv_auc": 0.9128
+        },
+        {
+          "ocultas": 32,
+          "dropout": 0.2,
+          "weight_decay": 0.0001,
+          "cv_auc": 0.9126
+        },
+        {
+          "ocultas": 128,
+          "dropout": 0.2,
+          "weight_decay": 0.001,
+          "cv_auc": 0.91
+        }
+      ],
+      "segundos": 19.4
+    }
+  ],
+  "nota": "Umbral elegido y costo medidos sobre la misma validación (optimista); probabilidades sin calibrar (T9)."
+}

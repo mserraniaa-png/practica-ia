@@ -200,3 +200,27 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **Decisión:** κ ≥ 0.6, el umbral fijado en D23 antes de ver el resultado, así que no se re-etiqueta. Valen las primeras etiquetas.
 - **Límites que van al PDF:** el repaso fue el mismo día, menos de 2.5 h después, así que la memoria puede inflar el acuerdo. Es consistencia de una sola persona consigo misma, no acuerdo entre personas ni exactitud. Con n = 50 el intervalo es ancho.
 - **Descartada:** repetir el repaso otro día para quitar el efecto de memoria; no cabe en el calendario.
+
+## D25 · Primer camino completo (T7), en validación — 24-nov-2026
+
+- **Hecho:** `scripts/entrenar.py` con dependencias nuevas en `.venv`: scikit-learn 1.9.1, torch 2.15.0 (CPU; en Linux desde el índice CPU de PyTorch, para la imagen Docker) y matplotlib 3.11.2. Entrenamiento 300 (41 % `atender`, sobremuestreado), validación 200 (51 `atender`, 25.5 %). Prueba no se cargó: `cargar_etiquetadas` la bloquea.
+- **Hiperparámetros:** validación cruzada de 5 partes **dentro de entrenamiento**, agrupada por restaurante, por ROC-AUC.
+  - Red densa, 8 combinaciones: gana 128 ocultas, dropout 0.5, weight decay 1e-4. AUC CV 0.918; las 8 quedan entre 0.910 y 0.918, así que la diferencia entre ellas es ruido.
+  - Logística, 4 valores de C: gana C = 3 (AUC CV 0.909).
+- **Validación** (probabilidades sin calibrar; umbral barrido de 0.01 a 0.99):
+
+| Modelo | Umbral | Costo / 1000 | FP | FN | AUC |
+|---|---|---|---|---|---|
+| Nada es atender | — | 7,650 | 0 | 51 | — |
+| Todo es atender (baseline más barato) | — | 2,235 | 149 | 0 | — |
+| ≤ 2★ = atender | — | 3,720 | 8 | 24 | — |
+| Logística (referencia) | 0.38 | 540 | 36 | 0 | 0.936 |
+| Red densa (entregado) | 0.13 | 675 | 45 | 0 | 0.928 |
+
+- **Lectura:**
+  - Los dos modelos cuestan entre 3 y 4 veces menos que el mejor baseline. El de estrellas es peor que "todo es atender", porque deja pasar 24 de las 51 quejas.
+  - Densa contra logística: 135 min/1000 de diferencia son 9 FP en 200 reseñas, dentro del ruido. La densa es menos sensible al umbral (curva más plana en `t7_barrido.png`) y es el modelo que pide el enunciado; la logística queda como referencia.
+  - **El costo de esta tabla es optimista:** el umbral se eligió en la misma validación donde se mide, y con 51 positivos cae justo donde no hay FN. La cifra honesta sale en T9, con validación cruzada dentro de validación.
+  - Sin calibrar, el umbral de la densa (0.13) está cerca del teórico 0.09; con el teórico costaría 810. La logística en el teórico cuesta 1,920. Se revisa en T9.
+- **Cómputo:** 21.7 s en total (CPU, Mac), en `resultados/tiempos.json`.
+- **Descartadas:** elegir hiperparámetros con validación (contaminaría la comparación y el umbral); umbral 0.5 (1,365 la densa y 1,500 la logística, el doble o más).

@@ -18,8 +18,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 2 — Modelo, umbral y calibración (sólo validación) |
 | Punto de control | **A** ✅ condiciones cumplidas (D22), alerta de calidad resuelta con T5 (D24) · siguiente: **B** (jue 26) |
-| Último paso | T5 hecho (κ 0.72) y nombres reemplazados (D24). Fase 1 cerrada |
-| Siguiente paso | T7: baselines, logística y red densa en validación (requiere agregar scikit-learn y torch CPU) |
+| Último paso | T7 hecho en validación (D25) |
+| Siguiente paso | T9 (calibración + costo honesto con CV dentro de validación) y T8 (LSTM) |
 | Bloqueos | Ninguno |
 | Sin commit | — |
 
@@ -45,7 +45,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T4 | Etiquetado a mano (prueba → validación → entrenamiento) | mar 24 – mié 25 | ✅ | 700 válidas, 12 ambiguas, 1.19 h (D22) |
 | T5 | Consistencia | mié 25 | ✅ | Acuerdo 90 %, κ 0.72 [0.45, 0.94] (D24) · `resultados/etiquetado/consistencia.json` |
 | T6 | Muestra sintética + tubería de punta a punta | mar 24 | ✅ | D20 · `data/sintetica/` · `tests/test_punta_a_punta.py` |
-| T7 | Baselines, logística y red densa en validación | mié 25 | ⬜ | |
+| T7 | Baselines, logística y red densa en validación | mié 25 | ✅ | D25 · `resultados/validacion/` · densa 675 vs todo-es-atender 2,235 min/1000 |
 | T8 | LSTM (alternativa) | jue 26 | ⬜ | |
 | T9 | Calibración | jue 26 | ⬜ | |
 | T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ⬜ | |
@@ -71,8 +71,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Consistencia (repaso de 50) | 90 % · κ 0.72, IC 95 % [0.45, 0.94] | D24 |
 | Tiempo de etiquetado | 1.19 h · mediana 4.3 s/reseña · 48 % a > 60 car/s | D22 |
 | Nombres escapados a la anonimización | 14 marcados, 14 con nombre; 23 nombres en la lista manual; 0 restantes | D22, D24 |
-| Cómputo acumulado | — de 20 min | `resultados/tiempos.json` |
-| Costo por 1000 en validación (mejor baseline / modelo) | — / — | |
+| Cómputo acumulado | 0.4 min (T7: 21.7 s) de 20 min | `resultados/tiempos.json` |
+| Costo por 1000 en validación (mejor baseline / modelo) | 2,235 / 675 densa (540 logística), optimista: umbral elegido en la misma validación | D25 |
 | ECE antes / después de calibrar | — / — | |
 | Umbral elegido (teórico ≈ 0.09) | — | |
 | Costo por 1000 en prueba | — | `resultados/prueba/` |
@@ -85,6 +85,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · T7: scikit-learn, torch (CPU) y matplotlib en `.venv`. Densa AUC val 0.928, costo 675/1000 (umbral 0.13) contra 2,235 del mejor baseline; logística 540. 47 pruebas pasan (D25).
 - **24-nov** · Usuario revisó los 14 nombres y repasó 50. Nombres: 0 restantes, 431 `[PERSONA]`, nuevo hash de `resenas.csv` (D24). T5: κ 0.72 ≥ 0.6 → no se re-etiqueta.
 - **24-nov** · Usuario eligió T5 (opción A). Hechos `revisar_nombres.py` + segunda pasada de `anonimizar.py` (`privacidad.py`) y `etiquetar.py --repaso` + `consistencia.py` (κ). 32 pruebas pasan (D23).
 - **24-nov** · T4 terminado por el usuario: 700 válidas (D22). Punto A cumplido un día antes, con alerta de velocidad (mediana 4.3 s por reseña). Commits sólo locales por ahora.

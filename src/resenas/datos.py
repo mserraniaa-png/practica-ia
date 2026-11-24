@@ -37,3 +37,35 @@ def periodo(fechas: pd.Series) -> pd.Series:
         ["entrenamiento" if f < val else "validacion" if f < pru else "prueba" for f in fechas],
         index=fechas.index,
     )
+
+
+# Candado de la prueba (ADR-06): sólo evaluar_prueba.py pone esta variable.
+PERMISO_PRUEBA = "RESENAS_PERMITIR_PRUEBA"
+
+
+class PruebaBloqueada(PermissionError):
+    pass
+
+
+def cargar_etiquetadas(carpeta: Path, splits=("entrenamiento", "validacion")) -> pd.DataFrame:
+    """Reseñas con etiqueta válida (0/1, la última de cada id) de los splits pedidos.
+
+    Columnas: id, split, estrato, texto, estrellas, fecha, lugar, y (int).
+    Pedir "prueba" falla salvo que el proceso tenga RESENAS_PERMITIR_PRUEBA=1.
+    """
+    import os
+
+    from resenas.etiquetado import cargar_muestra_completa, leer, vigentes
+
+    if "prueba" in splits and os.environ.get(PERMISO_PRUEBA) != "1":
+        raise PruebaBloqueada("El split de prueba sólo se carga desde scripts/evaluar_prueba.py (ADR-06).")
+    muestra = cargar_muestra_completa(carpeta)
+    muestra = muestra[muestra["split"].isin(splits)]
+    vig = vigentes(leer(carpeta / "etiquetas.csv"))
+    vig = vig[vig["etiqueta"].isin(["0", "1"])]
+    resenas = cargar_resenas(carpeta / config.RESENAS).set_index("id")
+    df = muestra[muestra["id"].isin(vig.index)].copy()
+    df["y"] = vig.loc[df["id"], "etiqueta"].astype(int).values
+    for c in ("texto", "estrellas", "fecha", "lugar"):
+        df[c] = resenas.loc[df["id"], c].values
+    return df[["id", "split", "estrato", "texto", "estrellas", "fecha", "lugar", "y"]].reset_index(drop=True)

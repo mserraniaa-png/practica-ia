@@ -165,3 +165,14 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 
 - **Decisión:** `scripts/auditar_seguridad.py --historial` corre antes de cada commit. Busca la key, secretos, correos, teléfonos, place_id, texto de reseñas reales (40 caracteres o más idénticos) y nombres de personas, en lo que entra al commit y en todo el historial. Los nombres que se escapan a la anonimización van en `data/nombres_escapados.txt`, ignorado por git.
 - **Razón:** pedido del usuario. La primera corrida encontró 4 paráfrasis de la guía demasiado parecidas a la reseña original; la segunda, los 4 nombres escapados escritos dentro del propio script. Los dos se corrigieron antes de que entraran a git.
+
+## D22 · Etiquetado terminado (T4) y punto de control A — 24-nov-2026
+
+- **Hecho:** 700 etiquetas válidas, de una sola persona (quien entrega la práctica), a mano, con la guía v1, el 24-nov de 13:05 a 14:56.
+  - Prueba 200 (42 `atender`, 21 %) · validación 200 (51, 25.5 %) · entrenamiento 150 de 1–3★ + 150 de 4–5★ (77 % y 5 % `atender`).
+  - 12 ambiguas, repuestas con reservas (prueba 4, validación 1, entrenamiento 7). 19 reseñas se volvieron a etiquetar con `b`. 14 con un nombre que se escapó (prueba 6, validación 5, entrenamiento 3).
+  - Tiempo registrado: 1.19 h sin pausas (731 filas). Mediana 4.3 s por reseña, p95 16.2 s, máximo 43 s.
+  - SHA-256 de `data/etiquetas.csv` al cerrar: `f5d12823284b3b1c455942d2164002caed5eb59a3d878eb78c7bcdcd4136a458`.
+- **Condiciones del punto A:** ≥ 500 etiquetadas ✔; split congelado ✔ (D17); hash de prueba anotado ✔; tiempo registrado ✔; ≥ 30 `atender` en validación y en prueba ✔.
+- **Alerta de calidad (pendiente de decidir):** la velocidad es alta para el largo de las reseñas: mediana de 57 caracteres por segundo; 48 % de las etiquetas a más de 60 car/s (~700 palabras por minuto) y 153 en menos de 2 s. D4 suponía ~5 h para 700. No dice que las etiquetas estén mal, pero hay que medirlo (T5) y declararlo en el PDF.
+- **Pendiente:** los 14 nombres marcados todavía no se cambian por `[PERSONA]` (D10).

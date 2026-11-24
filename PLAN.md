@@ -93,7 +93,7 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 - [x] **T3. Muestra y split** (`scripts/muestrear.py`). Depende de: TA. Hecho el 23-nov (D17).
   - Acepta: semilla fija; prueba se muestrea primero, después validación y al final entrenamiento (D5); cantidades de D4; el archivo de prueba queda aparte y su SHA-256 se anota en `DECISIONES.md`.
   - Verifica: ningún `lugar` aparece en dos splits; los conteos coinciden con D4.
-- [ ] **T4. Etiquetado** a mano. Depende de: T1, T2, T3. Orden: prueba → validación → entrenamiento.
+- [x] **T4. Etiquetado** a mano. Hecho el 24-nov (D22). Depende de: T1, T2, T3. Orden: prueba → validación → entrenamiento.
   - Acepta: 700 etiquetas (más reemplazos de las `s`); tiempo total registrado; ≥ 30 `atender` en validación y en prueba. Si no se llega, se anota en `DECISIONES.md` antes de seguir.
 - [ ] **T5. Consistencia** (opcional). Depende de: T4. Volver a etiquetar 50 al azar sin ver la primera etiqueta; reportar el acuerdo (% y κ).
 - [x] **T6. Muestra sintética** en `data/sintetica/` (`scripts/generar_sintetica.py`). Depende de: T3.

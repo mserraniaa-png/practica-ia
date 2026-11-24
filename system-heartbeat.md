@@ -16,10 +16,10 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 |---|---|
 | Actualizado | mar 24-nov-2026 |
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
-| Fase | 1 — Datos |
-| Punto de control | **0** ✅ aprobado · siguiente: **A** (mié 25, mediodía) |
-| Último paso | T6 muestra sintética (D20) y tubería de punta a punta con ella · auditoría de seguridad como script (D21) |
-| Siguiente paso | Usuario: T4, etiquetar (prueba → validación → entrenamiento). Claude: T7 sobre la sintética (código listo para cuando haya etiquetas reales) |
+| Fase | 1 — Datos (cierre) |
+| Punto de control | **A** ✅ condiciones cumplidas (D22), con alerta de calidad pendiente · siguiente: **B** (jue 26) |
+| Último paso | T4 terminado (usuario) · punto A revisado y registrado (D22) |
+| Siguiente paso | Usuario decide: calidad del etiquetado (T5) y nombres marcados → después T7 |
 | Bloqueos | Ninguno |
 | Sin commit | — |
 
@@ -28,7 +28,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Punto | Fecha meta | Condición | Estado | Evidencia |
 |---|---|---|---|---|
 | 0 | lun 23 | Plan y arquitectura revisados y aprobados | ✅ | Aprobado por el usuario el 23-nov |
-| A | mié 25, mediodía | ≥ 500 etiquetadas, split congelado, hash de prueba anotado, tiempo registrado | ⬜ | |
+| A | mié 25, mediodía | ≥ 500 etiquetadas, split congelado, hash de prueba anotado, tiempo registrado | ✅ | D22 (24-nov), un día antes; alerta: velocidad de etiquetado |
 | B | jue 26 | Modelo, calibrador, umbral y filtro congelados; commit con manifiesto | ⬜ | |
 | C | vie 27 | Tablas y figuras de prueba, errores y fuera de dominio en `resultados/` | ⬜ | |
 | Cierre | lun 30 | Video y PDF entregados; checklist de la rúbrica completo | ⬜ | |
@@ -42,7 +42,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T1 | Guía de etiquetado | mar 24 | ✅ | `GUIA_ETIQUETADO.md` v1, aprobada (D19) |
 | T2 | `scripts/etiquetar.py` | mar 24 | ✅ | `tests/test_etiquetado.py` (11 ✔), incluye retomar en la 11 tras 10 |
 | T3 | `scripts/muestrear.py` + hash de prueba | mar 24 | ✅ | D17 · `data/muestra.csv`, `data/muestra_prueba.csv` · `tests/test_split.py` |
-| T4 | Etiquetado a mano (prueba → validación → entrenamiento) | mar 24 – mié 25 | ⬜ | |
+| T4 | Etiquetado a mano (prueba → validación → entrenamiento) | mar 24 – mié 25 | ✅ | 700 válidas, 12 ambiguas, 1.19 h (D22) |
 | T5 | Consistencia (opcional) | mié 25 | ⬜ | |
 | T6 | Muestra sintética + tubería de punta a punta | mar 24 | ✅ | D20 · `data/sintetica/` · `tests/test_punta_a_punta.py` |
 | T7 | Baselines, logística y red densa en validación | mié 25 | ⬜ | |
@@ -63,13 +63,13 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 |---|---|---|
 | Reseñas descargadas | 2,783 de 562 restaurantes | `data/resenas.csv` |
 | Llamadas a Places API / costo | 32 / $0 | Avance en `PLAN.md` |
-| Etiquetadas (prueba / validación / entrenamiento) | 0 / 0 / 0 de 200 / 200 / 300 | `data/etiquetas.csv` |
+| Etiquetadas (prueba / validación / entrenamiento) | 200 / 200 / 300 de 200 / 200 / 300 | `data/etiquetas.csv` (hash en D22) |
 | Muestra: 1–3★ en prueba / validación | 53 / 59 de 200 | D17 |
 | Reservas (prueba / validación / ent. 1–3★ / ent. 4–5★) | 20 / 20 / 27 / 406 | D17 |
-| `atender` (prueba / validación) | — / — (meta ≥ 30 cada uno) | |
-| Ambiguas (`s`) | — | |
-| Tiempo de etiquetado | — | |
-| Nombres escapados a la anonimización | — | |
+| `atender` (prueba / validación) | 42 / 51 (meta ≥ 30 cada uno) ✔ | D22 |
+| Ambiguas (`s`) | 12 (4 / 1 / 7) | D22 |
+| Tiempo de etiquetado | 1.19 h · mediana 4.3 s/reseña · 48 % a > 60 car/s | D22 |
+| Nombres escapados a la anonimización | 14 marcados (6 / 5 / 3), sin reemplazar aún | D22 |
 | Cómputo acumulado | — de 20 min | `resultados/tiempos.json` |
 | Costo por 1000 en validación (mejor baseline / modelo) | — / — | |
 | ECE antes / después de calibrar | — / — | |
@@ -79,11 +79,14 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Preguntas abiertas
 
+- Velocidad del etiquetado: ¿T5 (consistencia) ahora, revisar las de < 2 s, o sólo declararlo?
+- Cómo reemplazar los 14 nombres marcados (6 en prueba) sin que Claude lea textos de prueba.
 - Cómo se entregan el video y el PDF en la plataforma del curso (formato, tamaño máximo). Antes del sáb 28.
 - Quién va a probar la app instalada (T11).
 
 ## Bitácora
 
+- **24-nov** · T4 terminado por el usuario: 700 válidas (D22). Punto A cumplido un día antes, con alerta de velocidad (mediana 4.3 s por reseña). Commits sólo locales por ahora.
 - **24-nov** · T6: `generar_sintetica.py` (2,783 reseñas inventadas, 1,092 lugares, 700 etiquetas simuladas); `muestrear`/`etiquetar --sintetica` corren; 24 pruebas pasan. `auditar_seguridad.py` en el repo (D21).
 - **24-nov** · Auditoría de seguridad antes del commit (contenido nuevo + todo el historial): sin key, sin nombres, sin correos ni teléfonos reales. 4 paráfrasis de la guía compartían ≥ 40 caracteres con la reseña original; se reescribieron. Commit de T1/T2/D19.
 - **24-nov** · Guía aprobada por la etiquetadora: R1–R4 sin cambios, R5 = opción A (D19).

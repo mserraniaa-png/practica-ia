@@ -119,7 +119,7 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 - [x] **T10. App.** Depende de: B. Hecha el 24-nov (D31).
   - Acepta: recibe el texto de una reseña y muestra clase, probabilidad y umbral; el filtro de fuera de dominio es propio (vacío, muy corto, sin palabras del vocabulario, sin palabras comunes del español) y responde "fuera de dominio" con su razón; no usa detectores de idioma ni modelos preentrenados.
   - Verifica: p95 < 2 s en 100 casos; ninguna excepción con emoji, 10,000 caracteres, HTML, sólo números o texto vacío (prueba automatizada).
-- [ ] **T11. App instalable con Docker y probada por otra persona** (ADR-08). Depende de: T10.
+- [ ] **T11. App en un Space público de Hugging Face (D33) + Docker de respaldo, probada por otra persona** (ADR-08). Depende de: T10.
   - Acepta: `Dockerfile` (torch CPU, sólo `src/`, `app/`, `modelos/`), `compose.yaml` con healthcheck, `.dockerignore`, lanzadores `iniciar.command` e `iniciar.bat`, y la sección "Instalar y usar la app" del README con pasos numerados para alguien que no programa (Docker Desktop, conseguir el repo o el ZIP, doble clic, apagarla, qué hacer si falla).
   - Verifica: en un clon limpio la imagen se construye, el healthcheck pasa y una reseña responde en < 2 s; la imagen no contiene `data/` ni `.env`; se anotan el tamaño de la imagen y el tiempo de construcción y de arranque.
   - Prueba real (vie 27 – sáb 28): otra persona la instala en su máquina con el README, sin ayuda; se anota dónde se atoró y se corrige el README.

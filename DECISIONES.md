@@ -336,3 +336,16 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
   - **Falla:** una reseña de producto en español (celular roto) pasa el filtro y sale `atender` (p = 0.40). Es el límite previsto en ADR-05: el filtro mira idioma y vocabulario, no el tema. Lo correcto sería "fuera de dominio".
 - **Reales no aptas (D9):** las 18 reseñas vacías y las 3 en otro idioma se rechazan.
 - **Para el PDF ("cuándo no usar la app"):** sólo sirve para reseñas de restaurantes en español. Una queja en español sobre otro tipo de negocio se clasifica como si fuera de restaurante.
+
+## D33 · Distribución: Space público de Hugging Face + Docker de respaldo — 24-nov-2026 (reemplaza a D16)
+
+- **Decisión del usuario:** la forma principal de uso es una liga pública a un Space de Hugging Face (plan gratuito de CPU). El contenedor Docker que se construye desde el repo (T11) queda como respaldo reproducible. Todavía no se publica.
+- **Razón:** la rúbrica pide que alguien la use sin que la autora esté presente y que no dependa de su máquina. Abrir una liga no requiere instalar nada; Docker garantiza que se pueda levantar aunque el Space falle.
+- **Descartadas:**
+  - Sólo Docker (D16): obliga a quien prueba a instalar Docker Desktop.
+  - Space privado: quien prueba necesita cuenta de Hugging Face con acceso.
+  - Liga temporal de Gradio: depende de la Mac encendida y caduca.
+- **Consecuencias que se aceptan:**
+  - El código de la app y `modelos/` quedan públicos. El vocabulario del modelo son palabras y n-gramas sueltos en orden alfabético, sin `stop_words_` (D28); no hay reseñas, datos ni la key.
+  - Lo que escribe quien la usa se procesa en servidores de Hugging Face. La app no lo guarda.
+  - El Space se duerme tras 48 h sin uso; hay que abrirlo antes de grabar o de compartir la liga.

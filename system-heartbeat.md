@@ -18,7 +18,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 5 — Entregables (T11 Docker, T15 casos del video, T16 PDF, T17 video) |
 | Punto de control | **C** ✅ (24-nov) · siguiente: **Cierre** (lun 30) |
-| Último paso | Space y contenedor preparados, sin publicar (D34) |
+| Último paso | Nuevo diseño de la app (D35) |
 | Siguiente paso | Usuario abre Docker Desktop → construir y probar el contenedor → autorización explícita para publicar el Space |
 | Bloqueos | Docker Desktop no está corriendo; publicar el Space espera autorización explícita |
 | Sin commit | — |
@@ -86,6 +86,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · Nuevo diseño de la app (Stitch → Gradio): sin el JS simulado de Stitch; capturas de escritorio, móvil y oscuro en `docs/capturas/`; 12/12 contra la referencia vía servidor (D35).
 - **24-nov** · Sesión de Hugging Face iniciada. Preparado sin publicar: Dockerfile único, compose, tarjeta del Space, `preparar_space.py` (27 archivos, 7.8 MB, auditoría limpia), referencia de predicciones 12/12 (D34).
 - **24-nov** · Usuario decide Space público de Hugging Face + Docker de respaldo (D33, reemplaza D16). Aún no se publica; falta iniciar sesión en Hugging Face.
 - **24-nov** · T13 (41 errores en 6 grupos; 12 FP parecen error de etiqueta), T10 (app Gradio, telemetría apagada) y T14 (9/10). Punto C cumplido. 95 pruebas pasan (D30–D32).

@@ -29,3 +29,6 @@ resultados/sintetica/
 
 # Carpeta armada para el Space (se regenera con scripts/preparar_space.py)
 dist/
+
+# Exportaciones de diseño (Stitch) y otros zips
+*.zip

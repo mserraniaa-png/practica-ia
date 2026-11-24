@@ -361,3 +361,20 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **Sesión de Hugging Face:** iniciada por el usuario con el CLI. El token queda fuera del repo.
 - **Regla:** no se crea ni se sube el Space sin autorización explícita del usuario.
 - **Falta:** construir y probar el contenedor en local (Docker Desktop no estaba corriendo).
+
+## D35 · Nuevo diseño de la app (propuesta de Stitch) — 24-nov-2026
+
+- **Hecho:** el usuario generó un diseño con Stitch a partir de una descripción del proyecto. Se adaptó a Gradio: `app/estilo.css`, más la estructura de `app/app.py`.
+  - Dos paneles: texto con ejemplos, y dictamen del modelo.
+  - Tarjetas para los estados atender, no atender, fuera de dominio y vacío. Muestran la probabilidad y el umbral en grande, y una barra con la marca del umbral.
+  - Modo claro y oscuro; en móvil los paneles se apilan.
+- **De Stitch NO se usó:**
+  - Su JavaScript, que traía un "motor de clasificación simulado": palabras clave y probabilidades con `Math.random()`. Usarlo habría mostrado resultados falsos.
+  - Textos que afirmaban cosas que el modelo no hace: el tipo de problema, "idioma detectado", "umbral óptimo", "alucinaciones".
+  - Etiquetas fijas en los ejemplos: ahora las calcula el modelo al arrancar.
+  - **Todos los números siguen saliendo del `Predictor` congelado.**
+- **Verificado:**
+  - Capturas con Playwright y Chromium temporales (vía `uvx`, no se agregaron al proyecto) en escritorio, móvil (390 px) y modo oscuro, en `docs/capturas/`.
+  - Por el servidor, las 12 respuestas coinciden con `app/referencia.json`.
+  - 95 pruebas pasan; el texto del usuario se escapa y nunca se inyecta como HTML.
+- **Nota:** las fuentes Inter y JetBrains Mono se cargan desde Google Fonts en el navegador de quien usa la app. Si no cargan, se usan las del sistema.

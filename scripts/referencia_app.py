@@ -49,7 +49,7 @@ def remota(url):
         if "Fuera de dominio" in h:
             out.append({"clase": "fuera_de_dominio", "probabilidad": None})
         else:
-            prob = float(re.search(r"Probabilidad de que reporte un problema\s+([\d.]+)%", h).group(1)) / 100
+            prob = float(re.search(r"Probabilidad de que reporte un problema\s+([\d.]+)\s*%", h).group(1)) / 100
             out.append({"clase": "atender" if "Atender:" in h else "no_atender", "probabilidad": prob})
     return out
 

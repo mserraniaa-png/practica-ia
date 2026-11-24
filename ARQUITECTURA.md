@@ -114,7 +114,7 @@ scripts/                una etapa por script, cada uno con --help y --sintetica
   entrenar.py           T7 ✔, T8 (baselines, logística y densa en una corrida; LSTM pendiente)
   calibrar.py           T9 ✔ (cifras; elección pendiente)
   congelar.py           punto B ✔ (D28)
-  evaluar_prueba.py     T12
+  evaluar_prueba.py     T12 ✔ (D29)
   analizar_errores.py   T13
   probar_fuera_dominio.py T14
 app/app.py              T10  (Gradio)

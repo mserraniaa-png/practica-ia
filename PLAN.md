@@ -126,7 +126,7 @@ Cada tarea entrega algo que se puede revisar. No se pasa de un punto de control 
 
 ### Fase 4 — Corrida única sobre prueba (vie 27)
 
-- [ ] **T12. `scripts/evaluar_prueba.py`.** Depende de: B.
+- [x] **T12. `scripts/evaluar_prueba.py`.** Depende de: B. Corrida única el 24-nov (D29).
   - Acepta: verifica los hashes del modelo congelado; se niega a correr si ya hay resultados; escribe en `resultados/` la matriz de confusión, el costo por 1000, el ECE y la curva de fiabilidad; commit inmediato de los resultados.
   - Regla: si después aparece un error, no se vuelve a correr en silencio. Se reporta el resultado original y, aparte, el corregido, con la corrección declarada.
 - [ ] **T13. 20 errores** agrupados por tipo de falla (etiqueta ambigua, ironía o faltas de ortografía, problema mencionado de pasada, clase confundida, etc.), con hipótesis de causa. Depende de: T12. Si son menos de 20, se completan con validación (D8).

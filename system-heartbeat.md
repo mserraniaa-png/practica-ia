@@ -18,8 +18,8 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 3–4 — Aplicación y corrida única sobre prueba |
 | Punto de control | **B** ✅ (D28) · siguiente: **C** (vie 27) |
-| Último paso | Punto B: `modelos/` congelado con manifiesto (D28) |
-| Siguiente paso | T12 `evaluar_prueba.py` (corrida única, con confirmación del usuario) · T10 app |
+| Último paso | T12: corrida única sobre prueba hecha y con commit (D29) |
+| Siguiente paso | T13 (20 errores de prueba), T10 (app), T14 (10 fuera de dominio) |
 | Bloqueos | Ninguno |
 | Sin commit | — |
 
@@ -50,7 +50,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T9 | Calibración | jue 26 | ✅ | Platt + umbral 0.0909, elegido por el usuario (D26, D28) |
 | T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ⬜ | |
 | T11 | Docker + prueba con otra persona | vie 27 – sáb 28 | ⬜ | |
-| T12 | Corrida única sobre prueba | vie 27 | ⬜ | |
+| T12 | Corrida única sobre prueba | vie 27 | ✅ | D29 · commit `80c247d` · costo 750 [480, 1,140] |
 | T13 | 20 errores agrupados | vie 27 | ⬜ | |
 | T14 | 10 entradas fuera de dominio | vie 27 | ⬜ | |
 | T15 | Casos nuevos para el video | mar 24 | ⬜ | Apartarlos antes de que entren al desarrollo |
@@ -75,7 +75,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Costo por 1000 en validación (mejor baseline / modelo) | 2,235 / honesto 810–960 densa (518–575 logística) | D25, D26 |
 | ECE antes / después de calibrar (densa) | 0.099 / 0.059 Platt | D26 |
 | Umbral elegido (teórico ≈ 0.09) | 0.0909 teórico, sobre probabilidad calibrada con Platt | D28 |
-| Costo por 1000 en prueba | — | `resultados/prueba/` |
+| Costo por 1000 en prueba | 750 [480, 1,140] vs 2,115 del mejor baseline · AUC 0.947 · ECE 0.023 | D29 |
 | Latencia p95 del predictor (modelo cargado) | 1.6 ms (meta < 2 s) | D28 |
 
 ## Preguntas abiertas
@@ -85,6 +85,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · T12: corrida única sobre prueba (commit `80c247d`): 41/42 quejas, 40 FP, costo 750 contra 2,115 del mejor baseline (≤ 2★). El filtro rechazó 6/200 reseñas reales (D29).
 - **24-nov** · Punto B: modelo congelado (densa + Platt + 0.0909) y filtro de fuera de dominio; protocolo de prueba fijado (D28). La auditoría encontró que el vectorizador guardaba n-gramas en orden de texto y `stop_words_`; se corrigió sin cambiar el modelo. 71 pruebas pasan.
 - **24-nov** · T9: costo honesto densa 810 (sin calibrar, 0.09) / 833 (Platt, 0.09); ECE 0.099 → 0.059 con Platt; el umbral teórico gana al barrido. T8: LSTM descartada (AUC 0.851). 54 pruebas pasan (D26, D27).
 - **24-nov** · T7: scikit-learn, torch (CPU) y matplotlib en `.venv`. Densa AUC val 0.928, costo 675/1000 (umbral 0.13) contra 2,235 del mejor baseline; logística 540. 47 pruebas pasan (D25).

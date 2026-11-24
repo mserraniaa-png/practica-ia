@@ -276,3 +276,25 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 3. **Métrica secundaria:** el sistema completo con filtro. Una reseña rechazada cuenta como enviada al gerente, porque la app le pide a una persona que la revise.
 4. **Las probabilidades se guardan por id, sin texto**, para T13 (errores).
 5. Commit inmediato de `resultados/prueba/`. Si después aparece un error, no se borra nada: se agrega `resultados/prueba_corregida/` y una entrada aquí, y en el PDF van las dos cifras.
+
+## D29 · Resultado de la corrida única sobre prueba (T12) — 24-nov-2026
+
+- **Corrida:** `evaluar_prueba.py` en el commit `439f638`, con el modelo congelado en D28. Resultados en `resultados/prueba/`, commit `80c247d`, sin cambios posteriores. Antes, el candado se negó a correr mientras el script no estaba en un commit, y la segunda corrida con la sintética quedó bloqueada.
+- **Prueba:** 200 reseñas, 42 `atender` (21 %; en validación 25.5 %).
+
+| Modelo | Costo / 1000 | VP | FP | FN | VN |
+|---|---|---|---|---|---|
+| Nada es atender | 6,300 | 0 | 0 | 42 | 158 |
+| Todo es atender | 2,370 | 42 | 158 | 0 | 0 |
+| ≤ 2★ = atender (mejor baseline en prueba) | 2,115 | 29 | 11 | 13 | 147 |
+| **Red densa + Platt, umbral 0.0909** | **750** [IC 95 %: 480, 1,140] | 41 | 40 | 1 | 118 |
+| Sistema con filtro (6 rechazadas → gerente) | 810 | 41 | 44 | 1 | 114 |
+
+- **Lectura:**
+  - El costo es 2.8 veces menor que el del mejor baseline de prueba. En prueba ese baseline es el de estrellas (2,115), no "todo es atender" como en validación: con menos quejas (21 %), mandar todo cuesta más.
+  - Atrapa 41 de 42 quejas y el gerente lee 81 de 200 reseñas (40 %).
+  - Coincide con el costo honesto estimado en validación (833, D26), que cae dentro del IC.
+  - AUC 0.947 (validación 0.928).
+  - **Calibración:** ECE 0.023; la curva sigue a la diagonal en todos los contenedores. El IC por bootstrap [0.029, 0.076] no contiene el valor puntual porque el bootstrap sesga el ECE hacia arriba al repetir casos; se reporta así.
+  - **Filtro:** rechazó 6 de 200 reseñas reales (3 %; en validación 1 %), 2 de ellas `atender`. Como una rechazada va al gerente, no agrega FN, pero suma 4 FP (+60 min/1000). Es una limitación del filtro que va a T14 y al PDF.
+- **Errores para T13:** 41 (40 FP, 1 FN). Pasan de 20, así que no hace falta completar con validación (D8).

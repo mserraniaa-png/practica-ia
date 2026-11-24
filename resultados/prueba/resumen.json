@@ -1,0 +1,136 @@
+{
+  "fecha": "2026-11-24T16:23:42",
+  "commit": "439f638e452e0df9847919fc508832b8e84ab7fa",
+  "umbral": 0.09090909090909091,
+  "n": 200,
+  "atender": 42,
+  "principal": {
+    "matriz": {
+      "vp": 41,
+      "fp": 40,
+      "fn": 1,
+      "vn": 118
+    },
+    "costo_1000": 750.0,
+    "costo_1000_ic95": [
+      480.0,
+      1140.0
+    ],
+    "auc": 0.9472573839662447,
+    "ece": 0.02342441744291532,
+    "ece_ic95": [
+      0.02900615946485084,
+      0.07611695616636889
+    ],
+    "fiabilidad": [
+      {
+        "contenedor": 0,
+        "p_media": 0.022891796669162315,
+        "observada": 0.01639344262295082,
+        "n": 122
+      },
+      {
+        "contenedor": 1,
+        "p_media": 0.12993393822807645,
+        "observada": 0.058823529411764705,
+        "n": 17
+      },
+      {
+        "contenedor": 2,
+        "p_media": 0.2564192494576631,
+        "observada": 0.3333333333333333,
+        "n": 6
+      },
+      {
+        "contenedor": 3,
+        "p_media": 0.35325151226925305,
+        "observada": 0.38461538461538464,
+        "n": 13
+      },
+      {
+        "contenedor": 4,
+        "p_media": 0.4631478253590735,
+        "observada": 0.5,
+        "n": 2
+      },
+      {
+        "contenedor": 5,
+        "p_media": 0.5451994484946199,
+        "observada": 0.6,
+        "n": 10
+      },
+      {
+        "contenedor": 6,
+        "p_media": 0.6566516821548481,
+        "observada": 0.6,
+        "n": 5
+      },
+      {
+        "contenedor": 7,
+        "p_media": 0.75893451644549,
+        "observada": 0.7142857142857143,
+        "n": 7
+      },
+      {
+        "contenedor": 8,
+        "p_media": 0.8436741929518489,
+        "observada": 0.8571428571428571,
+        "n": 7
+      },
+      {
+        "contenedor": 9,
+        "p_media": 0.9543452762046503,
+        "observada": 1.0,
+        "n": 11
+      }
+    ]
+  },
+  "sistema_con_filtro": {
+    "rechazadas": 6,
+    "etiqueta_de_rechazadas": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "matriz": {
+      "vp": 41,
+      "fp": 44,
+      "fn": 1,
+      "vn": 114
+    },
+    "costo_1000": 810.0
+  },
+  "baselines": {
+    "Nada es atender (mayoritaria)": {
+      "matriz": {
+        "vp": 0,
+        "fp": 0,
+        "fn": 42,
+        "vn": 158
+      },
+      "costo_1000": 6300.0
+    },
+    "Todo es atender": {
+      "matriz": {
+        "vp": 42,
+        "fp": 158,
+        "fn": 0,
+        "vn": 0
+      },
+      "costo_1000": 2370.0
+    },
+    "≤ 2★ = atender": {
+      "matriz": {
+        "vp": 29,
+        "fp": 11,
+        "fn": 13,
+        "vn": 147
+      },
+      "costo_1000": 2115.0
+    }
+  },
+  "segundos": 0.2
+}

@@ -378,3 +378,9 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
   - Por el servidor, las 12 respuestas coinciden con `app/referencia.json`.
   - 95 pruebas pasan; el texto del usuario se escapa y nunca se inyecta como HTML.
 - **Nota:** las fuentes Inter y JetBrains Mono se cargan desde Google Fonts en el navegador de quien usa la app. Si no cargan, se usan las del sistema.
+
+## D36 · Buscador de restaurantes con Google Maps: descartado — 24-nov-2026
+
+- **Decisión del usuario:** no se agrega a la app un buscador que traiga las reseñas de un restaurante desde Google Maps y las clasifique.
+- **Razón:** no lo pide la rúbrica ("un archivo o un texto"); trae sólo 5 reseñas por lugar; exige una key en el Space con riesgo de cobro (se habría controlado con cuota diaria en GCP, límites por sesión e interruptor de apagado) y atribución de autores según los términos de Google; y cuesta de medio día a un día de trabajo a 6 días de la entrega.
+- **Descartada:** hacerlo como pestaña opcional, apagada por omisión. Se dejaría para un trabajo futuro y se menciona así en el PDF.

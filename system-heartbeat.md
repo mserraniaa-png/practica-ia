@@ -80,13 +80,13 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Preguntas abiertas
 
-- ¿Agregar a la app un buscador de restaurantes de Google Maps que traiga sus reseñas y las clasifique? (factibilidad respondida el 24-nov; decide el usuario)
 - T13: confirmar (la etiquetadora) los 12 FP del grupo A que parecen error de etiqueta, antes de citarlos en el PDF.
 - Cómo se entregan el video y el PDF en la plataforma del curso (formato, tamaño máximo). Antes del sáb 28.
 - Quién va a probar la app instalada (T11).
 
 ## Bitácora
 
+- **24-nov** · Buscador de Google Maps en la app: descartado por el usuario (D36).
 - **24-nov** · Nuevo diseño de la app (Stitch → Gradio): sin el JS simulado de Stitch; capturas de escritorio, móvil y oscuro en `docs/capturas/`; 12/12 contra la referencia vía servidor (D35).
 - **24-nov** · Sesión de Hugging Face iniciada. Preparado sin publicar: Dockerfile único, compose, tarjeta del Space, `preparar_space.py` (27 archivos, 7.8 MB, auditoría limpia), referencia de predicciones 12/12 (D34).
 - **24-nov** · Usuario decide Space público de Hugging Face + Docker de respaldo (D33, reemplaza D16). Aún no se publica; falta iniciar sesión en Hugging Face.

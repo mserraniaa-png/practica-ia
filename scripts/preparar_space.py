@@ -6,9 +6,9 @@ prohibido y corre la auditoría de seguridad sobre la carpeta.
 
 Uso:
   uv run python scripts/preparar_space.py
-Publicar (sólo con autorización explícita del usuario):
-  uv run hf repo create <usuario>/resenas-atender --repo-type space --space-sdk docker
-  uv run hf upload <usuario>/resenas-atender dist/space . --repo-type space
+Publicar en HF (requiere PRO desde nov-2026; ver D39, hoy se publica en Render):
+  uv run hf repo create <usuario>/atender-resenas --repo-type space --space-sdk docker
+  uv run hf upload <usuario>/atender-resenas dist/space . --repo-type space
 """
 
 import hashlib

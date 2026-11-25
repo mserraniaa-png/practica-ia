@@ -400,3 +400,11 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **Cambio (sólo CSS):** en escritorio la píldora es `sticky` al borde inferior de la pantalla mientras el editor esté a la vista; en pantallas de menos de 900 px es `fixed` abajo al centro. Gradio pone `overflow: hidden` en su contenedor, que impide el sticky; se cambió a `overflow: clip`.
 - **Verificado con Playwright** (reseña de 2,475 caracteres): el botón Analizar está visible en 3 posiciones de scroll en escritorio (1280×720) y en móvil (390×844), y funciona al hacer clic; la página no se desborda a lo ancho ni con 6,000 caracteres.
 - **Descartada:** `fixed` también en escritorio, porque quedaría centrada en la ventana y no en el editor.
+
+## D39 · Publicación en Render en lugar del Space de Hugging Face — 24-nov-2026
+
+- **Qué pasó:** con la autorización del usuario se intentó crear el Space `Manu-se/atender-resenas`. Hugging Face respondió 402: hoy los Spaces de Docker y de Gradio en CPU gratuita piden suscripción PRO, y gratis sólo quedan los estáticos. No se creó ni se subió nada.
+- **Decisión del usuario:** publicar el mismo contenedor en Render, en el plan gratuito (512 MB de RAM; la app usa unos 350 MB en el contenedor local). Reemplaza el destino de D33/D34; el Dockerfile no cambia.
+- **Cómo:** `render.yaml` en la raíz define un servicio web Docker (`atender-resenas`, plan free, chequeo de salud en `/`, sin despliegue automático). Render construye desde el repo privado de GitHub; el `.dockerignore` de lista blanca deja fuera `data/`, `resultados/`, `.env` y `cache/`.
+- **Costo aceptado:** el servicio se duerme tras 15 min sin uso y el primer acceso tarda alrededor de 1 min. Para el video se abre antes de grabar.
+- **Descartadas:** pagar HF PRO (alrededor de 9 USD al mes); un Space estático con la inferencia reescrita en numpy para el navegador (medio día o más y riesgo de diferencias numéricas); no publicar.

@@ -1,0 +1,11 @@
+# Despliegue en Render (D39): plan gratuito, la misma imagen del Dockerfile.
+# Render pone la variable PORT (10000); app/app.py la lee.
+services:
+  - type: web
+    name: atender-resenas
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    autoDeploy: false   # sólo se despliega cuando se pide, no con cada push

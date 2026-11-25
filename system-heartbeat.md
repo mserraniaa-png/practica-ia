@@ -18,9 +18,9 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 5 — Entregables (T11 Docker, T15 casos del video, T16 PDF, T17 video) |
 | Punto de control | **C** ✅ (24-nov) · siguiente: **Cierre** (lun 30) |
-| Último paso | Rediseño de la app tipo editor de documentos (D37) |
-| Siguiente paso | Autorización explícita para publicar el Space (`Manu-se/resenas-atender`) → prueba con otra persona |
-| Bloqueos | Publicar el Space espera autorización explícita |
+| Último paso | HF pidió PRO (402) para el Space; se publicará en Render, plan gratuito (D39) |
+| Siguiente paso | Usuario autoriza push al repo privado → crea cuenta en Render y conecta el repo → desplegar y verificar la URL |
+| Bloqueos | Push a GitHub (espera autorización) y cuenta de Render |
 | Sin commit | — |
 
 ## Puntos de control
@@ -49,7 +49,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T8 | LSTM (alternativa) | jue 26 | ✅ | Descartada: AUC val 0.851, costo honesto ~1,300 (D27) |
 | T9 | Calibración | jue 26 | ✅ | Platt + umbral 0.0909, elegido por el usuario (D26, D28) |
 | T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ✅ | D31 · diseño tipo editor de documentos (D37; antes Stitch, D35) · ~55 ms por caso vía servidor · capturas en `docs/capturas/` |
-| T11 | Space público de Hugging Face + Docker de respaldo + prueba con otra persona | vie 27 – sáb 28 | 🟡 | D33–D35 · Dockerfile, compose y `dist/space/` listos; contenedor probado en local (build 1.5 min, arranque 4 s, healthy, 12/12, ida y vuelta 61 ms mediana / 74 ms p95, 347 MiB RAM, `.venv` 1.4 GB sin data/ ni .env, usuario 1000); falta autorización para publicar y prueba con otra persona |
+| T11 | Space público de Hugging Face + Docker de respaldo + prueba con otra persona | vie 27 – sáb 28 | 🟡 | D33–D39 · HF pide PRO → Render gratis (`render.yaml`); contenedor probado en local (build 1.5 min, arranque 4 s, healthy, 12/12, ida y vuelta 61 ms mediana / 74 ms p95, 347 MiB RAM, `.venv` 1.4 GB sin data/ ni .env, usuario 1000); falta push, desplegar en Render y prueba con otra persona |
 | T12 | Corrida única sobre prueba | vie 27 | ✅ | D29 · commit `80c247d` · costo 750 [480, 1,140] |
 | T13 | 20 errores agrupados | vie 27 | ✅ | D30 · `resultados/prueba/errores.md`; 12/40 FP parecen error de etiqueta (por confirmar) |
 | T14 | 10 entradas fuera de dominio | vie 27 | ✅ | D32 · 9/10 coinciden; falla la reseña de producto en español |
@@ -86,6 +86,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · Autorizado el Space `Manu-se/atender-resenas`; HF respondió 402 (Docker/Gradio en CPU gratis requiere PRO). No se creó nada. Se elige Render gratis con el mismo Dockerfile; `render.yaml` listo (D39).
 - **24-nov** · Botones Borrar / Analizar siempre visibles (sticky en escritorio, fijos en móvil) y barra superior que ya no desborda en móvil (D38).
 - **24-nov** · App rediseñada como editor de documentos (D37): hoja con el texto, panel de dictamen y ejemplos, píldora Analizar; `referencia_app.py` lee `data-clase`/`data-probabilidad`. 95 pruebas, 12/12 local y por servidor. Falta reconstruir la imagen Docker.
 - **24-nov** · Contenedor probado en local (Docker 29.6, arm64): build 1.5 min, arranque 4 s, healthcheck sano, 12/12 contra `app/referencia.json` vía `--url`, ida y vuelta 61 ms (p95 74), modelo 3.5 ms, 347 MiB de RAM; la imagen no trae data/, .env ni spaCy; el lock trae la rueda torch CPU x86_64 que usará el Space.

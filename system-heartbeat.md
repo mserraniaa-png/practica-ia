@@ -86,6 +86,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · Botones Borrar / Analizar siempre visibles (sticky en escritorio, fijos en móvil) y barra superior que ya no desborda en móvil (D38).
 - **24-nov** · App rediseñada como editor de documentos (D37): hoja con el texto, panel de dictamen y ejemplos, píldora Analizar; `referencia_app.py` lee `data-clase`/`data-probabilidad`. 95 pruebas, 12/12 local y por servidor. Falta reconstruir la imagen Docker.
 - **24-nov** · Contenedor probado en local (Docker 29.6, arm64): build 1.5 min, arranque 4 s, healthcheck sano, 12/12 contra `app/referencia.json` vía `--url`, ida y vuelta 61 ms (p95 74), modelo 3.5 ms, 347 MiB de RAM; la imagen no trae data/, .env ni spaCy; el lock trae la rueda torch CPU x86_64 que usará el Space.
 - **24-nov** · Buscador de Google Maps en la app: descartado por el usuario (D36).

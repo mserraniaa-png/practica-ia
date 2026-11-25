@@ -393,3 +393,10 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **Cambio de contrato:** la tarjeta de resultado lleva `data-clase` y `data-probabilidad` (4 decimales); `referencia_app.py --url` las lee en lugar de buscar texto visible, así el diseño puede cambiar sin romper la verificación.
 - **Sin cambios en el modelo ni en el `Predictor`.** Verificado: 95 pruebas, 12/12 contra `app/referencia.json` local y por el servidor; capturas nuevas en `docs/capturas/`.
 - **Descartada:** quedarse con el diseño de D35 (al usuario no le terminó de convencer).
+
+## D38 · Botones Borrar / Analizar siempre visibles — 24-nov-2026
+
+- **Pedido del usuario:** la píldora de acciones debe estar en pantalla en todo momento, como en la referencia de D37; con reseñas largas quedaba al fondo del editor y había que bajar.
+- **Cambio (sólo CSS):** en escritorio la píldora es `sticky` al borde inferior de la pantalla mientras el editor esté a la vista; en pantallas de menos de 900 px es `fixed` abajo al centro. Gradio pone `overflow: hidden` en su contenedor, que impide el sticky; se cambió a `overflow: clip`.
+- **Verificado con Playwright** (reseña de 2,475 caracteres): el botón Analizar está visible en 3 posiciones de scroll en escritorio (1280×720) y en móvil (390×844), y funciona al hacer clic; la página no se desborda a lo ancho ni con 6,000 caracteres.
+- **Descartada:** `fixed` también en escritorio, porque quedaría centrada en la ventana y no en el editor.

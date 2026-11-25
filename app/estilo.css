@@ -30,6 +30,7 @@ body, gradio-app, .gradio-container { background: var(--ra-bg-app) !important; }
 .gradio-container { font-family: var(--ra-font) !important; color: var(--ra-text); max-width: 1440px !important;
   margin: 0 auto !important; padding: .9rem 1.25rem 1.5rem !important; }
 footer { display: none !important; }
+.gradio-container { overflow: clip !important; }  /* Gradio pone hidden, que impide la píldora sticky */
 .gradio-container .block, .gradio-container .form, .gradio-container .html-container {
   border: none !important; box-shadow: none !important; background: transparent !important; padding: 0 !important; }
 
@@ -47,7 +48,7 @@ footer { display: none !important; }
 
 /* Hoja principal */
 .ra-hoja { background: var(--ra-bg-surface) !important; border: 1px solid var(--ra-border) !important; border-radius: 16px !important;
-  box-shadow: var(--ra-sombra); padding: 0 !important; gap: 0 !important; overflow: hidden; }
+  box-shadow: var(--ra-sombra); padding: 0 !important; gap: 0 !important; overflow: clip; }  /* clip (no hidden) para que la píldora pueda ser sticky */
 .ra-toolbar { align-items: center !important; justify-content: space-between !important; flex-wrap: nowrap !important;
   padding: .7rem 1.25rem !important; border-bottom: 1px solid var(--ra-border); gap: 1rem; min-height: 52px; }
 .ra-toolbar > div { flex: 0 1 auto !important; min-width: 0 !important; }
@@ -60,7 +61,7 @@ footer { display: none !important; }
 .ra-cuerpo { gap: 0 !important; align-items: stretch !important; flex-wrap: nowrap !important; }
 
 /* Editor */
-.ra-editor { position: relative; padding: 1.75rem 2.5rem 5.5rem !important; gap: 0 !important; min-width: 0 !important;
+.ra-editor { position: relative; padding: 1.75rem 2.5rem 1.25rem !important; gap: 0 !important; min-width: 0 !important;
   border-right: 1px solid var(--ra-border); }
 .ra-input textarea { font-family: var(--ra-font) !important; font-size: 1.02rem !important; line-height: 1.95 !important;
   color: var(--ra-text) !important; background: transparent !important; border: none !important; box-shadow: none !important;
@@ -69,7 +70,8 @@ footer { display: none !important; }
 .ra-input textarea::placeholder { color: var(--ra-soft); opacity: .8; }
 
 /* Píldora flotante de acciones */
-.ra-pildora { position: absolute !important; left: 50%; max-width: max-content !important; bottom: 1.25rem; transform: translateX(-50%); width: auto !important;
+/* Siempre visible: pegada al borde inferior de la pantalla mientras el editor esté a la vista (en móvil, fija). */
+.ra-pildora { position: sticky !important; bottom: 1.25rem; align-self: center !important; margin-top: auto !important; max-width: max-content !important; width: auto !important;
   flex-wrap: nowrap !important; gap: .3rem !important; padding: .3rem !important; background: var(--ra-bg-surface) !important;
   border: 1px solid var(--ra-border) !important; border-radius: 999px !important; box-shadow: 0 4px 14px rgb(16 24 40 / .12); z-index: 5; }
 .ra-pildora > * { flex: 0 0 auto !important; width: auto !important; min-width: max-content !important; }
@@ -157,12 +159,14 @@ footer { display: none !important; }
 /* Pantallas medianas y móviles: el panel va debajo del editor */
 @media (max-width: 900px) {
   .ra-cuerpo { flex-direction: column !important; }
-  .ra-editor { border-right: none; border-bottom: 1px solid var(--ra-border); padding: 1.25rem 1.25rem 5rem !important; width: 100% !important; }
+  .ra-editor { border-right: none; border-bottom: 1px solid var(--ra-border); padding: 1.25rem !important; width: 100% !important; }
+  .ra-pildora { position: fixed !important; left: 50%; transform: translateX(-50%); bottom: max(1rem, env(safe-area-inset-bottom)); }
+  .gradio-container { padding-bottom: 5.5rem !important; }
   .ra-lateral { min-width: 0 !important; width: 100% !important; }
   .ra-input textarea { min-height: 180px; height: 180px !important; }
 }
 @media (max-width: 640px) {
-  .gradio-container { padding: .6rem .5rem 1.2rem !important; }
+  .gradio-container { padding: .6rem .5rem 5.5rem !important; }
   .ra-top { gap: .5rem; }
   .ra-logo small { display: none; }
   .ra-logo b { font-size: .98rem; }
@@ -171,13 +175,16 @@ footer { display: none !important; }
   .ra-toolbar { padding: .6rem .9rem !important; }
   .ra-toolbar-izq span { display: none; }
   .ra-toolbar-der { gap: .7rem; font-size: .78rem; }
-  .ra-editor { padding: 1rem 1rem 4.6rem !important; }
+  .ra-editor { padding: 1rem !important; }
   .ra-lateral { padding: .7rem !important; }
   .ra-caja { grid-template-columns: 1fr; gap: .8rem; }
   .ra-grande b { font-size: 2.3rem; }
   .ra-leyenda span:nth-child(2) { display: none; }
   .ra-input textarea { font-size: .98rem !important; line-height: 1.7 !important; }
-  .ra-toolbar-der { flex-wrap: nowrap; }
+  .ra-toolbar > div:first-child { display: none !important; }
+  .ra-toolbar > div:last-child { flex: 1 1 100% !important; width: 100% !important; }
+  .ra-toolbar-der { justify-content: space-between; gap: .2rem .6rem; }
+  .ra-conteo { white-space: normal; }
   .ra-chip { flex-direction: column !important; align-items: flex-start !important; gap: .3rem; }
   .ra-pie-badge { border-radius: 8px; }
 }

@@ -18,9 +18,9 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 5 — Entregables (T11 Docker, T15 casos del video, T16 PDF, T17 video) |
 | Punto de control | **C** ✅ (24-nov) · siguiente: **Cierre** (lun 30) |
-| Último paso | Nuevo diseño de la app (D35) |
-| Siguiente paso | Usuario abre Docker Desktop → construir y probar el contenedor → autorización explícita para publicar el Space |
-| Bloqueos | Docker Desktop no está corriendo; publicar el Space espera autorización explícita |
+| Último paso | Contenedor Docker construido y probado en local (arm64): sano, 12/12 contra la referencia |
+| Siguiente paso | Autorización explícita para publicar el Space (`Manu-se/resenas-atender`) → prueba con otra persona |
+| Bloqueos | Publicar el Space espera autorización explícita |
 | Sin commit | — |
 
 ## Puntos de control
@@ -49,7 +49,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | T8 | LSTM (alternativa) | jue 26 | ✅ | Descartada: AUC val 0.851, costo honesto ~1,300 (D27) |
 | T9 | Calibración | jue 26 | ✅ | Platt + umbral 0.0909, elegido por el usuario (D26, D28) |
 | T10 | App Gradio + filtro de fuera de dominio | jue 26 – vie 27 | ✅ | D31 · diseño nuevo (Stitch adaptado, D35) · ~55 ms por caso vía servidor · capturas en `docs/capturas/` |
-| T11 | Space público de Hugging Face + Docker de respaldo + prueba con otra persona | vie 27 – sáb 28 | 🟡 | D33–D35 · Dockerfile, compose y `dist/space/` listos; falta probar el contenedor (Docker Desktop), autorización para publicar y prueba con otra persona |
+| T11 | Space público de Hugging Face + Docker de respaldo + prueba con otra persona | vie 27 – sáb 28 | 🟡 | D33–D35 · Dockerfile, compose y `dist/space/` listos; contenedor probado en local (build 1.5 min, arranque 4 s, healthy, 12/12, ida y vuelta 61 ms mediana / 74 ms p95, 347 MiB RAM, `.venv` 1.4 GB sin data/ ni .env, usuario 1000); falta autorización para publicar y prueba con otra persona |
 | T12 | Corrida única sobre prueba | vie 27 | ✅ | D29 · commit `80c247d` · costo 750 [480, 1,140] |
 | T13 | 20 errores agrupados | vie 27 | ✅ | D30 · `resultados/prueba/errores.md`; 12/40 FP parecen error de etiqueta (por confirmar) |
 | T14 | 10 entradas fuera de dominio | vie 27 | ✅ | D32 · 9/10 coinciden; falla la reseña de producto en español |
@@ -86,6 +86,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · Contenedor probado en local (Docker 29.6, arm64): build 1.5 min, arranque 4 s, healthcheck sano, 12/12 contra `app/referencia.json` vía `--url`, ida y vuelta 61 ms (p95 74), modelo 3.5 ms, 347 MiB de RAM; la imagen no trae data/, .env ni spaCy; el lock trae la rueda torch CPU x86_64 que usará el Space.
 - **24-nov** · Buscador de Google Maps en la app: descartado por el usuario (D36).
 - **24-nov** · Nuevo diseño de la app (Stitch → Gradio): sin el JS simulado de Stitch; capturas de escritorio, móvil y oscuro en `docs/capturas/`; 12/12 contra la referencia vía servidor (D35).
 - **24-nov** · Sesión de Hugging Face iniciada. Preparado sin publicar: Dockerfile único, compose, tarjeta del Space, `preparar_space.py` (27 archivos, 7.8 MB, auditoría limpia), referencia de predicciones 12/12 (D34).

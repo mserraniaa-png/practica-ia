@@ -1,5 +1,6 @@
 """ADR-05 filtro de fuera de dominio y predictor congelado: nunca lanza excepción."""
 
+import hashlib
 import json
 
 import numpy as np
@@ -7,7 +8,7 @@ import pytest
 
 from resenas.fuera_dominio import FiltroFueraDominio
 from resenas.modelos import RedDensa
-from resenas.predictor import Predictor
+from resenas.predictor import MODELOS, ManifiestoInvalido, Predictor, verificar_manifiesto
 
 CORPUS = ["la comida estuvo muy rica y el servicio fue amable",
           "el mesero tardó mucho y la sopa llegó fría",
@@ -50,7 +51,34 @@ def predictor(tmp_path_factory, filtro):
     (d / "calibrador.json").write_text(json.dumps({"metodo": "platt", "a": 1.0, "b": 0.0}))
     (d / "fuera_dominio.json").write_text(json.dumps(filtro.a_dict()))
     (d / "config.json").write_text(json.dumps({"umbral": 3 / 33}))
+    escribir_manifiesto(d)
     return Predictor(d), m
+
+
+def escribir_manifiesto(d):
+    archivos = ["vectorizador.joblib", "red.pt", "calibrador.json", "fuera_dominio.json", "config.json"]
+    (d / "MANIFIESTO.sha256").write_text(
+        "".join(f"{hashlib.sha256((d / a).read_bytes()).hexdigest()}  {a}\n" for a in archivos))
+
+
+def test_se_niega_sin_manifiesto_o_con_archivo_alterado(predictor, tmp_path):
+    import shutil
+    origen = predictor[0].carpeta
+    d = tmp_path / "m"
+    shutil.copytree(origen, d)
+    (d / "MANIFIESTO.sha256").unlink()
+    with pytest.raises(ManifiestoInvalido):
+        Predictor(d)
+    escribir_manifiesto(d)
+    Predictor(d)                                   # íntegro: carga
+    with open(d / "vectorizador.joblib", "ab") as f:
+        f.write(b"x")                              # un byte de más
+    with pytest.raises(ManifiestoInvalido):
+        Predictor(d)
+
+
+def test_modelo_congelado_real_pasa_el_manifiesto():
+    verificar_manifiesto(MODELOS)
 
 
 def test_cargado_reproduce_al_entrenado(predictor):

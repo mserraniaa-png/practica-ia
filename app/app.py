@@ -25,6 +25,8 @@ HEAD = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
         '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800'
         '&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">')
 LIMITE = 5000
+MAX_ENTRADA = 20_000   # D40: tope de lo que acepta la caja y el servidor (sólo se analizan 5,000)
+MAX_COLA = 20          # D40: peticiones en espera; las demás se rechazan en lugar de amontonarse
 
 # Ejemplos inventados (no son reseñas reales). La etiqueta de cada chip la calcula el modelo al arrancar.
 EJEMPLOS = [
@@ -88,7 +90,7 @@ VACIO = (f'<section class="ra-sec ra-sec--vacio" role="status">{_encabezado("che
 
 
 def tarjeta(texto: str) -> str:
-    r = PREDICTOR.predecir(texto)
+    r = PREDICTOR.predecir((texto or "")[:MAX_ENTRADA])
     aviso = f'<div class="ra-aviso">⚠ {html.escape(r.aviso)}</div>' if r.aviso else ""
     if r.fuera_de_dominio:
         return (f'<section class="ra-sec ra-sec--fuera" data-clase="fuera_de_dominio" role="status">{_encabezado("fuera", "Fuera de dominio")}{aviso}'
@@ -116,7 +118,7 @@ def tarjeta(texto: str) -> str:
 
 
 def contador(texto: str) -> str:
-    texto = texto or ""
+    texto = (texto or "")[:MAX_ENTRADA]
     n, palabras = len(texto), len(texto.split())
     extra = f' <span class="ra-alerta">· se analizan los primeros {LIMITE:,}</span>' if n > LIMITE else ""
     return (f'<div class="ra-toolbar-der"><span class="ra-conteo">{palabras:,} palabras · {n:,} caracteres{extra}</span>'
@@ -138,7 +140,7 @@ def construir() -> gr.Blocks:
 
             with gr.Row(elem_classes="ra-cuerpo", equal_height=False):
                 with gr.Column(elem_classes="ra-editor", scale=3):
-                    entrada = gr.Textbox(show_label=False, lines=14, max_lines=40, elem_classes="ra-input",
+                    entrada = gr.Textbox(show_label=False, lines=14, max_lines=40, max_length=MAX_ENTRADA, elem_classes="ra-input",
                                          placeholder="Escribe o pega aquí una reseña de restaurante en español…")
                     with gr.Row(elem_classes="ra-pildora"):
                         borrar = gr.Button("Borrar", elem_classes="ra-borrar", size="sm", scale=0)
@@ -171,5 +173,5 @@ def construir() -> gr.Blocks:
 
 
 if __name__ == "__main__":
-    construir().launch(server_name=os.environ.get("HOST", "0.0.0.0"), server_port=int(os.environ.get("PORT", 7860)),
+    construir().queue(max_size=MAX_COLA).launch(server_name=os.environ.get("HOST", "0.0.0.0"), server_port=int(os.environ.get("PORT", 7860)),
                        share=False, css=CSS, head=HEAD)

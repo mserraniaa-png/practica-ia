@@ -18,7 +18,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 | Faltan para la entrega | 6 días (lun 30-nov, 23:59 CDMX) |
 | Fase | 5 — Entregables (T11 Docker, T15 casos del video, T16 PDF, T17 video) |
 | Punto de control | **C** ✅ (24-nov) · siguiente: **Cierre** (lun 30) |
-| Último paso | HF pidió PRO (402) para el Space; se publicará en Render, plan gratuito (D39) |
+| Último paso | Auditoría completa antes del push (sin hallazgos) y endurecimiento: manifiesto al cargar, tope de 20,000 caracteres, cola de 20 (D40) |
 | Siguiente paso | Usuario autoriza push al repo privado → crea cuenta en Render y conecta el repo → desplegar y verificar la URL |
 | Bloqueos | Push a GitHub (espera autorización) y cuenta de Render |
 | Sin commit | — |
@@ -86,6 +86,7 @@ Estados: ⬜ pendiente · 🟡 en curso · 🔵 en revisión · ✅ hecho · ⛔
 
 ## Bitácora
 
+- **24-nov** · Auditoría completa antes del push: script del proyecto, gitleaks (25 commits), historial de rutas, pip-audit (72 dependencias) y sondeo del contenedor; sin hallazgos. Endurecimiento D40: el `Predictor` verifica el manifiesto antes de cargar, tope de 20,000 caracteres y cola de 20. 98 pruebas, 12/12 local y en el contenedor.
 - **24-nov** · Autorizado el Space `Manu-se/atender-resenas`; HF respondió 402 (Docker/Gradio en CPU gratis requiere PRO). No se creó nada. Se elige Render gratis con el mismo Dockerfile; `render.yaml` listo (D39).
 - **24-nov** · Botones Borrar / Analizar siempre visibles (sticky en escritorio, fijos en móvil) y barra superior que ya no desborda en móvil (D38).
 - **24-nov** · App rediseñada como editor de documentos (D37): hoja con el texto, panel de dictamen y ejemplos, píldora Analizar; `referencia_app.py` lee `data-clase`/`data-probabilidad`. 95 pruebas, 12/12 local y por servidor. Falta reconstruir la imagen Docker.

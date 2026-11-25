@@ -408,3 +408,19 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **Cómo:** `render.yaml` en la raíz define un servicio web Docker (`atender-resenas`, plan free, chequeo de salud en `/`, sin despliegue automático). Render construye desde el repo privado de GitHub; el `.dockerignore` de lista blanca deja fuera `data/`, `resultados/`, `.env` y `cache/`.
 - **Costo aceptado:** el servicio se duerme tras 15 min sin uso y el primer acceso tarda alrededor de 1 min. Para el video se abre antes de grabar.
 - **Descartadas:** pagar HF PRO (alrededor de 9 USD al mes); un Space estático con la inferencia reescrita en numpy para el navegador (medio día o más y riesgo de diferencias numéricas); no publicar.
+
+## D40 · Endurecimiento antes de publicar (auditoría del 24-nov) — 24-nov-2026
+
+- **Auditoría completa antes del push** (pedido del usuario):
+  - `auditar_seguridad.py --historial` y gitleaks 8.21.2 sobre los 25 commits: sin hallazgos.
+  - Nunca entraron al historial `.env`, `data/` real, `cache/` ni llaves. El único correo en los metadatos es el noreply de GitHub.
+  - pip-audit sobre las 72 dependencias de ejecución: sin vulnerabilidades conocidas.
+  - El contenedor no sirve `modelos/` ni el código (403/404) y corre sin root.
+- **Tres cambios de endurecimiento; ninguno cambia predicciones (12/12 contra `app/referencia.json`, local y en el contenedor):**
+  1. **El `Predictor` verifica `MANIFIESTO.sha256` antes de cargar** (`verificar_manifiesto`). `vectorizador.joblib` es un pickle, que puede ejecutar código si alguien lo cambia. Si falta el manifiesto o un archivo no coincide, lanza `ManifiestoInvalido` y no carga nada. Toca `predictor.py`: por eso esta entrada (regla de D28). Los pesos y los hashes de `modelos/` no cambian.
+  2. **Tope de entrada de 20,000 caracteres** (`max_length` en la caja y recorte en el servidor, para llamadas directas a la API). Sólo se analizan los primeros 5,000, como antes. Protege la RAM de 512 MB del plan gratuito.
+  3. **Cola acotada:** `queue(max_size=20)`. Las peticiones de más se rechazan en lugar de amontonarse.
+- **Pruebas nuevas:** se niega sin manifiesto y con un byte de más en el vectorizador; el modelo congelado real pasa el manifiesto; entrada de 200,000 caracteres topada en el servidor. 98 pruebas pasan.
+- **Descartadas:**
+  - Límite de peticiones por IP: Gradio no lo trae y un proxy propio es más trabajo del que vale para una práctica sin costo por uso.
+  - Firmar el modelo con llave: el manifiesto en git ya fija los hashes.

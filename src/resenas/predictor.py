@@ -3,6 +3,7 @@
 predecir(texto) → Resultado(clase, probabilidad calibrada, umbral, fuera de dominio, razón, ms).
 """
 
+import hashlib
 import json
 import time
 from dataclasses import asdict, dataclass
@@ -17,6 +18,23 @@ from resenas.modelos import RedDensa
 
 MODELOS = config.RAIZ / "modelos"
 CLASES = {1: "atender", 0: "no_atender"}
+
+
+class ManifiestoInvalido(RuntimeError):
+    """modelos/ no coincide con MANIFIESTO.sha256: no se carga nada (D40)."""
+
+
+def verificar_manifiesto(carpeta: Path) -> None:
+    """Antes de abrir el vectorizador (joblib/pickle puede ejecutar código), comprueba el SHA-256
+    de cada archivo contra MANIFIESTO.sha256. Si falta el manifiesto o algo no coincide, se niega."""
+    manifiesto = carpeta / "MANIFIESTO.sha256"
+    if not manifiesto.exists():
+        raise ManifiestoInvalido(f"Falta {manifiesto.name} en {carpeta}")
+    for linea in manifiesto.read_text().splitlines():
+        h, nombre = linea.split(maxsplit=1)
+        ruta = carpeta / nombre
+        if ruta.parent != carpeta or not ruta.exists() or hashlib.sha256(ruta.read_bytes()).hexdigest() != h:
+            raise ManifiestoInvalido(f"{nombre} no coincide con {manifiesto.name}")
 
 
 @dataclass
@@ -35,6 +53,8 @@ class Resultado:
 
 class Predictor:
     def __init__(self, carpeta: Path = MODELOS):
+        verificar_manifiesto(carpeta)
+        self.carpeta = carpeta
         self.config = json.loads((carpeta / "config.json").read_text())
         self.modelo = RedDensa.cargar(carpeta)
         cal = json.loads((carpeta / "calibrador.json").read_text())

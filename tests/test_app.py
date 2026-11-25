@@ -35,3 +35,9 @@ def test_latencia_p95_menor_a_200_ms():
 
 def test_construye_la_interfaz():
     assert construir() is not None
+
+
+def test_entrada_enorme_se_topa_en_el_servidor():
+    from app.app import MAX_ENTRADA, contador
+    assert f"{MAX_ENTRADA:,} caracteres" in contador("a " * 100_000)
+    assert "Umbral aplicado" in tarjeta("la comida " * 100_000)

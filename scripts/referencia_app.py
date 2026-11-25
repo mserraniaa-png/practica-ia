@@ -45,12 +45,10 @@ def remota(url):
     c = Client(url, verbose=False)
     out = []
     for t in TEXTOS:
-        h = re.sub(r"<[^>]+>", " ", c.predict(t, api_name="/tarjeta"))
-        if "Fuera de dominio" in h:
-            out.append({"clase": "fuera_de_dominio", "probabilidad": None})
-        else:
-            prob = float(re.search(r"Probabilidad de que reporte un problema\s+([\d.]+)\s*%", h).group(1)) / 100
-            out.append({"clase": "atender" if "Atender:" in h else "no_atender", "probabilidad": prob})
+        h = c.predict(t, api_name="/tarjeta")   # la tarjeta lleva data-clase y data-probabilidad
+        clase = re.search(r'data-clase="(\w+)"', h).group(1)
+        prob = re.search(r'data-probabilidad="([\d.]+)"', h)
+        out.append({"clase": clase, "probabilidad": float(prob.group(1)) if prob else None})
     return out
 
 
@@ -65,7 +63,7 @@ def main():
         return
     esperado = json.loads(RUTA.read_text())["esperado"]
     obtenido = remota(args.url) if args.url else local()
-    tol = 0.0006 if args.url else 1e-6          # la app muestra la probabilidad con 1 decimal en %
+    tol = 0.00006 if args.url else 1e-6         # la tarjeta trae la probabilidad con 4 decimales
     malos = [(t, e, o) for t, e, o in zip(TEXTOS, esperado, obtenido)
              if e["clase"] != o["clase"] or (e["probabilidad"] is not None and abs(e["probabilidad"] - o["probabilidad"]) > tol)]
     for t, e, o in malos:

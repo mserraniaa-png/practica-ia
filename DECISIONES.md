@@ -384,3 +384,12 @@ Los ejemplos reales de cada caso se agregan en `GUIA_ETIQUETADO.md` (T1).
 - **Decisión del usuario:** no se agrega a la app un buscador que traiga las reseñas de un restaurante desde Google Maps y las clasifique.
 - **Razón:** no lo pide la rúbrica ("un archivo o un texto"); trae sólo 5 reseñas por lugar; exige una key en el Space con riesgo de cobro (se habría controlado con cuota diaria en GCP, límites por sesión e interruptor de apagado) y atribución de autores según los términos de Google; y cuesta de medio día a un día de trabajo a 6 días de la entrega.
 - **Descartada:** hacerlo como pestaña opcional, apagada por omisión. Se dejaría para un trabajo futuro y se menciona así en el PDF.
+
+## D37 · Rediseño de la app como editor de documentos — 24-nov-2026
+
+- **Decisión del usuario:** cambiar el diseño de D35 por uno tipo editor de documentos, tomando como referencia la distribución de un editor comercial (captura que dio el usuario).
+- **Qué se tomó:** hoja grande con el texto sin bordes; barra superior con palabras, caracteres e idioma; panel derecho con secciones en tarjeta (dictamen con la probabilidad grande y una leyenda de umbral, decisión y tiempo; ejemplos); aviso al pie del panel; píldora flotante Borrar / Analizar.
+- **Qué no se tomó:** promociones, menú de herramientas, cuenta, deshacer/rehacer, barra de íconos, ni el nombre, logo o colores de la marca de referencia. Colores propios (azul `#2f5bd3`); modo oscuro y móvil (el panel pasa debajo del editor a menos de 900 px).
+- **Cambio de contrato:** la tarjeta de resultado lleva `data-clase` y `data-probabilidad` (4 decimales); `referencia_app.py --url` las lee en lugar de buscar texto visible, así el diseño puede cambiar sin romper la verificación.
+- **Sin cambios en el modelo ni en el `Predictor`.** Verificado: 95 pruebas, 12/12 contra `app/referencia.json` local y por el servidor; capturas nuevas en `docs/capturas/`.
+- **Descartada:** quedarse con el diseño de D35 (al usuario no le terminó de convencer).
